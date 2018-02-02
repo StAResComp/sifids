@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_vessel_details_title"
+        android:key="pref_vessel_details_key">
+        <EditTextPreference
+            android:key="pref_vessel_name"
+            android:title="@string/pref_vessel_name_title"
+            android:dialogTitle="@string/pref_vessel_name_dialog_title" />
+    </PreferenceCategory>
+</PreferenceScreen>
