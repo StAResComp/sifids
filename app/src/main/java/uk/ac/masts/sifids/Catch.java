@@ -40,9 +40,14 @@ public class Catch extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.activity_catch:
+                intent = new Intent(this, Catch.class);
                 startActivity(intent);
                 return true;
             default:
