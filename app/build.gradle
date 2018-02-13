@@ -17,6 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "stage"
+    productFlavors {
+        dev {
+            dimension "stage"
+            minSdkVersion 21
+            versionNameSuffix "-dev"
+            applicationIdSuffix '.dev'
+        }
+        prod {
+            dimension "stage"
+        }
+    }
 }
 
 dependencies {
