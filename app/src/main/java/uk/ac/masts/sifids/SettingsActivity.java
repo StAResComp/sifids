@@ -135,7 +135,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || VesselDetailsPreferenceFragment.class.getName().equals(fragmentName);
+                || VesselDetailsPreferenceFragment.class.getName().equals(fragmentName)
+                || SkipperDetailsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -169,6 +170,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class SkipperDetailsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_skipper_details);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("pref_skipper_name"));
+            bindPreferenceSummaryToValue(findPreference("pref_skipper_address"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -186,7 +218,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 startActivity(intent);
                 return true;
             case R.id.activity_catch:
-                intent = new Intent(this, Catch.class);
+                intent = new Intent(this, CatchActivity.class);
                 startActivity(intent);
                 return true;
             default:

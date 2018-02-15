@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:inputType="textCapWords"
+        android:key="pref_skipper_name"
+        android:title="@string/pref_skipper_name_title" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:inputType="textCapWords"
+        android:key="pref_skipper_address"
+        android:title="@string/pref_skipper_address_title" />
+
+</PreferenceScreen>

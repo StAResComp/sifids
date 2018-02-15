@@ -11,7 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-public class Catch extends AppCompatActivity {
+public class CatchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class Catch extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.activity_catch:
-                intent = new Intent(this, Catch.class);
+                intent = new Intent(this, CatchActivity.class);
                 startActivity(intent);
                 return true;
             default:
