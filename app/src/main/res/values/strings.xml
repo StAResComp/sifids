@@ -12,6 +12,14 @@
     <string name="pref_skipper_name_title">Skipper Name</string>
     <string name="pref_skipper_address_title">Skipper Address</string>
 
+    <string name="pref_header_port_details">Port Details</string>
+    <string name="pref_port_1_title">Port 1</string>
+    <string name="pref_port_2_title">Port 2</string>
+    <string name="pref_port_3_title">Port 3</string>
+    <string name="pref_port_4_title">Port 4</string>
+    <string name="pref_port_5_title">Port 5</string>
+    <string name="pref_port_6_title">Port 6</string>
+
     <string name="title_activity_catch">Catch</string>
 
 </resources>

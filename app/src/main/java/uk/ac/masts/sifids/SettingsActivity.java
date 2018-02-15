@@ -136,7 +136,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || VesselDetailsPreferenceFragment.class.getName().equals(fragmentName)
-                || SkipperDetailsPreferenceFragment.class.getName().equals(fragmentName);
+                || SkipperDetailsPreferenceFragment.class.getName().equals(fragmentName)
+                || PortDetailsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -188,6 +189,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("pref_skipper_name"));
             bindPreferenceSummaryToValue(findPreference("pref_skipper_address"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class PortDetailsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_port_details);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("pref_port_1"));
+            bindPreferenceSummaryToValue(findPreference("pref_port_2"));
+            bindPreferenceSummaryToValue(findPreference("pref_port_3"));
+            bindPreferenceSummaryToValue(findPreference("pref_port_4"));
+            bindPreferenceSummaryToValue(findPreference("pref_port_5"));
+            bindPreferenceSummaryToValue(findPreference("pref_port_6"));
         }
 
         @Override
