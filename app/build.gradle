@@ -21,7 +21,7 @@ android {
     productFlavors {
         dev {
             dimension "stage"
-            minSdkVersion 21
+            minSdkVersion 16
             versionNameSuffix "-dev"
             applicationIdSuffix '.dev'
         }
