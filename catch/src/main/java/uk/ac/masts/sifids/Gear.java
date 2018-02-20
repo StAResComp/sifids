@@ -7,10 +7,10 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by pgm5 on 19/02/2018.
  */
 
-@Entity
+@Entity(tableName = "gear")
 public class Gear {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     public String name;

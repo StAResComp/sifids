@@ -12,7 +12,8 @@ import java.util.Date;
  * Created by pgm5 on 19/02/2018.
  */
 
-@Entity(foreignKeys = {
+@Entity(tableName = "fish_1_form_row",
+        foreignKeys = {
         @ForeignKey(
                 entity = Fish1Form.class,
                 parentColumns = "id",
@@ -49,7 +50,7 @@ import java.util.Date;
 )
 public class Fish1FormRow {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "form_id")

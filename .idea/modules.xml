@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/catch/app.iml" filepath="$PROJECT_DIR$/catch/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/catch/catch.iml" filepath="$PROJECT_DIR$/catch/catch.iml" />
       <module fileurl="file://$PROJECT_DIR$/sifids.iml" filepath="$PROJECT_DIR$/sifids.iml" />
     </modules>
   </component>

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fdd4f15c505f3a5b7e47901a7f182559",
+    "identityHash": "970f51b4b6e7124736a45d53b2567c77",
     "entities": [
       {
-        "tableName": "Fish1Form",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `fishery_office` TEXT, `email` TEXT, `port_of_departure` TEXT, `port_of_landing` TEXT, `pln` TEXT, `vessel_name` TEXT, `owner_master` TEXT, `address` TEXT, `total_pots_fishing` INTEGER NOT NULL, `comments_and_buyers_information` TEXT, `created_at` INTEGER, `modified_at` INTEGER, PRIMARY KEY(`id`))",
+        "tableName": "fish_1_form",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `fishery_office` TEXT, `email` TEXT, `port_of_departure` TEXT, `port_of_landing` TEXT, `pln` TEXT, `vessel_name` TEXT, `owner_master` TEXT, `address` TEXT, `total_pots_fishing` INTEGER NOT NULL, `comments_and_buyers_information` TEXT, `created_at` INTEGER, `modified_at` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -91,14 +91,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "Fish1FormRow",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `form_id` INTEGER NOT NULL, `fishing_activity_date` INTEGER, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `ices_area` TEXT, `gear_id` INTEGER NOT NULL, `mesh_size` INTEGER NOT NULL, `species_id` INTEGER NOT NULL, `state_id` INTEGER NOT NULL, `presentation_id` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `dis` INTEGER NOT NULL, `bms` INTEGER NOT NULL, `number_of_pots_hauled` INTEGER NOT NULL, `landing_or_discard_date` INTEGER, `transporter_reg_etc` TEXT, `created_at` INTEGER, `modified_at` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`form_id`) REFERENCES `Fish1Form`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`gear_id`) REFERENCES `Gear`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`species_id`) REFERENCES `CatchSpecies`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`state_id`) REFERENCES `CatchState`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`presentation_id`) REFERENCES `CatchPresentation`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "tableName": "fish_1_form_row",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `form_id` INTEGER NOT NULL, `fishing_activity_date` INTEGER, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `ices_area` TEXT, `gear_id` INTEGER NOT NULL, `mesh_size` INTEGER NOT NULL, `species_id` INTEGER NOT NULL, `state_id` INTEGER NOT NULL, `presentation_id` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `dis` INTEGER NOT NULL, `bms` INTEGER NOT NULL, `number_of_pots_hauled` INTEGER NOT NULL, `landing_or_discard_date` INTEGER, `transporter_reg_etc` TEXT, `created_at` INTEGER, `modified_at` INTEGER, FOREIGN KEY(`form_id`) REFERENCES `fish_1_form`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`gear_id`) REFERENCES `Gear`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`species_id`) REFERENCES `catch_species`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`state_id`) REFERENCES `catch_state`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`presentation_id`) REFERENCES `catch_presentation`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -219,7 +219,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -265,7 +265,7 @@
         ],
         "foreignKeys": [
           {
-            "table": "Fish1Form",
+            "table": "fish_1_form",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -287,7 +287,7 @@
             ]
           },
           {
-            "table": "CatchSpecies",
+            "table": "catch_species",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -298,7 +298,7 @@
             ]
           },
           {
-            "table": "CatchState",
+            "table": "catch_state",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -309,7 +309,7 @@
             ]
           },
           {
-            "table": "CatchPresentation",
+            "table": "catch_presentation",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -322,8 +322,8 @@
         ]
       },
       {
-        "tableName": "CatchSpecies",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `species_name` TEXT, `species_code` TEXT, `scientific_name` TEXT, PRIMARY KEY(`id`))",
+        "tableName": "catch_species",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `species_name` TEXT, `species_code` TEXT, `scientific_name` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -354,14 +354,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "CatchState",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
+        "tableName": "catch_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -380,13 +380,13 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "CatchPresentation",
+        "tableName": "catch_presentation",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -413,7 +413,7 @@
       },
       {
         "tableName": "Gear",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `hasMeshSize` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `hasMeshSize` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -438,14 +438,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
-        "tableName": "CatchSpeciesAllowedState",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`species_id` INTEGER NOT NULL, `state_id` INTEGER NOT NULL, PRIMARY KEY(`species_id`, `state_id`), FOREIGN KEY(`species_id`) REFERENCES `CatchSpecies`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`state_id`) REFERENCES `CatchState`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "tableName": "catch_species_allowed_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`species_id` INTEGER NOT NULL, `state_id` INTEGER NOT NULL, PRIMARY KEY(`species_id`, `state_id`), FOREIGN KEY(`species_id`) REFERENCES `catch_species`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`state_id`) REFERENCES `catch_state`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "species_id",
@@ -487,7 +487,7 @@
         ],
         "foreignKeys": [
           {
-            "table": "CatchSpecies",
+            "table": "catch_species",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -498,7 +498,7 @@
             ]
           },
           {
-            "table": "CatchState",
+            "table": "catch_state",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -511,8 +511,8 @@
         ]
       },
       {
-        "tableName": "CatchSpeciesAllowedPresentation",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`species_id` INTEGER NOT NULL, `presentation_id` INTEGER NOT NULL, PRIMARY KEY(`species_id`, `presentation_id`), FOREIGN KEY(`species_id`) REFERENCES `CatchSpecies`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`presentation_id`) REFERENCES `CatchPresentation`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "tableName": "catch_species_allowed_presentation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`species_id` INTEGER NOT NULL, `presentation_id` INTEGER NOT NULL, PRIMARY KEY(`species_id`, `presentation_id`), FOREIGN KEY(`species_id`) REFERENCES `catch_species`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`presentation_id`) REFERENCES `catch_presentation`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "species_id",
@@ -554,7 +554,7 @@
         ],
         "foreignKeys": [
           {
-            "table": "CatchSpecies",
+            "table": "catch_species",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -565,7 +565,7 @@
             ]
           },
           {
-            "table": "CatchPresentation",
+            "table": "catch_presentation",
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -580,7 +580,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fdd4f15c505f3a5b7e47901a7f182559\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"970f51b4b6e7124736a45d53b2567c77\")"
     ]
   }
 }

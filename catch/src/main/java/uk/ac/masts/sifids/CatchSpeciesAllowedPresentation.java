@@ -8,7 +8,8 @@ import android.arch.persistence.room.Index;
  * Created by pgm5 on 19/02/2018.
  */
 
-@Entity(primaryKeys = {
+@Entity(tableName = "catch_species_allowed_presentation",
+        primaryKeys = {
         "species_id",
         "presentation_id"
 },
