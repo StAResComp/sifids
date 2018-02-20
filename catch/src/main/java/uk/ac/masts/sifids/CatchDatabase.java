@@ -44,7 +44,7 @@ public abstract class CatchDatabase extends RoomDatabase{
     private static CatchDatabase buildDatabase(final Context context) {
         return Room.databaseBuilder(context,
                 CatchDatabase.class,
-                "my-database")
+                "catch-database")
                 .addCallback(new Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -52,7 +52,9 @@ public abstract class CatchDatabase extends RoomDatabase{
                         Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                             @Override
                             public void run() {
+                                getInstance(context).catchDao().insertPresentations(CatchPresentation.createPresentations());
                                 getInstance(context).catchDao().insertSpecies(CatchSpecies.createSpecies());
+                                getInstance(context).catchDao().insertStates(CatchState.createStates());
                             }
                         });
                     }

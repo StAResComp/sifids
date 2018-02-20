@@ -16,6 +16,12 @@ public interface CatchDao {
     @Insert
     public void insertSpecies(List<CatchSpecies> species);
 
+    @Insert
+    public void insertStates(List<CatchState> states);
+
+    @Insert
+    public void insertPresentations(List<CatchPresentation> presentations);
+
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
 

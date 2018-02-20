@@ -96,23 +96,6 @@ public class CatchSpecies {
             {"Whiting", "WHG", "Merlangius merlangus"},
     };
 
-    public static List<CatchSpecies> createSpecies() {
-        List<CatchSpecies> speciesObjects = new ArrayList<CatchSpecies>();
-        for(String[] speciesDetails : SPECIES) {
-            speciesObjects.add(new CatchSpecies(speciesDetails));
-        }
-        return speciesObjects;
-    }
-
-    @Ignore
-    public CatchSpecies(String[] speciesDetails) {
-        this.setSpeciesName(speciesDetails[0]);
-        this.setSpeciesCode(speciesDetails[1]);
-        this.setScientificName(speciesDetails[2]);
-    }
-
-    public CatchSpecies(){}
-
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -124,6 +107,21 @@ public class CatchSpecies {
 
     @ColumnInfo(name = "scientific_name")
     public String scientificName;
+
+    public static List<CatchSpecies> createSpecies() {
+        List<CatchSpecies> speciesObjects = new ArrayList();
+        for(String[] speciesDetails : SPECIES) speciesObjects.add(new CatchSpecies(speciesDetails));
+        return speciesObjects;
+    }
+
+    @Ignore
+    public CatchSpecies(String[] speciesDetails) {
+        this.setSpeciesName(speciesDetails[0]);
+        this.setSpeciesCode(speciesDetails[1]);
+        this.setScientificName(speciesDetails[2]);
+    }
+
+    public CatchSpecies(){}
 
     public int getId() {
         return id;
