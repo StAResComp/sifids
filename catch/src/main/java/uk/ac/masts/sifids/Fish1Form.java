@@ -49,12 +49,16 @@ public class Fish1Form {
     @ColumnInfo(name = "modified_at")
     public Date modifiedAt;
 
+    public Fish1Form() {
+        this.updateDates();
+    }
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (this.getId() == 0) this.id = id;
     }
 
     public String getFisheryOffice() {
@@ -62,7 +66,10 @@ public class Fish1Form {
     }
 
     public void setFisheryOffice(String fisheryOffice) {
-        this.fisheryOffice = fisheryOffice;
+        if (!fisheryOffice.equals(this.getFisheryOffice())) {
+            this.fisheryOffice = fisheryOffice;
+            this.updateDates();
+        }
     }
 
     public String getEmail() {
@@ -70,7 +77,10 @@ public class Fish1Form {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (!email.equals(this.getEmail())) {
+            this.email = email;
+            this.updateDates();
+        }
     }
 
     public String getPortOfDeparture() {
@@ -78,7 +88,10 @@ public class Fish1Form {
     }
 
     public void setPortOfDeparture(String portOfDeparture) {
-        this.portOfDeparture = portOfDeparture;
+        if (!portOfDeparture.equals(this.getPortOfDeparture())) {
+            this.portOfDeparture = portOfDeparture;
+            this.updateDates();
+        }
     }
 
     public String getPortOfLanding() {
@@ -86,7 +99,10 @@ public class Fish1Form {
     }
 
     public void setPortOfLanding(String portOfLanding) {
-        this.portOfLanding = portOfLanding;
+        if (!portOfLanding.equals(this.getPortOfLanding())) {
+            this.portOfLanding = portOfLanding;
+            this.updateDates();
+        }
     }
 
     public String getPln() {
@@ -94,7 +110,10 @@ public class Fish1Form {
     }
 
     public void setPln(String pln) {
-        this.pln = pln;
+        if (!pln.equals(this.getPln())) {
+            this.pln = pln;
+            this.updateDates();
+        }
     }
 
     public String getVesselName() {
@@ -102,7 +121,10 @@ public class Fish1Form {
     }
 
     public void setVesselName(String vesselName) {
-        this.vesselName = vesselName;
+        if (!vesselName.equals(this.getVesselName())) {
+            this.vesselName = vesselName;
+            this.updateDates();
+        }
     }
 
     public String getOwnerMaster() {
@@ -110,7 +132,10 @@ public class Fish1Form {
     }
 
     public void setOwnerMaster(String ownerMaster) {
-        this.ownerMaster = ownerMaster;
+        if (!ownerMaster.equals(this.getOwnerMaster())) {
+            this.ownerMaster = ownerMaster;
+            this.updateDates();
+        }
     }
 
     public String getAddress() {
@@ -118,7 +143,10 @@ public class Fish1Form {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        if (!address.equals(this.getAddress())) {
+            this.address = address;
+            this.updateDates();
+        }
     }
 
     public int getTotalPotsFishing() {
@@ -126,7 +154,10 @@ public class Fish1Form {
     }
 
     public void setTotalPotsFishing(int totalPotsFishing) {
-        this.totalPotsFishing = totalPotsFishing;
+        if (totalPotsFishing != this.getTotalPotsFishing()) {
+            this.totalPotsFishing = totalPotsFishing;
+            this.updateDates();
+        }
     }
 
     public String getCommentsAndBuyersInformation() {
@@ -134,7 +165,10 @@ public class Fish1Form {
     }
 
     public void setCommentsAndBuyersInformation(String commentsAndBuyersInformation) {
-        this.commentsAndBuyersInformation = commentsAndBuyersInformation;
+        if (!commentsAndBuyersInformation.equals(this.getCommentsAndBuyersInformation())) {
+            this.commentsAndBuyersInformation = commentsAndBuyersInformation;
+            this.updateDates();
+        }
     }
 
     public Date getCreatedAt() {
@@ -151,5 +185,12 @@ public class Fish1Form {
 
     public void setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public void updateDates() {
+        if (this.getCreatedAt() == null) {
+            this.setCreatedAt(new Date());
+        }
+        this.setModifiedAt(new Date());
     }
 }

@@ -12,19 +12,27 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".CatchActivity">
+            android:parentActivityName=".Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CatchActivity" />
+                android:value=".Fish1FormsActivity" />
         </activity>
         <activity
-            android:name=".CatchActivity"
+            android:name=".Fish1FormsActivity"
             android:label="@string/title_activity_catch"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddFish1FormActivity"
+            android:label="Add a Fish 1 Form"
+            android:parentActivityName=".Fish1FormsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Fish1FormsActivity" />
         </activity>
     </application>
 

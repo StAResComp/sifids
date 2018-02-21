@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0509010c721713d3a7f7a72749c9221e",
+    "identityHash": "cec5f1908dd1cbf38096607f8d52795a",
     "entities": [
       {
         "tableName": "fish_1_form",
@@ -387,7 +387,7 @@
       },
       {
         "tableName": "catch_presentation",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -406,7 +406,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -580,7 +580,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0509010c721713d3a7f7a72749c9221e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"cec5f1908dd1cbf38096607f8d52795a\")"
     ]
   }
 }

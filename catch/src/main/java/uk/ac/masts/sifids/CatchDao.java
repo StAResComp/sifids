@@ -22,7 +22,13 @@ public interface CatchDao {
     @Insert
     public void insertPresentations(List<CatchPresentation> presentations);
 
+    @Insert
+    public void insertFish1Form(Fish1Form form);
+
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
+
+    @Query("SELECT * FROM fish_1_form")
+    public List<Fish1Form> getForms();
 
 }

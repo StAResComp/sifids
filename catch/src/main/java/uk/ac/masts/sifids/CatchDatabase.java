@@ -57,6 +57,7 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 getInstance(context).catchDao().insertStates(CatchState.createStates());
                             }
                         });
+
                     }
                 })
                 .build();
