@@ -76,26 +76,6 @@ public class Fish1FormsActivity extends AppCompatActivity {
         });
     }
 
-//    private File createFileToSend() {
-//        File file = null;
-//        try {
-//            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "fish-1.txt");
-//            FileWriter writer= new FileWriter(file);
-//            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-//            Map<String,?> keys = sharedPrefs.getAll();
-//            for(Map.Entry<String,?> entry : keys.entrySet()) {
-//                writer.write(entry.getKey() + ": " + entry.getValue().toString());
-//            }
-//            writer.close();
-//            Toast.makeText(getBaseContext(), "Temporarily saved contents in " + file.getPath(), Toast.LENGTH_LONG).show();
-//        }
-//        catch (IOException e) {
-//            Toast.makeText(getBaseContext(), "Unable create temp file. Check logcat for stackTrace", Toast.LENGTH_LONG).show();
-//            e.printStackTrace();
-//        }
-//        return file;
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

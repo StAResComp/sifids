@@ -3,9 +3,12 @@ package uk.ac.masts.sifids;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -19,7 +22,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -138,6 +145,19 @@ public class AddFish1FormActivity extends AppCompatActivity implements AdapterVi
                 }
             }
         });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "pgm5@st-andrews.ac.uk", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fish-1 Form");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find Fish-1 Form attached.");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"pgm5@st-andrews.ac.uk"});
+                emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + createFileToSend().getAbsoluteFile()));
+                startActivity(Intent.createChooser(emailIntent, "Send email..."));
+            }
+        });
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -192,6 +212,33 @@ public class AddFish1FormActivity extends AppCompatActivity implements AdapterVi
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private File createFileToSend() {
+        File file = null;
+        try {
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "fish-1.txt");
+            FileWriter writer= new FileWriter(file);
+
+            writer.write("Fishery Office: " + this.fisheryOffice.getText().toString() + "\n");
+            writer.write("Email: " + this.fisheryOfficeEmail.getText().toString() + "\n\n");
+            writer.write("Port of Departure: " + this.portOfDepartureValue + "\n");
+            writer.write("Port of Landing: " + this.portOfLandingValue + "\n");
+            writer.write("PLN: " + pln.getText().toString() + "\n");
+            writer.write("Vessel Name: " + vesselName.getText().toString() + "\n");
+            writer.write("Owner/Master: " + ownerMaster.getText().toString() + "\n");
+            writer.write("Address: " + address.getText().toString() + "\n");
+            writer.write("Total Pots Fishing: " + totalPotsFishing.getText().toString() + "\n");
+            writer.write("Comments and Buyers Information: " + comment.getText().toString());
+
+            writer.close();
+            Toast.makeText(getBaseContext(), "Temporarily saved contents in " + file.getPath(), Toast.LENGTH_LONG).show();
+        }
+        catch (IOException e) {
+            Toast.makeText(getBaseContext(), "Unable create temp file. Check logcat for stackTrace", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+        return file;
     }
 
 }
