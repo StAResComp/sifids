@@ -4,15 +4,23 @@
 
     <!-- Strings related to Settings -->
 
+    <string name="pref_header_fishery_office_details">Fishery Office Details</string>
+    <string name="pref_fishery_office_name_title">Fishery Office Name</string>
+    <string name="pref_fishery_office_address_title">Fishery Office Address</string>
+    <string name="pref_fishery_office_email_title">Fishery Office Email</string>
+    <string name="pref_fishery_office_name_default">Buckie</string>
+    <string name="pref_fishery_office_address_default">Suites 3-5, Douglas Centre, March Road, BUCKIE AB56 4BT</string>
+    <string name="pref_fishery_office_email_default">fo.buckie@gov.scot</string>
+
     <string name="pref_header_vessel_details">Vessel Details</string>
-    <string name="pref_vessel_id_title">Vessel ID</string>
+    <string name="pref_vessel_pln_title">Vessel PLN</string>
     <string name="pref_vessel_name_title">Vessel Name</string>
 
-    <string name="pref_header_skipper_details">Skipper Details</string>
-    <string name="pref_skipper_name_title">Skipper Name</string>
-    <string name="pref_skipper_address_title">Skipper Address</string>
+    <string name="pref_header_owner_master_details">Owner/Master Details</string>
+    <string name="pref_owner_master_name_title">Owner/Master Name</string>
+    <string name="pref_owner_master_address_title">Owner/Master Address</string>
 
-    <string name="pref_header_port_details">Port Details</string>
+    <string name="pref_header_port_details">Usual Ports</string>
     <string name="pref_port_1_title">Port 1</string>
     <string name="pref_port_2_title">Port 2</string>
     <string name="pref_port_3_title">Port 3</string>

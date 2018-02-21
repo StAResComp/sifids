@@ -130,9 +130,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
+                || FisheryOfficeDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || VesselDetailsPreferenceFragment.class.getName().equals(fragmentName)
-                || SkipperDetailsPreferenceFragment.class.getName().equals(fragmentName)
+                || OwnerMasterDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || PortDetailsPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class FisheryOfficeDetailsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_fishery_office_details);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("pref_fishery_office_name"));
+            bindPreferenceSummaryToValue(findPreference("pref_fishery_office_address"));
+            bindPreferenceSummaryToValue(findPreference("pref_fishery_office_email"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -151,7 +184,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_vessel_id"));
+            bindPreferenceSummaryToValue(findPreference("pref_vessel_pln"));
             bindPreferenceSummaryToValue(findPreference("pref_vessel_name"));
         }
 
@@ -171,19 +204,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class SkipperDetailsPreferenceFragment extends PreferenceFragment {
+    public static class OwnerMasterDetailsPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_skipper_details);
+            addPreferencesFromResource(R.xml.pref_owner_master_details);
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_skipper_name"));
-            bindPreferenceSummaryToValue(findPreference("pref_skipper_address"));
+            bindPreferenceSummaryToValue(findPreference("pref_owner_master_name"));
+            bindPreferenceSummaryToValue(findPreference("pref_owner_master_address"));
         }
 
         @Override

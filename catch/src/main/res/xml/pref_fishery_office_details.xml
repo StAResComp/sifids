@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:inputType="textCapWords"
+        android:key="pref_fishery_office_name"
+        android:title="@string/pref_fishery_office_name_title"
+        android:defaultValue="@string/pref_fishery_office_name_default"/>
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:inputType="textCapWords"
+        android:key="pref_fishery_office_address"
+        android:title="@string/pref_fishery_office_address_title"
+        android:defaultValue="@string/pref_fishery_office_address_default"/>
+
+    <EditTextPreference
+        android:inputType="textEmailAddress"
+        android:key="pref_fishery_office_email"
+        android:title="@string/pref_fishery_office_email_title"
+        android:defaultValue="@string/pref_fishery_office_email_default"/>
+
+</PreferenceScreen>

@@ -1,8 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:key="pref_vessel_id"
-        android:title="@string/pref_vessel_id_title" />
+        android:key="pref_vessel_pln"
+        android:title="@string/pref_vessel_pln_title" />
 
     <EditTextPreference
         android:capitalize="words"

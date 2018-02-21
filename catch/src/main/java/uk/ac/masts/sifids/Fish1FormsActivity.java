@@ -37,6 +37,10 @@ public class Fish1FormsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fish_1_forms);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        PreferenceManager.setDefaultValues(this, R.xml.pref_fishery_office_details, false);
 
         final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
 
