@@ -12,14 +12,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by pgm5 on 21/02/2018.
  */
 
-public class AddFish1FormActivity extends AppCompatActivity {
+public class AddFish1FormActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EditText fisheryOffice;
     EditText fisheryOfficeEmail;
@@ -29,13 +35,21 @@ public class AddFish1FormActivity extends AppCompatActivity {
     EditText address;
     EditText totalPotsFishing;
     EditText comment;
+    Spinner portOfDeparture;
+    Spinner portOfLanding;
     Button button;
+
+    String portOfDepartureValue;
+    String portOfLandingValue;
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
         setContentView(R.layout.activity_add_fish_1_form);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         fisheryOffice = (EditText) findViewById(R.id.fishery_office);
         fisheryOfficeEmail = (EditText) findViewById(R.id.fishery_office_email);
@@ -45,9 +59,25 @@ public class AddFish1FormActivity extends AppCompatActivity {
         address = (EditText) findViewById(R.id.address);
         totalPotsFishing = (EditText) findViewById(R.id.total_pots_fishing);
         comment = (EditText) findViewById(R.id.comment);
-        button = (Button) findViewById(R.id.button);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        ArrayList<String> ports = new ArrayList();
+        for (int i = 1; i <= 6; i++) {
+            String port = prefs.getString("pref_port_"+i,"");
+            if (port != null && port != "") ports.add(port);
+        }
+
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, ports);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        portOfDeparture = (Spinner) findViewById(R.id.port_of_departure);
+        portOfDeparture.setAdapter(adapter);
+        portOfDeparture.setOnItemSelectedListener(this);
+
+        portOfLanding = (Spinner) findViewById(R.id.port_of_landing);
+        portOfLanding.setAdapter(adapter);
+        portOfLanding.setOnItemSelectedListener(this);
+
+        button = (Button) findViewById(R.id.button);
 
         fisheryOffice.setText(prefs.getString("pref_fishery_office_name", "") + " ("+ prefs.getString("pref_fishery_office_address", "") +")");
         fisheryOfficeEmail.setText(prefs.getString("pref_fishery_office_email", ""));
@@ -78,6 +108,8 @@ public class AddFish1FormActivity extends AppCompatActivity {
                     fish1Form.setVesselName(vesselName.getText().toString());
                     fish1Form.setOwnerMaster(ownerMaster.getText().toString());
                     fish1Form.setAddress(address.getText().toString());
+                    fish1Form.setPortOfDeparture(portOfDepartureValue);
+                    fish1Form.setPortOfLanding(portOfLandingValue);
                     int totalPotsInt;
                     try {
                         totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
@@ -107,6 +139,24 @@ public class AddFish1FormActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        switch(parent.getId()) {
+            case R.id.port_of_departure:
+                this.portOfDepartureValue = parent.getItemAtPosition(pos).toString();
+                break;
+            case R.id.port_of_landing:
+                this.portOfLandingValue = parent.getItemAtPosition(pos).toString();
+                break;
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -28,6 +28,9 @@
     <string name="pref_port_5_title">Port 5</string>
     <string name="pref_port_6_title">Port 6</string>
 
+    <string name="port_of_departure">Port of Departure</string>
+    <string name="port_of_landing">Port of Landing</string>
+
     <string name="title_activity_catch">Catch</string>
 
 </resources>
