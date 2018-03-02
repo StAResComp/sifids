@@ -27,8 +27,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.AddFish1FormActivity"
-            android:label="Add a Fish 1 Form"
+            android:name=".activities.EditFish1FormActivity"
+            android:label="Fish 1 Form"
             android:parentActivityName=".activities.Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

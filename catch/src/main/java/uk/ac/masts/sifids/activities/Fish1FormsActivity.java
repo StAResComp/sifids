@@ -63,7 +63,7 @@ public class Fish1FormsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Fish1FormsActivity.this,AddFish1FormActivity.class);
+                Intent i = new Intent(Fish1FormsActivity.this,EditFish1FormActivity.class);
                 startActivity(i);
                 finish();
             }

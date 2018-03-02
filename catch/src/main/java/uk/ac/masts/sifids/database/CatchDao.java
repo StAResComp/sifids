@@ -3,6 +3,7 @@ package uk.ac.masts.sifids.database;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -28,12 +29,18 @@ public interface CatchDao {
     public void insertPresentations(List<CatchPresentation> presentations);
 
     @Insert
-    public void insertFish1Form(Fish1Form form);
+    public void insertFish1Forms(Fish1Form... forms);
 
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
 
     @Query("SELECT * FROM fish_1_form")
     public List<Fish1Form> getForms();
+
+    @Query("SELECT * FROM fish_1_form WHERE id = :id")
+    public Fish1Form getForm(int id);
+
+    @Update
+    public void updateFish1Forms(Fish1Form... forms);
 
 }
