@@ -1,4 +1,4 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
@@ -8,10 +8,10 @@ import android.arch.persistence.room.Index;
  * Created by pgm5 on 19/02/2018.
  */
 
-@Entity(tableName = "catch_species_allowed_presentation",
+@Entity(tableName = "catch_species_allowed_state",
         primaryKeys = {
         "species_id",
-        "presentation_id"
+        "state_id"
 },
         foreignKeys = {
         @ForeignKey(
@@ -20,19 +20,19 @@ import android.arch.persistence.room.Index;
                 childColumns = "species_id"
         ),
         @ForeignKey(
-                entity = CatchPresentation.class,
+                entity = CatchState.class,
                 parentColumns = "id",
-                childColumns = "presentation_id"
+                childColumns = "state_id"
         )
 },
         indices = {
-                @Index(value = "species_id", name = "allowed_presentation_species_id"),
-                @Index(value = "presentation_id", name = "allowed_presentation_presentation_id"),
-        })
-public class CatchSpeciesAllowedPresentation {
-
+        @Index(value = "species_id", name = "allowed_state_species_id"),
+        @Index(value = "state_id", name = "allowed_state_state_id"),
+})
+public class CatchSpeciesAllowedState {
+    
     public int species_id;
-    public int presentation_id;
+    public int state_id;
 
     public int getSpecies_id() {
         return species_id;
@@ -42,11 +42,11 @@ public class CatchSpeciesAllowedPresentation {
         this.species_id = species_id;
     }
 
-    public int getPresentation_id() {
-        return presentation_id;
+    public int getState_id() {
+        return state_id;
     }
 
-    public void setPresentation_id(int presentation_id) {
-        this.presentation_id = presentation_id;
+    public void setState_id(int state_id) {
+        this.state_id = state_id;
     }
 }

@@ -1,4 +1,4 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -10,15 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".Fish1FormsActivity">
+            android:parentActivityName=".activities.Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Fish1FormsActivity" />
+                android:value=".activities.Fish1FormsActivity" />
         </activity>
         <activity
-            android:name=".Fish1FormsActivity"
+            android:name=".activities.Fish1FormsActivity"
             android:label="@string/title_activity_catch"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,12 +27,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddFish1FormActivity"
+            android:name=".activities.AddFish1FormActivity"
             android:label="Add a Fish 1 Form"
-            android:parentActivityName=".Fish1FormsActivity">
+            android:parentActivityName=".activities.Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Fish1FormsActivity" />
+                android:value=".activities.Fish1FormsActivity" />
         </activity>
     </application>
 

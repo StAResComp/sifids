@@ -1,10 +1,15 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import java.util.List;
+
+import uk.ac.masts.sifids.entities.CatchPresentation;
+import uk.ac.masts.sifids.entities.CatchSpecies;
+import uk.ac.masts.sifids.entities.CatchState;
+import uk.ac.masts.sifids.entities.Fish1Form;
 
 /**
  * Created by pgm5 on 19/02/2018.

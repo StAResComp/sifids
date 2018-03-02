@@ -1,4 +1,4 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.activities;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.entities.Fish1Form;
 
 /**
  * Created by pgm5 on 21/02/2018.

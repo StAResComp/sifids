@@ -1,4 +1,4 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.database;
 
 import android.arch.persistence.room.TypeConverter;
 

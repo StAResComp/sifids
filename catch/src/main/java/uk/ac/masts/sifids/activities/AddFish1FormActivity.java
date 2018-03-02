@@ -1,6 +1,5 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.activities;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -26,7 +25,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
+
+import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.Fish1Form;
+import uk.ac.masts.sifids.R;
 
 /**
  * Created by pgm5 on 21/02/2018.

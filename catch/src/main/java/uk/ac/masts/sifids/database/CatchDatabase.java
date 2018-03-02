@@ -1,4 +1,4 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -9,6 +9,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executors;
+
+import uk.ac.masts.sifids.entities.CatchPresentation;
+import uk.ac.masts.sifids.entities.CatchSpecies;
+import uk.ac.masts.sifids.entities.CatchSpeciesAllowedPresentation;
+import uk.ac.masts.sifids.entities.CatchSpeciesAllowedState;
+import uk.ac.masts.sifids.entities.CatchState;
+import uk.ac.masts.sifids.entities.Fish1Form;
+import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.Gear;
 
 /**
  * Created by pgm5 on 19/02/2018.

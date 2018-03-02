@@ -1,12 +1,7 @@
-package uk.ac.masts.sifids;
+package uk.ac.masts.sifids.activities;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +12,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
+import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.Fish1Form;
 
 public class Fish1FormsActivity extends AppCompatActivity {
 
