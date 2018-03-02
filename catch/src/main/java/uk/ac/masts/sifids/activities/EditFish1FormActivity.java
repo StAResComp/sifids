@@ -48,7 +48,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
     EditText comment;
     Spinner portOfDeparture;
     Spinner portOfLanding;
-    Button button;
+    Button saveButton;
+    Button addRowButton;
 
     String portOfDepartureValue;
     String portOfLandingValue;
@@ -94,7 +95,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
         portOfLanding.setAdapter(portOfLandingAdapter);
         portOfLanding.setOnItemSelectedListener(this);
 
-        button = (Button) findViewById(R.id.button);
+        saveButton = (Button) findViewById(R.id.save_form_button);
+        addRowButton = (Button) findViewById(R.id.add_row_button);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -153,7 +155,17 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
             portOfLanding.setSelection(position);
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
+        addRowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditFish1FormActivity.this, EditFish1FormRowActivity.class);
+                i.putExtra("form_id", fish1Form.getId());
+                startActivity(i);
+                finish();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -343,7 +355,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            // Show the Up button in the action bar.
+            // Show the Up saveButton in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

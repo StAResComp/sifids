@@ -11,6 +11,7 @@ import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
+import uk.ac.masts.sifids.entities.Fish1FormRow;
 
 /**
  * Created by pgm5 on 19/02/2018.
@@ -39,6 +40,12 @@ public interface CatchDao {
 
     @Query("SELECT * FROM fish_1_form WHERE id = :id")
     public Fish1Form getForm(int id);
+
+    @Query("SELECT * FROM fish_1_form_row WHERE form_id = :formId")
+    public List<Fish1FormRow> getRowsForForm(int formId);
+
+    @Query("SELECT * FROM fish_1_form_row WHERE id = :id")
+    public Fish1FormRow getFormRow(int id);
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);

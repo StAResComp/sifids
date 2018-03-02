@@ -4,174 +4,202 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
-<ScrollView android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="24dp"
-    tools:context="uk.ac.masts.sifids.activities.EditFish1FormActivity">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:textSize="24sp"
-            android:text="New Form:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/fishery_office"
-                android:hint="Fishery Office"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/fishery_office_email"
-                android:inputType="textEmailAddress"
-                android:hint="Fishery Office Email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <TextView
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Port of Departure:" />
+            android:padding="24dp"
+            tools:context="uk.ac.masts.sifids.activities.EditFish1FormActivity">
 
-        <Spinner
-            android:spinnerMode="dropdown"
-            android:id="@+id/port_of_departure"
-            android:prompt="@string/port_of_departure"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Port of Landing:" />
-
-        <Spinner
-            android:spinnerMode="dropdown"
-            android:id="@+id/port_of_landing"
-            android:prompt="@string/port_of_landing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/pln"
-                android:hint="PLN"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent">
 
-        </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Fish 1 Form Row:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/vessel_name"
-                android:hint="Vessel Name"
-                android:inputType="textCapWords"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/fishery_office"
+                        android:hint="Fishery Office"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/owner_master"
-                android:hint="Owner/Master"
-                android:inputType="textCapWords"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/fishery_office_email"
+                        android:inputType="textEmailAddress"
+                        android:hint="Fishery Office Email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Port of Departure:" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/address"
-                android:hint="Address"
-                android:inputType="textCapWords"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <Spinner
+                    android:spinnerMode="dropdown"
+                    android:id="@+id/port_of_departure"
+                    android:prompt="@string/port_of_departure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Port of Landing:" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <Spinner
+                    android:spinnerMode="dropdown"
+                    android:id="@+id/port_of_landing"
+                    android:prompt="@string/port_of_landing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/total_pots_fishing"
-                android:hint="Total Pots Fishing"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/pln"
+                        android:hint="PLN"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Comment and Buyers Information" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/vessel_name"
+                        android:hint="Vessel Name"
+                        android:inputType="textCapWords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
+                </android.support.design.widget.TextInputLayout>
 
-            <!--<android.support.design.widget.TextInputEditText-->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/owner_master"
+                        android:hint="Owner/Master"
+                        android:inputType="textCapWords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/address"
+                        android:hint="Address"
+                        android:inputType="textCapWords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/total_pots_fishing"
+                        android:hint="Total Pots Fishing"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Comment and Buyers Information" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<android.support.design.widget.TextInputEditText-->
                 <!--android:id="@+id/time"-->
                 <!--android:hint="Time:"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"/>-->
 
-        <!--</android.support.design.widget.TextInputLayout>-->
+                <!--</android.support.design.widget.TextInputLayout>-->
 
-        <Button
-            android:text="Save"
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <Button
+                    android:text="Add Row"
+                    android:id="@+id/add_row_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:text="Save"
+                    android:id="@+id/save_form_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_centerHorizontal="true"
+                        android:textColor="#000"
+                        android:textSize="25sp"
+                        android:text="Fish-1 Form Rows:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
 
-    </LinearLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/form_row_recycler_view"
+                        android:layout_marginTop="60dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-</RelativeLayout>
-</ScrollView>
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

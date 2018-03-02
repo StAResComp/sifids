@@ -58,7 +58,10 @@ public class Fish1Form {
     }
 
     public void setId(int id) {
-        if (this.getId() == 0) this.id = id;
+        if (this.getId() == 0) {
+            this.id = id;
+            this.updateDates();
+        }
     }
 
     public String getFisheryOffice() {

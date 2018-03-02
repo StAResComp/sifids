@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <id name="form_to_edit">form_to_edit</id>
+    <id name="parent_form">parent_form</id>
+    <id name="form_row_to_edit">form_row_to_edit</id>
 </resources>

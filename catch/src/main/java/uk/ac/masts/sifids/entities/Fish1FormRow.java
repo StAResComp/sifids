@@ -107,7 +107,10 @@ public class Fish1FormRow {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (this.getId() == 0) {
+            this.id = id;
+            this.updateDates();
+        }
     }
 
     public int getFormId() {
@@ -115,7 +118,10 @@ public class Fish1FormRow {
     }
 
     public void setFormId(int formId) {
-        this.formId = formId;
+        if (formId != this.getFormId()) {
+            this.formId = formId;
+            this.updateDates();
+        }
     }
 
     public Date getFishingActivityDate() {
@@ -123,7 +129,10 @@ public class Fish1FormRow {
     }
 
     public void setFishingActivityDate(Date fishingActivityDate) {
-        this.fishingActivityDate = fishingActivityDate;
+        if (!fishingActivityDate.equals(this.getFishingActivityDate())) {
+            this.fishingActivityDate = fishingActivityDate;
+            this.updateDates();
+        }
     }
 
     public double getLatitude() {
@@ -131,7 +140,10 @@ public class Fish1FormRow {
     }
 
     public void setLatitude(double latitude) {
-        this.latitude = latitude;
+        if (latitude != this.getLatitude()) {
+            this.latitude = latitude;
+            this.updateDates();
+        }
     }
 
     public double getLongitude() {
@@ -139,7 +151,10 @@ public class Fish1FormRow {
     }
 
     public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        if (longitude != this.getLongitude()) {
+            this.longitude = longitude;
+            this.updateDates();
+        }
     }
 
     public String getIcesArea() {
@@ -147,7 +162,10 @@ public class Fish1FormRow {
     }
 
     public void setIcesArea(String icesArea) {
-        this.icesArea = icesArea;
+        if (!icesArea.equals(this.getIcesArea())) {
+            this.icesArea = icesArea;
+            this.updateDates();
+        }
     }
 
     public int getGearId() {
@@ -155,7 +173,10 @@ public class Fish1FormRow {
     }
 
     public void setGearId(int gearId) {
-        this.gearId = gearId;
+        if (gearId != this.getGearId()) {
+            this.gearId = gearId;
+            this.updateDates();
+        }
     }
 
     public int getMeshSize() {
@@ -163,7 +184,10 @@ public class Fish1FormRow {
     }
 
     public void setMeshSize(int meshSize) {
-        this.meshSize = meshSize;
+        if (meshSize != this.getMeshSize()) {
+            this.meshSize = meshSize;
+            this.updateDates();
+        }
     }
 
     public int getSpeciesId() {
@@ -171,7 +195,10 @@ public class Fish1FormRow {
     }
 
     public void setSpeciesId(int speciesId) {
-        this.speciesId = speciesId;
+        if (speciesId != this.getSpeciesId()) {
+            this.speciesId = speciesId;
+            this.updateDates();
+        }
     }
 
     public int getStateId() {
@@ -179,7 +206,10 @@ public class Fish1FormRow {
     }
 
     public void setStateId(int stateId) {
-        this.stateId = stateId;
+        if (stateId != this.getStateId()) {
+            this.stateId = stateId;
+            this.updateDates();
+        }
     }
 
     public int getPresentationId() {
@@ -187,7 +217,10 @@ public class Fish1FormRow {
     }
 
     public void setPresentationId(int presentationId) {
-        this.presentationId = presentationId;
+        if (presentationId != this.getPresentationId()) {
+            this.presentationId = presentationId;
+            this.updateDates();
+        }
     }
 
     public int getWeight() {
@@ -195,7 +228,10 @@ public class Fish1FormRow {
     }
 
     public void setWeight(int weight) {
-        this.weight = weight;
+        if (weight != this.getWeight()) {
+            this.weight = weight;
+            this.updateDates();
+        }
     }
 
     public boolean isDis() {
@@ -203,7 +239,10 @@ public class Fish1FormRow {
     }
 
     public void setDis(boolean dis) {
-        this.dis = dis;
+        if (dis != this.isDis()) {
+            this.dis = dis;
+            this.updateDates();
+        }
     }
 
     public boolean isBms() {
@@ -211,7 +250,10 @@ public class Fish1FormRow {
     }
 
     public void setBms(boolean bms) {
-        this.bms = bms;
+        if (bms != this.isBms()) {
+            this.bms = bms;
+            this.updateDates();
+        }
     }
 
     public int getNumberOfPotsHauled() {
@@ -219,7 +261,10 @@ public class Fish1FormRow {
     }
 
     public void setNumberOfPotsHauled(int numberOfPotsHauled) {
-        this.numberOfPotsHauled = numberOfPotsHauled;
+        if (numberOfPotsHauled != this.getNumberOfPotsHauled()) {
+            this.numberOfPotsHauled = numberOfPotsHauled;
+            this.updateDates();
+        }
     }
 
     public Date getLandingOrDiscardDate() {
@@ -227,7 +272,10 @@ public class Fish1FormRow {
     }
 
     public void setLandingOrDiscardDate(Date landingOrDiscardDate) {
-        this.landingOrDiscardDate = landingOrDiscardDate;
+        if (!landingOrDiscardDate.equals(this.getLandingOrDiscardDate())) {
+            this.landingOrDiscardDate = landingOrDiscardDate;
+            this.updateDates();
+        }
     }
 
     public String getTransporterRegEtc() {
@@ -235,7 +283,10 @@ public class Fish1FormRow {
     }
 
     public void setTransporterRegEtc(String transporterRegEtc) {
-        this.transporterRegEtc = transporterRegEtc;
+        if (!transporterRegEtc.equals(this.getTransporterRegEtc())) {
+            this.transporterRegEtc = transporterRegEtc;
+            this.updateDates();
+        }
     }
 
     public Date getCreatedAt() {
@@ -252,5 +303,12 @@ public class Fish1FormRow {
 
     public void setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public void updateDates() {
+        if (this.getCreatedAt() == null) {
+            this.setCreatedAt(new Date());
+        }
+        this.setModifiedAt(new Date());
     }
 }
