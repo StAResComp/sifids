@@ -154,4 +154,8 @@ public class CatchSpecies {
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
     }
+
+    public String toString() {
+        return this.getSpeciesName() + " (" + this.getSpeciesCode() + ")";
+    }
 }

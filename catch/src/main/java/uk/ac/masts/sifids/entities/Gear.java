@@ -40,4 +40,8 @@ public class Gear {
     public void setHasMeshSize(boolean hasMeshSize) {
         this.hasMeshSize = hasMeshSize;
     }
+
+    public String toString() {
+        return this.getName();
+    }
 }

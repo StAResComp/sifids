@@ -4,13 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -24,18 +18,17 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
-import uk.ac.masts.sifids.entities.Fish1Form;
+import uk.ac.masts.sifids.entities.CatchPresentation;
+import uk.ac.masts.sifids.entities.CatchSpecies;
+import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.Gear;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -45,22 +38,30 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     Fish1FormRow fish1FormRow;
 
+    CatchDatabase db;
+
     int formId;
 
-    Button fishingActivityDate;
     EditText latitude;
     EditText longitude;
     EditText icesArea;
+    List<Gear> gearList;
+    ArrayAdapter<Gear> gearAdapter;
     Spinner gear;
     EditText meshSize;
+    List<CatchSpecies> speciesList;
+    ArrayAdapter<CatchSpecies> speciesAdapter;
     Spinner species;
+    List<CatchState> stateList;
+    ArrayAdapter<CatchState> stateAdapter;
     Spinner state;
+    List<CatchPresentation> presentationList;
+    ArrayAdapter<CatchPresentation> presentationAdapter;
     Spinner presentation;
     EditText weight;
     CheckBox dis;
     CheckBox bms;
     EditText numberOfPotsHauled;
-    Button landingOrDiscardDate;
     EditText transporterRegEtc;
     Button button;
 
@@ -70,10 +71,17 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         setupActionBar();
         setContentView(R.layout.activity_edit_fish_1_form_row);
 
-        final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
+        db = CatchDatabase.getInstance(getApplicationContext());
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        this.mapElements();
+
+        this.processIntent();
+
+    }
+
+    private void processIntent() {
         Intent intent = this.getIntent();
         if (intent != null) {
             Bundle extras = intent.getExtras();
@@ -100,6 +108,54 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                 }
             }
         }
+    }
+
+    private void mapElements() {
+
+        this.loadOptions();
+
+        latitude = (EditText) findViewById(R.id.latitude);
+        longitude = (EditText) findViewById(R.id.longitude);
+        icesArea = (EditText) findViewById(R.id.ices_area);
+        this.createSpinner(gearAdapter, gearList, gear, R.id.gear);
+        meshSize = (EditText) findViewById(R.id.mesh_size);
+        this.createSpinner(speciesAdapter, speciesList, species,R.id.species);
+        this.createSpinner(stateAdapter, stateList, state,R.id.state);
+        this.createSpinner(presentationAdapter, presentationList, presentation,R.id.presentation);
+        weight = (EditText) findViewById(R.id.weight);
+        dis = (CheckBox) findViewById(R.id.dis);
+        bms = (CheckBox) findViewById(R.id.bms);
+        numberOfPotsHauled = (EditText) findViewById(R.id.number_of_pots_hauled);
+        transporterRegEtc = (EditText) findViewById(R.id.transporter_reg_etc);
+    }
+
+    private void loadOptions() {
+        Runnable r = new Runnable(){
+            @Override
+            public void run() {
+                gearList = db.catchDao().getGear();
+                speciesList = db.catchDao().getSpecies();
+                stateList = db.catchDao().getStates();
+                presentationList = db.catchDao().getPresentations();
+            }
+        };
+
+        Thread newThread= new Thread(r);
+        newThread.start();
+        try {
+            newThread.join();
+        }
+        catch (InterruptedException ie) {
+
+        }
+    }
+
+    private void createSpinner(ArrayAdapter adapter, List list, Spinner spinner, int widgetId) {
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner = (Spinner) findViewById(widgetId);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     public void showFishingActivityDatePickerDialog(View v) {

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.util.SparseArray;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.Gear;
 
 /**
  * Created by pgm5 on 19/02/2018.
@@ -46,6 +48,15 @@ public interface CatchDao {
 
     @Query("SELECT * FROM fish_1_form_row WHERE id = :id")
     public Fish1FormRow getFormRow(int id);
+
+    @Query("SELECT * FROM gear")
+    public List<Gear> getGear();
+
+    @Query("SELECT * FROM catch_state")
+    public List<CatchState> getStates();
+
+    @Query("SELECT * FROM catch_presentation")
+    public List<CatchPresentation> getPresentations();
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);
