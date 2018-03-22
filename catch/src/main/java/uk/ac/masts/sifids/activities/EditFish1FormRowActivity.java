@@ -40,7 +40,7 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     Fish1FormRow fish1FormRow;
 
-    int formId;
+    int formId = 0;
 
     Button fishingActivityDate;
     EditText latitude;
@@ -68,6 +68,14 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        Intent intent = this.getIntent();
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            if (!extras.isEmpty() && extras.containsKey("form_id")) {
+                this.formId = extras.getInt("form_id");
+            }
+        }
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
