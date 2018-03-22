@@ -1,5 +1,8 @@
 package uk.ac.masts.sifids.activities;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
@@ -76,6 +81,16 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                 this.formId = extras.getInt("form_id");
             }
         }
+    }
+
+    public void showFishingActivityDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "fishing_activity_date");
+    }
+
+    public void showLandingOrDiscardDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "landing_or_discard_date");
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -129,6 +144,26 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         if (actionBar != null) {
             // Show the Up saveButton in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
         }
     }
 }

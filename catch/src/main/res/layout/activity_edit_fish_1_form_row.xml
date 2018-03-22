@@ -29,7 +29,7 @@ android:layout_height="wrap_content" >
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Fishing Activity Date"
-                android:onClick="showDatePickerDialog" />
+                android:onClick="showFishingActivityDatePickerDialog" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -177,7 +177,7 @@ android:layout_height="wrap_content" >
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Landing or Discard Date"
-                android:onClick="showDatePickerDialog" />
+                android:onClick="showLandingOrDiscardDatePickerDialog" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
