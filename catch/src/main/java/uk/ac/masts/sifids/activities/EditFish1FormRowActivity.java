@@ -45,7 +45,7 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     Fish1FormRow fish1FormRow;
 
-    int formId = 0;
+    int formId;
 
     Button fishingActivityDate;
     EditText latitude;
@@ -79,6 +79,25 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
             Bundle extras = intent.getExtras();
             if (!extras.isEmpty() && extras.containsKey("form_id")) {
                 this.formId = extras.getInt("form_id");
+            }
+            if (!extras.isEmpty() && extras.containsKey("id")) {
+                final int id = extras.getInt("id");
+
+                Runnable r = new Runnable(){
+                    @Override
+                    public void run() {
+                        fish1FormRow = db.catchDao().getFormRow(id);
+                    }
+                };
+
+                Thread newThread= new Thread(r);
+                newThread.start();
+                try {
+                    newThread.join();
+                }
+                catch (InterruptedException ie) {
+
+                }
             }
         }
     }
@@ -163,6 +182,7 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+            String tag = getTag();
             // Do something with the date chosen by the user
         }
     }
