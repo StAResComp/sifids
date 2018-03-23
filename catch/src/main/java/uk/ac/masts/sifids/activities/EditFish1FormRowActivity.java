@@ -57,20 +57,20 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     List<Gear> gearList;
     ArrayAdapter<Gear> gearAdapter;
     Spinner gear;
-    String gearValue;
+    int gearIdValue;
     EditText meshSize;
     List<CatchSpecies> speciesList;
     ArrayAdapter<CatchSpecies> speciesAdapter;
     Spinner species;
-    String speciesValue;
+    int speciesIdValue;
     List<CatchState> stateList;
     ArrayAdapter<CatchState> stateAdapter;
     Spinner state;
-    String stateValue;
+    int stateIdValue;
     List<CatchPresentation> presentationList;
     ArrayAdapter<CatchPresentation> presentationAdapter;
     Spinner presentation;
-    String presentationValue;
+    int presentationIdValue;
     EditText weight;
     CheckBox dis;
     CheckBox bms;
@@ -203,7 +203,37 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                     || !numberOfPotsHauled.getText().toString().equals("")
                     || landingOrDiscardDate != null
                     || !transporterRegEtc.getText().toString().equals("")) {
-
+                if (formId != 0) {
+                    final Fish1FormRow newFish1FormRow = new Fish1FormRow();
+                    newFish1FormRow.setFormId(formId);
+                    newFish1FormRow.setFishingActivityDate(fishingActivityDate);
+                    double latitudeDbl;
+                    try {
+                        latitudeDbl = Double.parseDouble(latitude.getText().toString());
+                    }
+                    catch (Exception e) {
+                        latitudeDbl = 100;
+                    }
+                    newFish1FormRow.setLatitude(latitudeDbl);
+                    double longitudeDbl;
+                    try {
+                        longitudeDbl = Double.parseDouble(longitude.getText().toString());
+                    }
+                    catch (Exception e) {
+                        longitudeDbl = 100;
+                    }
+                    newFish1FormRow.setLongitude(longitudeDbl);
+                    newFish1FormRow.setIcesArea(icesArea.getText().toString());
+                    newFish1FormRow.setGearId(gearIdValue);
+                    int meshSizeInt;
+                    try {
+                        meshSizeInt = Integer.parseInt(meshSize.getText().toString());
+                    }
+                    catch (Exception e) {
+                        meshSizeInt = 0;
+                    }
+                    newFish1FormRow.setMeshSize(meshSizeInt);
+                }
             }
         }
         else {
@@ -261,16 +291,20 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//        switch(parent.getId()) {
-//            case R.id.port_of_departure:
-//                this.portOfDepartureValue = parent.getItemAtPosition(pos).toString();
-//                break;
-//            case R.id.port_of_landing:
-//                this.portOfLandingValue = parent.getItemAtPosition(pos).toString();
-//                break;
-//        }
-//        portOfDepartureAdapter.notifyDataSetChanged();
-
+        switch(parent.getId()) {
+            case R.id.gear:
+                this.gearIdValue = ((Gear)parent.getItemAtPosition(pos)).getId();
+                break;
+            case R.id.species:
+                this.speciesIdValue = ((CatchSpecies)parent.getItemAtPosition(pos)).getId();
+                break;
+            case R.id.state:
+                this.stateIdValue = ((CatchState)parent.getItemAtPosition(pos)).getId();
+                break;
+            case R.id.presentation:
+                this.presentationIdValue = ((CatchPresentation)parent.getItemAtPosition(pos)).getId();
+                break;
+        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
