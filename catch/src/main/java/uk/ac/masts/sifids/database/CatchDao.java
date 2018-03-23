@@ -32,6 +32,9 @@ public interface CatchDao {
     public void insertPresentations(List<CatchPresentation> presentations);
 
     @Insert
+    public void insertGear(List<Gear> gear);
+
+    @Insert
     public void insertFish1Forms(Fish1Form... forms);
 
     @Query("SELECT * FROM catch_species")

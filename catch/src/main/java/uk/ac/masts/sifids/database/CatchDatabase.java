@@ -64,6 +64,7 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 getInstance(context).catchDao().insertPresentations(CatchPresentation.createPresentations());
                                 getInstance(context).catchDao().insertSpecies(CatchSpecies.createSpecies());
                                 getInstance(context).catchDao().insertStates(CatchState.createStates());
+                                getInstance(context).catchDao().insertGear(Gear.createGear());
                             }
                         });
 
