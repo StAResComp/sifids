@@ -3,14 +3,18 @@ package uk.ac.masts.sifids.activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,8 +22,11 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.masts.sifids.R;
@@ -34,7 +41,7 @@ import uk.ac.masts.sifids.entities.Gear;
  * Created by pgm5 on 21/02/2018.
  */
 
-public class EditFish1FormRowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditFish1FormRowActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, DatePickerDialog.OnDateSetListener {
 
     Fish1FormRow fish1FormRow;
 
@@ -42,28 +49,36 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     int formId;
 
+    TextView fishingActivityDateDisplay;
+    Date fishingActivityDate;
     EditText latitude;
     EditText longitude;
     EditText icesArea;
     List<Gear> gearList;
     ArrayAdapter<Gear> gearAdapter;
     Spinner gear;
+    String gearValue;
     EditText meshSize;
     List<CatchSpecies> speciesList;
     ArrayAdapter<CatchSpecies> speciesAdapter;
     Spinner species;
+    String speciesValue;
     List<CatchState> stateList;
     ArrayAdapter<CatchState> stateAdapter;
     Spinner state;
+    String stateValue;
     List<CatchPresentation> presentationList;
     ArrayAdapter<CatchPresentation> presentationAdapter;
     Spinner presentation;
+    String presentationValue;
     EditText weight;
     CheckBox dis;
     CheckBox bms;
     EditText numberOfPotsHauled;
+    TextView landingOrDiscardDateDisplay;
+    Date landingOrDiscardDate;
     EditText transporterRegEtc;
-    Button button;
+    Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +90,9 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
 //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        this.mapElements();
-
         this.processIntent();
 
+        this.buildForm();
     }
 
     private void processIntent() {
@@ -110,10 +124,11 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         }
     }
 
-    private void mapElements() {
+    private void buildForm() {
 
         this.loadOptions();
 
+        fishingActivityDateDisplay = (TextView) findViewById(R.id.fishing_activity_date);
         latitude = (EditText) findViewById(R.id.latitude);
         longitude = (EditText) findViewById(R.id.longitude);
         icesArea = (EditText) findViewById(R.id.ices_area);
@@ -126,7 +141,84 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         dis = (CheckBox) findViewById(R.id.dis);
         bms = (CheckBox) findViewById(R.id.bms);
         numberOfPotsHauled = (EditText) findViewById(R.id.number_of_pots_hauled);
+        landingOrDiscardDateDisplay = (TextView) findViewById(R.id.landing_or_discard_date);
         transporterRegEtc = (EditText) findViewById(R.id.transporter_reg_etc);
+
+        saveButton = (Button) findViewById(R.id.save_form_row_button);
+
+        this.applyExistingValues();
+
+        this.setSaveListener();
+    }
+
+    private void applyExistingValues() {
+        if (fish1FormRow != null && fish1FormRow.getFishingActivityDate() != null) {
+            fishingActivityDate = fish1FormRow.getFishingActivityDate();
+            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
+        }
+        if (fish1FormRow != null) {
+            latitude.setText(Double.toString(fish1FormRow.getLatitude()));
+            longitude.setText(Double.toString(fish1FormRow.getLongitude()));
+            for (int i = 0; i < gearAdapter.getCount(); i++) {
+                if (gearAdapter.getItem(i).getId() == fish1FormRow.getGearId())
+                    gear.setSelection(i);
+            }
+            meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
+            for (int i = 0; i < speciesAdapter.getCount(); i++) {
+                if (speciesAdapter.getItem(i).getId() == fish1FormRow.getSpeciesId())
+                    species.setSelection(i);
+            }
+            for (int i = 0; i < stateAdapter.getCount(); i++) {
+                if (stateAdapter.getItem(i).getId() == fish1FormRow.getStateId())
+                    state.setSelection(i);
+            }
+            for (int i = 0; i < presentationAdapter.getCount(); i++) {
+                if (presentationAdapter.getItem(i).getId() == fish1FormRow.getPresentationId())
+                    presentation.setSelection(i);
+            }
+            weight.setText(Double.toString(fish1FormRow.getWeight()));
+            dis.setChecked(fish1FormRow.isDis());
+            bms.setChecked(fish1FormRow.isBms());
+            numberOfPotsHauled.setText(Integer.toString(fish1FormRow.getNumberOfPotsHauled()));
+        }
+        if (fish1FormRow != null && fish1FormRow.getIcesArea() != null && !fish1FormRow.getIcesArea().equals(""))
+            icesArea.setText(fish1FormRow.getIcesArea());
+        if (fish1FormRow != null && fish1FormRow.getLandingOrDiscardDate() != null) {
+            landingOrDiscardDate = fish1FormRow.getLandingOrDiscardDate();
+            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay, "Landing or Discard Date: ");
+        }
+        if (fish1FormRow != null && fish1FormRow.getTransporterRegEtc() != null && !fish1FormRow.getTransporterRegEtc().equals(""))
+            icesArea.setText(fish1FormRow.getTransporterRegEtc());
+    }
+
+    private void setSaveListener() {
+
+        if (fish1FormRow == null) {
+            if (fishingActivityDate != null
+                    || !latitude.getText().toString().equals("")
+                    || !longitude.getText().toString().equals("")
+                    || !icesArea.getText().toString().equals("")
+                    || !meshSize.getText().toString().equals("")
+                    || !weight.getText().toString().equals("")
+                    || !numberOfPotsHauled.getText().toString().equals("")
+                    || landingOrDiscardDate != null
+                    || !transporterRegEtc.getText().toString().equals("")) {
+
+            }
+        }
+        else {
+
+        }
+    }
+
+    private void updateDateDisplay(Date date, TextView display, String prefix) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        String dateString = day + "-" + month + "-" + year;
+        display.setText(prefix + dateString);
     }
 
     private void loadOptions() {
@@ -159,8 +251,8 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     }
 
     public void showFishingActivityDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "fishing_activity_date");
+        DialogFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.show(getFragmentManager(), "fishing_activity_date");
     }
 
     public void showLandingOrDiscardDatePickerDialog(View v) {
@@ -222,8 +314,22 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         }
     }
 
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        String tag = view.getTag().toString();
+        Log.w("DatePicker", tag);
+        Calendar c = Calendar.getInstance();
+        c.set(year, month, day);
+        if (tag == "fishing_activity_date") {
+            this.fishingActivityDate = c.getTime();
+            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
+        }
+        else if (tag == "landing_or_discard_date") {
+            this.landingOrDiscardDate = c.getTime();
+            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay, "Landing or Discard Date: ");
+        }
+    }
+
+    public static class DatePickerFragment extends DialogFragment {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -234,12 +340,9 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            String tag = getTag();
-            // Do something with the date chosen by the user
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), (EditFish1FormRowActivity) getActivity(), year, month, day);
+            dialog.getDatePicker().setTag(this.getTag());
+            return dialog;
         }
     }
 }

@@ -61,4 +61,7 @@ public interface CatchDao {
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 
+    @Update
+    public void updateFish1FormRows(Fish1FormRow... forms);
+
 }

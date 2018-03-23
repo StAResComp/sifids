@@ -193,7 +193,7 @@ android:layout_height="wrap_content" >
 
             <Button
                 android:text="Save"
-                android:id="@+id/save_form_button"
+                android:id="@+id/save_form_row_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
