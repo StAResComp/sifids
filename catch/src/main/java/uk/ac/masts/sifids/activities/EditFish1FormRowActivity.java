@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -193,52 +194,96 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     private void setSaveListener() {
 
-        if (fish1FormRow == null) {
-            if (fishingActivityDate != null
-                    || !latitude.getText().toString().equals("")
-                    || !longitude.getText().toString().equals("")
-                    || !icesArea.getText().toString().equals("")
-                    || !meshSize.getText().toString().equals("")
-                    || !weight.getText().toString().equals("")
-                    || !numberOfPotsHauled.getText().toString().equals("")
-                    || landingOrDiscardDate != null
-                    || !transporterRegEtc.getText().toString().equals("")) {
-                if (formId != 0) {
-                    final Fish1FormRow newFish1FormRow = new Fish1FormRow();
-                    newFish1FormRow.setFormId(formId);
-                    newFish1FormRow.setFishingActivityDate(fishingActivityDate);
-                    double latitudeDbl;
-                    try {
-                        latitudeDbl = Double.parseDouble(latitude.getText().toString());
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (fish1FormRow == null) {
+                    if (fishingActivityDate != null
+                            || !latitude.getText().toString().equals("")
+                            || !longitude.getText().toString().equals("")
+                            || !icesArea.getText().toString().equals("")
+                            || !meshSize.getText().toString().equals("")
+                            || !weight.getText().toString().equals("")
+                            || !numberOfPotsHauled.getText().toString().equals("")
+                            || landingOrDiscardDate != null
+                            || !transporterRegEtc.getText().toString().equals("")) {
+                        if (formId != 0) {
+                            fish1FormRow = new Fish1FormRow();
+                            fish1FormRow.setFormId(formId);
+                            fish1FormRow.setFishingActivityDate(fishingActivityDate);
+                            double latitudeDbl;
+                            try {
+                                latitudeDbl = Double.parseDouble(latitude.getText().toString());
+                            } catch (Exception e) {
+                                latitudeDbl = 100;
+                            }
+                            fish1FormRow.setLatitude(latitudeDbl);
+                            double longitudeDbl;
+                            try {
+                                longitudeDbl = Double.parseDouble(longitude.getText().toString());
+                            } catch (Exception e) {
+                                longitudeDbl = 100;
+                            }
+                            fish1FormRow.setLongitude(longitudeDbl);
+                            fish1FormRow.setIcesArea(icesArea.getText().toString());
+                            fish1FormRow.setGearId(gearIdValue);
+                            int meshSizeInt;
+                            try {
+                                meshSizeInt = Integer.parseInt(meshSize.getText().toString());
+                            } catch (Exception e) {
+                                meshSizeInt = 0;
+                            }
+                            fish1FormRow.setMeshSize(meshSizeInt);
+                            fish1FormRow.setSpeciesId(speciesIdValue);
+                            fish1FormRow.setStateId(stateIdValue);
+                            fish1FormRow.setPresentationId(presentationIdValue);
+                            double weightDbl;
+                            try {
+                                weightDbl = Double.parseDouble(weight.getText().toString());
+                            } catch (Exception e) {
+                                weightDbl = 100;
+                            }
+                            fish1FormRow.setWeight(weightDbl);
+                            fish1FormRow.setDis(dis.isChecked());
+                            fish1FormRow.setBms(bms.isChecked());
+                            int numberOfPotsHauledInt;
+                            try {
+                                numberOfPotsHauledInt = Integer.parseInt(numberOfPotsHauled.getText().toString());
+                            } catch (Exception e) {
+                                numberOfPotsHauledInt = 0;
+                            }
+                            fish1FormRow.setNumberOfPotsHauled(numberOfPotsHauledInt);
+                            fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate);
+
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    db.catchDao().insertFish1FormRows(fish1FormRow);
+                                }
+                            });
+                        }
                     }
-                    catch (Exception e) {
-                        latitudeDbl = 100;
+                } else {
+
+                    boolean changes = false;
+
+                    if (changes) {
+
+                        //save the item before leaving the activity
+
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.catchDao().updateFish1FormRows(fish1FormRow);
+                            }
+                        });
+
                     }
-                    newFish1FormRow.setLatitude(latitudeDbl);
-                    double longitudeDbl;
-                    try {
-                        longitudeDbl = Double.parseDouble(longitude.getText().toString());
-                    }
-                    catch (Exception e) {
-                        longitudeDbl = 100;
-                    }
-                    newFish1FormRow.setLongitude(longitudeDbl);
-                    newFish1FormRow.setIcesArea(icesArea.getText().toString());
-                    newFish1FormRow.setGearId(gearIdValue);
-                    int meshSizeInt;
-                    try {
-                        meshSizeInt = Integer.parseInt(meshSize.getText().toString());
-                    }
-                    catch (Exception e) {
-                        meshSizeInt = 0;
-                    }
-                    newFish1FormRow.setMeshSize(meshSizeInt);
+
                 }
             }
-        }
-        else {
-
-        }
+        });
     }
 
     private void updateDateDisplay(Date date, TextView display, String prefix) {

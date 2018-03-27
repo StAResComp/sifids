@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,10 +27,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.entities.Fish1FormRow;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -56,13 +60,19 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
     ArrayAdapter<CharSequence> portOfDepartureAdapter;
     ArrayAdapter<CharSequence> portOfLandingAdapter;
 
+    CatchDatabase db;
+
+    List<Fish1FormRow> formRows;
+    public static RecyclerView recyclerView;
+    public static RecyclerView.Adapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
         setContentView(R.layout.activity_edit_fish_1_form);
 
-        final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
+        db = CatchDatabase.getInstance(getApplicationContext());
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -158,6 +168,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
         addRowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveForm();
                 Intent i = new Intent(EditFish1FormActivity.this, EditFish1FormRowActivity.class);
                 i.putExtra("form_id", fish1Form.getId());
                 startActivity(i);
@@ -169,120 +180,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View v) {
 
-            if (fish1Form == null) {
-
-                if (!fisheryOffice.getText().toString().equals("")
-                        || !fisheryOfficeEmail.getText().toString().equals("")
-                        || !pln.getText().toString().equals("")
-                        || !vesselName.getText().toString().equals("")
-                        || !ownerMaster.getText().toString().equals("")
-                        || !address.getText().toString().equals("")
-                        || !totalPotsFishing.getText().toString().equals("")
-                        || !comment.getText().toString().equals("")) {
-
-                    final Fish1Form newFish1Form = new Fish1Form();
-                    newFish1Form.setFisheryOffice(fisheryOffice.getText().toString());
-                    newFish1Form.setEmail(fisheryOfficeEmail.getText().toString());
-                    newFish1Form.setPln(pln.getText().toString());
-                    newFish1Form.setVesselName(vesselName.getText().toString());
-                    newFish1Form.setOwnerMaster(ownerMaster.getText().toString());
-                    newFish1Form.setAddress(address.getText().toString());
-                    newFish1Form.setPortOfDeparture(portOfDepartureValue);
-                    newFish1Form.setPortOfLanding(portOfLandingValue);
-                    int totalPotsInt;
-                    try {
-                        totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
-                    } catch (Exception e) {
-                        totalPotsInt = 0;
-                    }
-                    newFish1Form.setTotalPotsFishing(totalPotsInt);
-                    newFish1Form.setCommentsAndBuyersInformation(comment.getText().toString());
-
-                    //save the item before leaving the activity
-
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.catchDao().insertFish1Forms(newFish1Form);
-                        }
-                    });
-
-                }
-            }
-            else {
-
-                boolean changes = false;
-
-                if (!fisheryOffice.getText().toString().equals(fish1Form.getFisheryOffice())) {
-                    fish1Form.setFisheryOffice(fisheryOffice.getText().toString());
-                    changes = true;
-                }
-
-                if (!fisheryOfficeEmail.getText().toString().equals(fish1Form.getEmail())) {
-                    fish1Form.setEmail(fisheryOfficeEmail.getText().toString());
-                    changes = true;
-                }
-
-                if (!pln.getText().toString().equals(fish1Form.getPln())) {
-                    fish1Form.setPln(pln.getText().toString());
-                    changes = true;
-                }
-
-                if (!vesselName.getText().toString().equals(fish1Form.getVesselName())) {
-                    fish1Form.setVesselName(vesselName.getText().toString());
-                    changes = true;
-                }
-
-                if (!ownerMaster.getText().toString().equals(fish1Form.getOwnerMaster())) {
-                    fish1Form.setOwnerMaster(ownerMaster.getText().toString());
-                    changes = true;
-                }
-
-                if (!address.getText().toString().equals(fish1Form.getAddress())) {
-                    fish1Form.setAddress(address.getText().toString());
-                    changes = true;
-                }
-
-                if (!totalPotsFishing.getText().toString().equals(fish1Form.getTotalPotsFishing())) {
-                    int totalPotsInt;
-                    try {
-                        totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
-                    } catch (Exception e) {
-                        totalPotsInt = 0;
-                    }
-                    fish1Form.setTotalPotsFishing(totalPotsInt);
-                    changes = true;
-                }
-
-                if (!comment.getText().toString().equals(fish1Form.getCommentsAndBuyersInformation())) {
-                    fish1Form.setCommentsAndBuyersInformation(comment.getText().toString());
-                    changes = true;
-                }
-
-                if (!portOfDepartureValue.equals(fish1Form.getPortOfDeparture())) {
-                    fish1Form.setPortOfDeparture(portOfDepartureValue);
-                    changes = true;
-                }
-
-                if (!portOfLandingValue.equals(fish1Form.getPortOfLanding())) {
-                    fish1Form.setPortOfLanding(portOfLandingValue);
-                    changes = true;
-                }
-
-                if (changes) {
-
-                    //save the item before leaving the activity
-
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.catchDao().updateFish1Forms(fish1Form);
-                        }
-                    });
-
-                }
-
-            }
+            saveForm();
 
             Intent i = new Intent(EditFish1FormActivity.this, Fish1FormsActivity.class);
             startActivity(i);
@@ -291,6 +189,27 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
 
             }
         });
+
+        if (fish1Form != null) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    formRows = db.catchDao().getRowsForForm(fish1Form.getId());
+                    adapter = new Fish1FormRowAdapter(formRows);
+                    adapter.notifyDataSetChanged();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView = (RecyclerView) findViewById(R.id.form_row_recycler_view);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }
+            };
+            Thread newThread= new Thread(r);
+            newThread.start();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -304,6 +223,125 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
             }
         });
+    }
+
+    private void saveForm() {
+
+        if (fish1Form == null) {
+
+            if (!fisheryOffice.getText().toString().equals("")
+                    || !fisheryOfficeEmail.getText().toString().equals("")
+                    || !pln.getText().toString().equals("")
+                    || !vesselName.getText().toString().equals("")
+                    || !ownerMaster.getText().toString().equals("")
+                    || !address.getText().toString().equals("")
+                    || !totalPotsFishing.getText().toString().equals("")
+                    || !comment.getText().toString().equals("")) {
+
+                fish1Form = new Fish1Form();
+                fish1Form.setFisheryOffice(fisheryOffice.getText().toString());
+                fish1Form.setEmail(fisheryOfficeEmail.getText().toString());
+                fish1Form.setPln(pln.getText().toString());
+                fish1Form.setVesselName(vesselName.getText().toString());
+                fish1Form.setOwnerMaster(ownerMaster.getText().toString());
+                fish1Form.setAddress(address.getText().toString());
+                fish1Form.setPortOfDeparture(portOfDepartureValue);
+                fish1Form.setPortOfLanding(portOfLandingValue);
+                int totalPotsInt;
+                try {
+                    totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
+                } catch (Exception e) {
+                    totalPotsInt = 0;
+                }
+                fish1Form.setTotalPotsFishing(totalPotsInt);
+                fish1Form.setCommentsAndBuyersInformation(comment.getText().toString());
+
+                //save the item before leaving the activity
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.catchDao().insertFish1Forms(fish1Form);
+                    }
+                });
+
+            }
+        }
+        else {
+
+            boolean changes = false;
+
+            if (!fisheryOffice.getText().toString().equals(fish1Form.getFisheryOffice())) {
+                fish1Form.setFisheryOffice(fisheryOffice.getText().toString());
+                changes = true;
+            }
+
+            if (!fisheryOfficeEmail.getText().toString().equals(fish1Form.getEmail())) {
+                fish1Form.setEmail(fisheryOfficeEmail.getText().toString());
+                changes = true;
+            }
+
+            if (!pln.getText().toString().equals(fish1Form.getPln())) {
+                fish1Form.setPln(pln.getText().toString());
+                changes = true;
+            }
+
+            if (!vesselName.getText().toString().equals(fish1Form.getVesselName())) {
+                fish1Form.setVesselName(vesselName.getText().toString());
+                changes = true;
+            }
+
+            if (!ownerMaster.getText().toString().equals(fish1Form.getOwnerMaster())) {
+                fish1Form.setOwnerMaster(ownerMaster.getText().toString());
+                changes = true;
+            }
+
+            if (!address.getText().toString().equals(fish1Form.getAddress())) {
+                fish1Form.setAddress(address.getText().toString());
+                changes = true;
+            }
+
+            if (!totalPotsFishing.getText().toString().equals(fish1Form.getTotalPotsFishing())) {
+                int totalPotsInt;
+                try {
+                    totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
+                } catch (Exception e) {
+                    totalPotsInt = 0;
+                }
+                fish1Form.setTotalPotsFishing(totalPotsInt);
+                changes = true;
+            }
+
+            if (!comment.getText().toString().equals(fish1Form.getCommentsAndBuyersInformation())) {
+                fish1Form.setCommentsAndBuyersInformation(comment.getText().toString());
+                changes = true;
+            }
+
+            if (!portOfDepartureValue.equals(fish1Form.getPortOfDeparture())) {
+                fish1Form.setPortOfDeparture(portOfDepartureValue);
+                changes = true;
+            }
+
+            if (!portOfLandingValue.equals(fish1Form.getPortOfLanding())) {
+                fish1Form.setPortOfLanding(portOfLandingValue);
+                changes = true;
+            }
+
+            if (changes) {
+
+                //save the item before leaving the activity
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.catchDao().updateFish1Forms(fish1Form);
+                    }
+                });
+
+            }
+
+        }
+
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {

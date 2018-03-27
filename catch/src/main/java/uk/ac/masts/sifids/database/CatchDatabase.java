@@ -5,6 +5,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -34,7 +35,7 @@ import uk.ac.masts.sifids.entities.Gear;
                 CatchSpeciesAllowedState.class,
                 CatchSpeciesAllowedPresentation.class
     },
-        version = 1
+        version = 2
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -70,7 +71,7 @@ public abstract class CatchDatabase extends RoomDatabase{
 
                     }
                 })
+                .fallbackToDestructiveMigration()
                 .build();
     }
-
 }

@@ -81,7 +81,7 @@ public class Fish1FormRow {
     @ColumnInfo(name = "presentation_id")
     public int presentationId;
 
-    public int weight;
+    public double weight;
 
     public boolean dis;
 
@@ -129,7 +129,7 @@ public class Fish1FormRow {
     }
 
     public void setFishingActivityDate(Date fishingActivityDate) {
-        if (!fishingActivityDate.equals(this.getFishingActivityDate())) {
+        if (fishingActivityDate == null || !fishingActivityDate.equals(this.getFishingActivityDate())) {
             this.fishingActivityDate = fishingActivityDate;
             this.updateDates();
         }
@@ -223,11 +223,11 @@ public class Fish1FormRow {
         }
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         if (weight != this.getWeight()) {
             this.weight = weight;
             this.updateDates();
@@ -272,7 +272,7 @@ public class Fish1FormRow {
     }
 
     public void setLandingOrDiscardDate(Date landingOrDiscardDate) {
-        if (!landingOrDiscardDate.equals(this.getLandingOrDiscardDate())) {
+        if (landingOrDiscardDate == null || !landingOrDiscardDate.equals(this.getLandingOrDiscardDate())) {
             this.landingOrDiscardDate = landingOrDiscardDate;
             this.updateDates();
         }

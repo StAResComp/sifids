@@ -27,7 +27,7 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
 
     @Override
     public Fish1FormRowAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_recycler_view,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_row_recycler_view,parent,false);
         return new ViewHolder(view);
     }
 
@@ -59,7 +59,7 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
             int id = (Integer) view.getTag(R.id.form_row_to_edit);
             int form_id = (Integer) view.getTag(R.id.parent_form);
             i.putExtra("id", id);
-            i.putExtra("form_id", form_id);
+            i.putExtra("form_row_id", form_id);
             view.getContext().startActivity(i);
         }
     }

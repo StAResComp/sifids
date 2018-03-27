@@ -34,6 +34,8 @@ public class Gear {
         this.setName(name);
     }
 
+    public Gear() {}
+
     public int getId() {
         return id;
     }
