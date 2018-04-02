@@ -26,9 +26,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
@@ -55,22 +58,10 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     EditText latitude;
     EditText longitude;
     EditText icesArea;
-    List<Gear> gearList;
-    ArrayAdapter<Gear> gearAdapter;
-    Spinner gear;
     int gearIdValue;
     EditText meshSize;
-    List<CatchSpecies> speciesList;
-    ArrayAdapter<CatchSpecies> speciesAdapter;
-    Spinner species;
     int speciesIdValue;
-    List<CatchState> stateList;
-    ArrayAdapter<CatchState> stateAdapter;
-    Spinner state;
     int stateIdValue;
-    List<CatchPresentation> presentationList;
-    ArrayAdapter<CatchPresentation> presentationAdapter;
-    Spinner presentation;
     int presentationIdValue;
     EditText weight;
     CheckBox dis;
@@ -80,6 +71,15 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     Date landingOrDiscardDate;
     EditText transporterRegEtc;
     Button saveButton;
+
+    Map<String,Spinner> spinners;
+    Map<String,Adapter> adapters;
+    Map<String,List> spinnerLists;
+
+    final String GEAR_KEY = "gear";
+    final String SPECIES_KEY = "species";
+    final String STATE_KEY = "state";
+    final String PRESENTATION_KEY = "presentation";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,17 +127,27 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
     private void buildForm() {
 
+        this.spinnerLists = new HashMap();
+
+        this.spinnerLists.put(GEAR_KEY, new ArrayList<Gear>());
+        this.spinnerLists.put(SPECIES_KEY, new ArrayList<CatchSpecies>());
+        this.spinnerLists.put(STATE_KEY, new ArrayList<CatchState>());
+        this.spinnerLists.put(PRESENTATION_KEY, new ArrayList<CatchPresentation>());
+
+        this.adapters = new HashMap();
+        this.spinners = new HashMap();
+
         this.loadOptions();
 
         fishingActivityDateDisplay = (TextView) findViewById(R.id.fishing_activity_date);
         latitude = (EditText) findViewById(R.id.latitude);
         longitude = (EditText) findViewById(R.id.longitude);
         icesArea = (EditText) findViewById(R.id.ices_area);
-        this.createSpinner(gearAdapter, gearList, gear, R.id.gear);
+        this.createSpinner(GEAR_KEY, R.id.gear);
         meshSize = (EditText) findViewById(R.id.mesh_size);
-        this.createSpinner(speciesAdapter, speciesList, species,R.id.species);
-        this.createSpinner(stateAdapter, stateList, state,R.id.state);
-        this.createSpinner(presentationAdapter, presentationList, presentation,R.id.presentation);
+        this.createSpinner(SPECIES_KEY, R.id.species);
+        this.createSpinner(STATE_KEY, R.id.state);
+        this.createSpinner(PRESENTATION_KEY, R.id.presentation);
         weight = (EditText) findViewById(R.id.weight);
         dis = (CheckBox) findViewById(R.id.dis);
         bms = (CheckBox) findViewById(R.id.bms);
@@ -158,24 +168,25 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
             this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
         }
         if (fish1FormRow != null) {
+            formId = fish1FormRow.getFormId();
             latitude.setText(Double.toString(fish1FormRow.getLatitude()));
             longitude.setText(Double.toString(fish1FormRow.getLongitude()));
-            for (int i = 0; i < gearAdapter.getCount(); i++) {
-                if (gearAdapter.getItem(i).getId() == fish1FormRow.getGearId())
-                    gear.setSelection(i);
+            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
+                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
+                    spinners.get(GEAR_KEY).setSelection(i);
             }
             meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
-            for (int i = 0; i < speciesAdapter.getCount(); i++) {
-                if (speciesAdapter.getItem(i).getId() == fish1FormRow.getSpeciesId())
-                    species.setSelection(i);
+            for (int i = 0; i < adapters.get(SPECIES_KEY).getCount(); i++) {
+                if (((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId() == fish1FormRow.getSpeciesId())
+                    spinners.get(SPECIES_KEY).setSelection(i);
             }
-            for (int i = 0; i < stateAdapter.getCount(); i++) {
-                if (stateAdapter.getItem(i).getId() == fish1FormRow.getStateId())
-                    state.setSelection(i);
+            for (int i = 0; i < adapters.get(STATE_KEY).getCount(); i++) {
+                if (((CatchState) adapters.get(STATE_KEY).getItem(i)).getId() == fish1FormRow.getStateId())
+                    spinners.get(STATE_KEY).setSelection(i);
             }
-            for (int i = 0; i < presentationAdapter.getCount(); i++) {
-                if (presentationAdapter.getItem(i).getId() == fish1FormRow.getPresentationId())
-                    presentation.setSelection(i);
+            for (int i = 0; i < adapters.get(PRESENTATION_KEY).getCount(); i++) {
+                if (((CatchPresentation) adapters.get(PRESENTATION_KEY).getItem(i)).getId() == fish1FormRow.getPresentationId())
+                    spinners.get(PRESENTATION_KEY).setSelection(i);
             }
             weight.setText(Double.toString(fish1FormRow.getWeight()));
             dis.setChecked(fish1FormRow.isDis());
@@ -268,6 +279,63 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
 
                     boolean changes = false;
 
+                    if (fishingActivityDate != null && !fishingActivityDate.equals(fish1FormRow.getFishingActivityDate())) {
+                        fish1FormRow.setFishingActivityDate(fishingActivityDate);
+                        changes = true;
+                    }
+                    if (Double.parseDouble(latitude.getText().toString()) != fish1FormRow.getLatitude()) {
+                        fish1FormRow.setLatitude(Double.parseDouble(latitude.getText().toString()));
+                        changes = true;
+                    }
+                    if (Double.parseDouble(longitude.getText().toString()) != fish1FormRow.getLongitude()) {
+                        fish1FormRow.setLongitude(Double.parseDouble(longitude.getText().toString()));
+                        changes = true;
+                    }
+                    if (!icesArea.getText().toString().equals(fish1FormRow.getIcesArea())) {
+                        fish1FormRow.setIcesArea(icesArea.getText().toString());
+                        changes = true;
+                    }
+                    if (gearIdValue != fish1FormRow.getGearId()) {
+                        fish1FormRow.setGearId(gearIdValue);
+                        changes = true;
+                    }
+                    if (Integer.parseInt(meshSize.getText().toString()) != fish1FormRow.getMeshSize()) {
+                        fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()));
+                        changes = true;
+                    }
+                    if (speciesIdValue != fish1FormRow.getSpeciesId()) {
+                        fish1FormRow.setSpeciesId(speciesIdValue);
+                        changes = true;
+                    }
+                    if (stateIdValue != fish1FormRow.getStateId()) {
+                        fish1FormRow.setSpeciesId(stateIdValue);
+                        changes = true;
+                    }
+                    if (presentationIdValue != fish1FormRow.getPresentationId()) {
+                        fish1FormRow.setSpeciesId(presentationIdValue);
+                        changes = true;
+                    }
+                    if (Double.parseDouble(weight.getText().toString()) != fish1FormRow.getWeight()) {
+                        fish1FormRow.setWeight(Double.parseDouble(weight.getText().toString()));
+                        changes = true;
+                    }
+                    if (dis.isChecked() != fish1FormRow.isDis()) {
+                        fish1FormRow.setDis(dis.isChecked());
+                        changes = true;
+                    }
+                    if (bms.isChecked() != fish1FormRow.isBms()) {
+                        fish1FormRow.setBms(bms.isChecked());
+                        changes = true;
+                    }
+                    if (Integer.parseInt(numberOfPotsHauled.getText().toString()) != fish1FormRow.getNumberOfPotsHauled()) {
+                        fish1FormRow.setNumberOfPotsHauled(Integer.parseInt(numberOfPotsHauled.getText().toString()));
+                        changes = true;
+                    }
+                    if (!transporterRegEtc.getText().toString().equals(fish1FormRow.getTransporterRegEtc())) {
+                        fish1FormRow.setTransporterRegEtc(transporterRegEtc.getText().toString());
+                        changes = true;
+                    }
+
                     if (changes) {
 
                         //save the item before leaving the activity
@@ -282,6 +350,10 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                     }
 
                 }
+
+                Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
+                i.putExtra("id", EditFish1FormRowActivity.this.formId);
+                EditFish1FormRowActivity.this.startActivity(i);
             }
         });
     }
@@ -300,10 +372,10 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         Runnable r = new Runnable(){
             @Override
             public void run() {
-                gearList = db.catchDao().getGear();
-                speciesList = db.catchDao().getSpecies();
-                stateList = db.catchDao().getStates();
-                presentationList = db.catchDao().getPresentations();
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.GEAR_KEY, EditFish1FormRowActivity.this.db.catchDao().getGear());
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.SPECIES_KEY, EditFish1FormRowActivity.this.db.catchDao().getSpecies());
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.STATE_KEY, EditFish1FormRowActivity.this.db.catchDao().getStates());
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.PRESENTATION_KEY, EditFish1FormRowActivity.this.db.catchDao().getPresentations());
             }
         };
 
@@ -317,12 +389,14 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         }
     }
 
-    private void createSpinner(ArrayAdapter adapter, List list, Spinner spinner, int widgetId) {
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, list);
+    private void createSpinner(String mapKey, int widgetId) {
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, this.spinnerLists.get(mapKey));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner = (Spinner) findViewById(widgetId);
+        this.adapters.put(mapKey,adapter);
+        Spinner spinner = (Spinner) findViewById(widgetId);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+        this.spinners.put(mapKey,spinner);
     }
 
     public void showFishingActivityDatePickerDialog(View v) {

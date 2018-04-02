@@ -33,7 +33,7 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
 
     @Override
     public void onBindViewHolder(Fish1FormRowAdapter.ViewHolder holder, int position) {
-        holder.createdAt.setText(formRows.get(position).getCreatedAt().toString());
+        holder.label.setText(formRows.get(position).toString());
         holder.button.setTag(R.id.parent_form, Integer.valueOf(formRows.get(position).getFormId()));
         holder.button.setTag(R.id.form_row_to_edit, Integer.valueOf(formRows.get(position).getId()));
     }
@@ -44,18 +44,18 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView createdAt;
+        public TextView label;
         public Button button;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            createdAt = itemView.findViewById(R.id.created_at);
+            label = itemView.findViewById(R.id.label);
             button = (Button) itemView.findViewById(R.id.btn_edit_form_row);
             button.setOnClickListener(this);
         }
 
         public void onClick(View view) {
-            Intent i = new Intent(view.getContext(), EditFish1FormActivity.class);
+            Intent i = new Intent(view.getContext(), EditFish1FormRowActivity.class);
             int id = (Integer) view.getTag(R.id.form_row_to_edit);
             int form_id = (Integer) view.getTag(R.id.parent_form);
             i.putExtra("id", id);

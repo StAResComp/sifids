@@ -33,7 +33,7 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
 
     @Override
     public void onBindViewHolder(Fish1FormAdapter.ViewHolder holder, int position) {
-        holder.createdAt.setText(forms.get(position).getCreatedAt().toString());
+        holder.createdAt.setText(forms.get(position).toString());
         holder.button.setTag(R.id.form_to_edit, Integer.valueOf(forms.get(position).getId()));
     }
 
@@ -48,7 +48,7 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
-            createdAt = itemView.findViewById(R.id.created_at);
+            createdAt = itemView.findViewById(R.id.label);
             button = (Button) itemView.findViewById(R.id.btn_edit_form);
             button.setOnClickListener(this);
         }

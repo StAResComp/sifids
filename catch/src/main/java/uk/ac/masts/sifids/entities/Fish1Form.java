@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -195,5 +197,11 @@ public class Fish1Form {
             this.setCreatedAt(new Date());
         }
         this.setModifiedAt(new Date());
+    }
+
+    public String toString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.getCreatedAt());
+        return this.getPln() + " " + new SimpleDateFormat("dd MMM yyyy").format(cal.getTime());
     }
 }
