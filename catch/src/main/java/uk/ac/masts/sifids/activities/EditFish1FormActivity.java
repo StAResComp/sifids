@@ -26,13 +26,19 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchPresentation;
+import uk.ac.masts.sifids.entities.CatchSpecies;
+import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.Gear;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -399,21 +405,96 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
     }
 
     private File createFileToSend() {
+        this.saveForm();
         File file = null;
         try {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "fish-1.txt");
-            FileWriter writer= new FileWriter(file);
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fish1Form.toString() + ".csv");
+            final FileWriter writer= new FileWriter(file);
 
-            writer.write("Fishery Office: " + this.fisheryOffice.getText().toString() + "\n");
-            writer.write("Email: " + this.fisheryOfficeEmail.getText().toString() + "\n\n");
-            writer.write("Port of Departure: " + this.portOfDepartureValue + "\n");
-            writer.write("Port of Landing: " + this.portOfLandingValue + "\n");
-            writer.write("PLN: " + pln.getText().toString() + "\n");
-            writer.write("Vessel Name: " + vesselName.getText().toString() + "\n");
-            writer.write("Owner/Master: " + ownerMaster.getText().toString() + "\n");
-            writer.write("Address: " + address.getText().toString() + "\n");
-            writer.write("Total Pots Fishing: " + totalPotsFishing.getText().toString() + "\n");
-            writer.write("Comments and Buyers Information: " + comment.getText().toString());
+            writer.write("# Fishery Office: " + this.fisheryOffice.getText().toString() + "\n");
+            writer.write("# Email: " + this.fisheryOfficeEmail.getText().toString() + "\n");
+            writer.write("# Port of Departure: " + this.portOfDepartureValue + "\n");
+            writer.write("# Port of Landing: " + this.portOfLandingValue + "\n");
+            writer.write("# PLN: " + pln.getText().toString() + "\n");
+            writer.write("# Vessel Name: " + vesselName.getText().toString() + "\n");
+            writer.write("# Owner/Master: " + ownerMaster.getText().toString() + "\n");
+            writer.write("# Address: " + address.getText().toString() + "\n");
+            writer.write("# Total Pots Fishing: " + totalPotsFishing.getText().toString() + "\n");
+            writer.write("# Comments and Buyers Information: " + comment.getText().toString());
+            writer.write("\n");
+            writer.write("Fishing Activity Date,"
+                    + "Lat/Long,"
+                    + "Stat Rect / ICES Area,"
+                    + "Gear,"
+                    + "Mesh Size,"
+                    + "Species,"
+                    + "State,"
+                    + "Presentation,"
+                    + "Weight,"
+                    + "DIS,"
+                    + "BMS,"
+                    + "Number of Pots Hauled,"
+                    + "Landing or Discard Date,"
+                    + "\"Transporter Reg, Not Transported or Landed to Keeps\"\n");
+            for (final Fish1FormRow formRow : formRows) {
+                Calendar cal = Calendar.getInstance();
+                if (formRow.getFishingActivityDate() != null) {
+                    cal.setTime(formRow.getFishingActivityDate());
+                    writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
+                }
+                else writer.write(",");
+                writer.write(formRow.getLatitude() + "/" );
+                writer.write(formRow.getLongitude() + "," );
+                if (formRow.getIcesArea() != null)
+                    writer.write("\"" + formRow.getIcesArea() + "\",");
+                else writer.write(",");
+                Runnable r = new Runnable(){
+                    @Override
+                    public void run() {
+                        Gear gear = EditFish1FormActivity.this.db.catchDao().getGearById(formRow.getGearId());
+                        CatchSpecies species = EditFish1FormActivity.this.db.catchDao().getSpeciesById(formRow.getSpeciesId());
+                        CatchState state = EditFish1FormActivity.this.db.catchDao().getStateById(formRow.getStateId());
+                        CatchPresentation presentation = EditFish1FormActivity.this.db.catchDao().getPresentationById(formRow.getPresentationId());
+                        try {
+                            if (gear != null)
+                                writer.write("\"" + gear.getName() + "\",");
+                            else writer.write(",");
+                            writer.write( formRow.getMeshSize() + ",");
+                            if (species != null)
+                                writer.write("\"" + species.toString() + "\",");
+                            else writer.write(",");
+                            if (state != null)
+                                writer.write("\"" + state.getName() + "\",");
+                            else writer.write(",");
+                            if (presentation != null)
+                                writer.write("\"" + presentation.getName() + "\",");
+                            else writer.write(",");
+                        }
+                        catch (IOException e) { }
+                    }
+                };
+                Thread newThread= new Thread(r);
+                newThread.start();
+                try {
+                    newThread.join();
+                }
+                catch (InterruptedException ie) {
+
+                }
+                writer.write( formRow.getWeight() + ",");
+                writer.write( formRow.isDis() + ",");
+                writer.write( formRow.isBms() + ",");
+                writer.write( formRow.getNumberOfPotsHauled() + ",");
+                if (formRow.getLandingOrDiscardDate() != null) {
+                    cal.setTime(formRow.getLandingOrDiscardDate());
+                    writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
+                }
+                else writer.write(",");
+                if (formRow.getTransporterRegEtc() != null) {
+                    writer.write("\"" + formRow.getTransporterRegEtc() + "\"\n");
+                }
+                else writer.write("\n");
+            }
 
             writer.close();
             Toast.makeText(getBaseContext(), "Temporarily saved contents in " + file.getPath(), Toast.LENGTH_LONG).show();

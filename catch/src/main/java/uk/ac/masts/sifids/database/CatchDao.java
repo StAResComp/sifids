@@ -64,6 +64,18 @@ public interface CatchDao {
     @Query("SELECT * FROM catch_presentation")
     public List<CatchPresentation> getPresentations();
 
+    @Query("SELECT * FROM gear WHERE id = :id")
+    public Gear getGearById(int id);
+
+    @Query("SELECT * FROM catch_species WHERE id = :id")
+    public CatchSpecies getSpeciesById(int id);
+
+    @Query("SELECT * FROM catch_state WHERE id = :id")
+    public CatchState getStateById(int id);
+
+    @Query("SELECT * FROM catch_presentation WHERE id = :id")
+    public CatchPresentation getPresentationById(int id);
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 
