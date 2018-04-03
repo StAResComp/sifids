@@ -38,7 +38,7 @@ android:layout_height="wrap_content" >
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/latitude"
                     android:hint="Latitude"
-                    android:inputType="number"
+                    android:inputType="numberSigned|numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -51,7 +51,7 @@ android:layout_height="wrap_content" >
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/longitude"
                     android:hint="Longitude"
-                    android:inputType="number"
+                    android:inputType="numberSigned|numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -137,7 +137,7 @@ android:layout_height="wrap_content" >
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/weight"
                     android:hint="Weight"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
