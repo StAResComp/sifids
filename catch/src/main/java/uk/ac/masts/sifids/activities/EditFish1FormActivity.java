@@ -161,6 +161,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
             address.setText(fish1Form.getAddress());
         else address.setText(prefs.getString("pref_owner_master_address", ""));
 
+        if (fish1Form != null) totalPotsFishing.setText(Integer.toString(fish1Form.getTotalPotsFishing()));
+
         if (fish1Form != null && fish1Form.getPortOfDeparture() != null && !fish1Form.getPortOfDeparture().equals("")) {
             int position = portOfDepartureAdapter.getPosition(fish1Form.getPortOfDeparture());
             portOfDeparture.setSelection(position);
@@ -222,8 +224,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View view) {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "pgm5@st-andrews.ac.uk", null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fish-1 Form");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find Fish-1 Form attached.");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "FISH1 Form");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find FISH1 Form attached.");
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"pgm5@st-andrews.ac.uk"});
                 emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + createFileToSend().getAbsoluteFile()));
                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
@@ -307,13 +309,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                 changes = true;
             }
 
-            if (!totalPotsFishing.getText().toString().equals(fish1Form.getTotalPotsFishing())) {
-                int totalPotsInt;
-                try {
-                    totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
-                } catch (Exception e) {
-                    totalPotsInt = 0;
-                }
+            int totalPotsInt = Integer.parseInt(totalPotsFishing.getText().toString());
+            if (totalPotsInt != fish1Form.getTotalPotsFishing()) {
                 fish1Form.setTotalPotsFishing(totalPotsInt);
                 changes = true;
             }
@@ -443,8 +440,8 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                     writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
                 }
                 else writer.write(",");
-                writer.write(formRow.getLatitude() + "/" );
-                writer.write(formRow.getLongitude() + "," );
+                writer.write(Double.toString(formRow.getLatitude()) + "/" );
+                writer.write(Double.toString(formRow.getLongitude()) + "," );
                 if (formRow.getIcesArea() != null)
                     writer.write("\"" + formRow.getIcesArea() + "\",");
                 else writer.write(",");
@@ -481,10 +478,10 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                 catch (InterruptedException ie) {
 
                 }
-                writer.write( formRow.getWeight() + ",");
-                writer.write( formRow.isDis() + ",");
-                writer.write( formRow.isBms() + ",");
-                writer.write( formRow.getNumberOfPotsHauled() + ",");
+                writer.write( Double.toString(formRow.getWeight()) + ",");
+                writer.write( Boolean.toString(formRow.isDis()) + ",");
+                writer.write( Boolean.toString(formRow.isBms()) + ",");
+                writer.write( Integer.toString(formRow.getNumberOfPotsHauled()) + ",");
                 if (formRow.getLandingOrDiscardDate() != null) {
                     cal.setTime(formRow.getLandingOrDiscardDate());
                     writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
