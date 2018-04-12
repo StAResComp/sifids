@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executors;
 
+import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchSpeciesAllowedPresentation;
@@ -33,9 +34,10 @@ import uk.ac.masts.sifids.entities.Gear;
                 CatchPresentation.class,
                 Gear.class,
                 CatchSpeciesAllowedState.class,
-                CatchSpeciesAllowedPresentation.class
+                CatchSpeciesAllowedPresentation.class,
+                CatchLocation.class
     },
-        version = 2
+        version = 3
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{

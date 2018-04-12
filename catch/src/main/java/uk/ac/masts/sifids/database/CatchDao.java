@@ -8,6 +8,7 @@ import android.util.SparseArray;
 
 import java.util.List;
 
+import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
@@ -39,6 +40,9 @@ public interface CatchDao {
 
     @Insert
     public void insertFish1FormRows(Fish1FormRow... formRows);
+
+    @Insert
+    public void insertLocations(CatchLocation... locations);
 
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();

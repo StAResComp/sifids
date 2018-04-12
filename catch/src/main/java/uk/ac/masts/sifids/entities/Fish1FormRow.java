@@ -307,7 +307,7 @@ public class Fish1FormRow {
         this.modifiedAt = modifiedAt;
     }
 
-    public void updateDates() {
+    private void updateDates() {
         if (this.getCreatedAt() == null) {
             this.setCreatedAt(new Date());
         }

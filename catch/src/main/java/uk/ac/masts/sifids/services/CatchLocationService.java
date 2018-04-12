@@ -17,9 +17,12 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import java.util.Date;
+
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.activities.Fish1FormsActivity;
-import uk.ac.masts.sifids.channels.NotificationUtils;
+import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchLocation;
 
 public class CatchLocationService extends Service {
 
@@ -27,7 +30,6 @@ public class CatchLocationService extends Service {
 	private LocationManager mLocationManager = null;
 	private static final int LOCATION_INTERVAL = 1000;
 	private static final float LOCATION_DISTANCE = 10f;
-    private NotificationUtils notificationUtils;
 
 	private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -41,6 +43,7 @@ public class CatchLocationService extends Service {
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
+            this.writeLocation();
         }
 
         @Override
@@ -56,6 +59,22 @@ public class CatchLocationService extends Service {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             Log.e(TAG, "onStatusChanged: " + provider);
+        }
+
+        private void writeLocation() {
+            final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
+            Runnable r = new Runnable(){
+                @Override
+                public void run() {
+                    CatchLocation location = new CatchLocation();
+                    location.setLatitude(mLastLocation.getLatitude());
+                    location.setLongitude(mLastLocation.getLongitude());
+                    location.setTimestamp(new Date());
+                    db.catchDao().insertLocations(location);
+                }
+            };
+            Thread newThread= new Thread(r);
+            newThread.start();
         }
     }
 
@@ -86,7 +105,6 @@ public class CatchLocationService extends Service {
 		Log.e(TAG, "onCreate");
 
 		initializeLocationManager();
-		notificationUtils = new NotificationUtils(this);
 
 //		try {
 //			mLocationManager.requestLocationUpdates(
