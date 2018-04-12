@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -27,14 +27,15 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.EditFish1FormActivity"
             android:label="FISH1 Form"
-            android:parentActivityName=".activities.Fish1FormsActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.Fish1FormsActivity" />
@@ -47,5 +48,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.EditFish1FormActivity" />
         </activity>
+
+        <service
+            android:name=".services.CatchLocationService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
+
 </manifest>

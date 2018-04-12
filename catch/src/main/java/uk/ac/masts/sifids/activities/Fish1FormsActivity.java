@@ -27,6 +27,7 @@ import java.util.List;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Fish1Form;
+import uk.ac.masts.sifids.services.CatchLocationService;
 
 public class Fish1FormsActivity extends AppCompatActivity {
 
@@ -35,8 +36,8 @@ public class Fish1FormsActivity extends AppCompatActivity {
     public static RecyclerView.Adapter adapter;
     List<Fish1Form> forms;
 
-    private FusedLocationProviderClient mFusedLocationClient;
-    protected Location mLastLocation;
+//    private FusedLocationProviderClient mFusedLocationClient;
+//    protected Location mLastLocation;
 
 
     @Override
@@ -44,25 +45,27 @@ public class Fish1FormsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//
+//        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+//            //request permission
+//        }
+//
+//        mFusedLocationClient.getLastLocation()
+//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        // Got last known location. In some rare situations this can be null.
+//                        if (location != null) {
+//                            Toast.makeText(getBaseContext(), "Current location is:  " + location.getLatitude() + "/" + location.getLongitude(), Toast.LENGTH_LONG).show();
+//                        }
+//                        else {
+//                            Toast.makeText(getBaseContext(), "Location unknown ", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                });
 
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            //request permission
-        }
-
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            Toast.makeText(getBaseContext(), "Current location is:  " + location.getLatitude() + "/" + location.getLongitude(), Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(getBaseContext(), "Location unknown ", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+        startService(new Intent(this, CatchLocationService.class));
 
         setContentView(R.layout.activity_fish_1_forms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
