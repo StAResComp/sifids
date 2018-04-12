@@ -2,6 +2,10 @@ package uk.ac.masts.sifids.services;
 
 //Based on https://github.com/codepath/android_guides/issues/220#issuecomment-250756857
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +17,17 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.activities.Fish1FormsActivity;
+import uk.ac.masts.sifids.channels.NotificationUtils;
+
 public class CatchLocationService extends Service {
+
 	private static final String TAG = "CatchLocationService";
 	private LocationManager mLocationManager = null;
 	private static final int LOCATION_INTERVAL = 1000;
 	private static final float LOCATION_DISTANCE = 10f;
+    private NotificationUtils notificationUtils;
 
 	private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -76,6 +86,7 @@ public class CatchLocationService extends Service {
 		Log.e(TAG, "onCreate");
 
 		initializeLocationManager();
+		notificationUtils = new NotificationUtils(this);
 
 //		try {
 //			mLocationManager.requestLocationUpdates(
@@ -97,6 +108,20 @@ public class CatchLocationService extends Service {
 					LOCATION_DISTANCE,
 					mLocationListeners[1]
 			);
+            Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+            Notification notification =
+                    new Notification.Builder(this, createNotificationChannel())
+                            .setContentTitle("Tracking Location")
+                            .setContentText("Tracking Location")
+                            .setSmallIcon(R.drawable.ic_info_black_24dp)
+                            .setContentIntent(pendingIntent)
+                            .setTicker("Ticker text")
+                            .build();
+
+            startForeground(121, notification);
 		} catch (java.lang.SecurityException ex) {
 			Log.i(TAG, "fail to request location update, ignore", ex);
 		} catch (IllegalArgumentException ex) {
@@ -128,5 +153,14 @@ public class CatchLocationService extends Service {
 			mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 		}
 	}
+
+	private String createNotificationChannel() {
+	    String channelId = "sifids_location_tracking_channel";
+	    String channelName = "SIFIDS Location Tracking";
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.createNotificationChannel(channel);
+        return channelId;
+    }
 }
 
