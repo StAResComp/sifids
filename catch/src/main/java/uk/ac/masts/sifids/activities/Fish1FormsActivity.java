@@ -40,9 +40,7 @@ public class Fish1FormsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        startService(new Intent(this, CatchLocationService.class));
-
+        
         setContentView(R.layout.activity_fish_1_forms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,6 +104,14 @@ public class Fish1FormsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void startTrackingLocation(View v) {
+        startService(new Intent(this, CatchLocationService.class));
+    }
+
+    public void stopTrackingLocation(View v) {
+        stopService(new Intent(this, CatchLocationService.class));
     }
 
 }
