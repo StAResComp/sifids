@@ -3,7 +3,6 @@ package uk.ac.masts.sifids.entities;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.location.Location;
 
 import java.util.Date;
 
@@ -45,7 +44,24 @@ public class CatchLocation {
     }
 
     public String getLatitudeString() {
-        return Location.convert(this.getLatitude(), Location.FORMAT_MINUTES);
+        return String.format("%02d",this.getLatitudeDegrees()) + " " + String.format("%02d",this.getLatitudeMinutes()) + " " + this.getLatitudeDirection();
+    }
+
+    public char getLatitudeDirection() {
+        double lat = this.getLatitude();
+        if (lat >= 0.0) return 'N';
+        else return 'S';
+    }
+
+    public int getLatitudeDegrees() {
+        double lat = Math.abs(this.getLatitude());
+        return (int) Math.floor(lat);
+    }
+
+    public int getLatitudeMinutes() {
+        double lat = Math.abs(this.getLatitude());
+        int deg = this.getLatitudeDegrees();
+        return (int) Math.round((lat - deg) * 60);
     }
 
     public void setLatitude(double latitude) {
@@ -55,12 +71,35 @@ public class CatchLocation {
         }
     }
 
+    public void setLatitude(int deg, int min, char dir) {
+        double lat = deg + ((double) min/60);
+        if (dir == 'N') this.setLatitude(lat);
+        else if (dir == 'S') this.setLatitude(lat * -1);
+    }
+
     public double getLongitude() {
         return longitude;
     }
 
     public String getLongitudeString() {
-        return Location.convert(this.getLongitude(), Location.FORMAT_MINUTES);
+        return String.format("%02d",this.getLongitudeDegrees()) + " " + String.format("%02d",this.getLongitudeMinutes()) + " " + this.getLongitudeDirection();
+    }
+
+    public char getLongitudeDirection() {
+        double lat = this.getLongitude();
+        if (lat >= 0.0) return 'E';
+        else return 'W';
+    }
+
+    public int getLongitudeDegrees() {
+        double lat = Math.abs(this.getLongitude());
+        return (int) Math.floor(lat);
+    }
+
+    public int getLongitudeMinutes() {
+        double lat = Math.abs(this.getLongitude());
+        int deg = this.getLongitudeDegrees();
+        return (int) Math.round((lat - deg) * 60);
     }
 
     public void setLongitude(double longitude) {
@@ -68,6 +107,16 @@ public class CatchLocation {
             this.longitude = longitude;
             this.updateDates();
         }
+    }
+
+    public void setLongitude(int deg, int min, char dir) {
+        double lat = deg + ((double) min/60);
+        if (dir == 'E') this.setLongitude(lat);
+        else if (dir == 'W') this.setLongitude(lat * -1);
+    }
+
+    public String getCoordinates() {
+        return this.getLatitudeString() + " " + this.getLongitudeString();
     }
 
     public Date getTimestamp() {
