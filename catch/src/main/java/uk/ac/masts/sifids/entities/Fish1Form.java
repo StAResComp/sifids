@@ -93,7 +93,7 @@ public class Fish1Form {
     }
 
     public void setPortOfDeparture(String portOfDeparture) {
-        if (!portOfDeparture.equals(this.getPortOfDeparture())) {
+        if (portOfDeparture != null && !portOfDeparture.equals(this.getPortOfDeparture())) {
             this.portOfDeparture = portOfDeparture;
             this.updateDates();
         }
@@ -104,7 +104,7 @@ public class Fish1Form {
     }
 
     public void setPortOfLanding(String portOfLanding) {
-        if (!portOfLanding.equals(this.getPortOfLanding())) {
+        if (portOfLanding != null && !portOfLanding.equals(this.getPortOfLanding())) {
             this.portOfLanding = portOfLanding;
             this.updateDates();
         }

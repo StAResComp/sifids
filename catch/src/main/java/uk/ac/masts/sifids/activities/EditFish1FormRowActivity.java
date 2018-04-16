@@ -6,8 +6,10 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -163,6 +165,9 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
     }
 
     private void applyExistingValues() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         if (fish1FormRow != null && fish1FormRow.getFishingActivityDate() != null) {
             fishingActivityDate = fish1FormRow.getFishingActivityDate();
             this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
@@ -175,7 +180,6 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                 if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
                     spinners.get(GEAR_KEY).setSelection(i);
             }
-            meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
             for (int i = 0; i < adapters.get(SPECIES_KEY).getCount(); i++) {
                 if (((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId() == fish1FormRow.getSpeciesId())
                     spinners.get(SPECIES_KEY).setSelection(i);
@@ -193,6 +197,20 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
             bms.setChecked(fish1FormRow.isBms());
             numberOfPotsHauled.setText(Integer.toString(fish1FormRow.getNumberOfPotsHauled()));
         }
+        if (fish1FormRow != null) {
+            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
+                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
+                    spinners.get(GEAR_KEY).setSelection(i);
+            }
+        }
+        else {
+            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
+                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == Integer.parseInt(prefs.getString("pref_gear", "")));
+                    spinners.get(GEAR_KEY).setSelection(i);
+            }
+        }
+        if (fish1FormRow != null) meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
+        else meshSize.setText(prefs.getString("pref_mesh_size", ""));
         if (fish1FormRow != null && fish1FormRow.getIcesArea() != null && !fish1FormRow.getIcesArea().equals(""))
             icesArea.setText(fish1FormRow.getIcesArea());
         if (fish1FormRow != null && fish1FormRow.getLandingOrDiscardDate() != null) {

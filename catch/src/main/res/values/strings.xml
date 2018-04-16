@@ -28,6 +28,11 @@
     <string name="pref_port_5_title">Port 5</string>
     <string name="pref_port_6_title">Port 6</string>
 
+    <string name="pref_header_gear_details">Gear Details</string>
+    <string name="pref_gear_title">Gear</string>
+    <string name="pref_mesh_size_title">Mesh Size</string>
+    <string name="pref_total_pots_fishing_title">Total Pots Fishing</string>
+
     <string name="port_of_departure">Port of Departure</string>
     <string name="port_of_landing">Port of Landing</string>
 

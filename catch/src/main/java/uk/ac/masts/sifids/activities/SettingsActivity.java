@@ -12,6 +12,7 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -135,7 +136,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || FisheryOfficeDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || VesselDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || OwnerMasterDetailsPreferenceFragment.class.getName().equals(fragmentName)
-                || PortDetailsPreferenceFragment.class.getName().equals(fragmentName);
+                || PortDetailsPreferenceFragment.class.getName().equals(fragmentName)
+                || GearDetailsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -254,6 +256,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("pref_port_4"));
             bindPreferenceSummaryToValue(findPreference("pref_port_5"));
             bindPreferenceSummaryToValue(findPreference("pref_port_6"));
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class GearDetailsPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_gear_details);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference("pref_gear"));
+            bindPreferenceSummaryToValue(findPreference("pref_mesh_size"));
+            bindPreferenceSummaryToValue(findPreference("pref_total_pots_fishing"));
         }
 
         @Override

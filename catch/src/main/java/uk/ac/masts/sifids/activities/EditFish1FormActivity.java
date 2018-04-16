@@ -162,6 +162,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
         else address.setText(prefs.getString("pref_owner_master_address", ""));
 
         if (fish1Form != null) totalPotsFishing.setText(Integer.toString(fish1Form.getTotalPotsFishing()));
+        else totalPotsFishing.setText(prefs.getString("pref_total_pots_fishing", ""));
 
         if (fish1Form != null && fish1Form.getPortOfDeparture() != null && !fish1Form.getPortOfDeparture().equals("")) {
             int position = portOfDepartureAdapter.getPosition(fish1Form.getPortOfDeparture());
