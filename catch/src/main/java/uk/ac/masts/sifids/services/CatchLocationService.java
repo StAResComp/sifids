@@ -12,9 +12,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Date;
@@ -130,16 +132,33 @@ public class CatchLocationService extends Service {
             PendingIntent pendingIntent =
                     PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-            Notification notification =
-                    new Notification.Builder(this, createNotificationChannel())
-                            .setContentTitle("Tracking Location")
-                            .setContentText("Tracking Location")
-                            .setSmallIcon(R.drawable.ic_info_black_24dp)
-                            .setContentIntent(pendingIntent)
-                            .setTicker("Ticker text")
-                            .build();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                String channelId = "sifids_location_tracking_channel";
+                String channelName = "SIFIDS Location Tracking";
+                NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.createNotificationChannel(channel);
+                Notification notification =
+                        new Notification.Builder(this, channelId)
+                                .setContentTitle("Tracking Location")
+                                .setContentText("Tracking Location")
+                                .setSmallIcon(R.drawable.ic_info_black_24dp)
+                                .setContentIntent(pendingIntent)
+                                .setTicker("Ticker text")
+                                .build();
+                startForeground(121, notification);
+            }
+            else {
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, null)
+                        .setContentTitle("Tracking Location")
+                        .setContentText("Tracking Location")
+                        .setContentIntent(pendingIntent)
+                        .setTicker("Ticker text");
+                manager.notify(1, builder.build());
+            }
 
-            startForeground(121, notification);
+
 		} catch (java.lang.SecurityException ex) {
 			Log.i(TAG, "fail to request location update, ignore", ex);
 		} catch (IllegalArgumentException ex) {
@@ -171,14 +190,5 @@ public class CatchLocationService extends Service {
 			mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 		}
 	}
-
-	private String createNotificationChannel() {
-	    String channelId = "sifids_location_tracking_channel";
-	    String channelName = "SIFIDS Location Tracking";
-        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.createNotificationChannel(channel);
-        return channelId;
-    }
 }
 
