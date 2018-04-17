@@ -53,6 +53,16 @@
             android:name=".services.CatchLocationService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBdr33S1rNzcn9uipzeLoNZO_ARSY1TJEo"/>
+
+
     </application>
 
 </manifest>

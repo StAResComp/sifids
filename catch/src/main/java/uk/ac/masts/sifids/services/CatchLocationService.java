@@ -64,19 +64,21 @@ public class CatchLocationService extends Service {
         }
 
         private void writeLocation() {
-            final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
-            Runnable r = new Runnable(){
-                @Override
-                public void run() {
-                    CatchLocation location = new CatchLocation();
-                    location.setLatitude(mLastLocation.getLatitude());
-                    location.setLongitude(mLastLocation.getLongitude());
-                    location.setTimestamp(new Date());
-                    db.catchDao().insertLocations(location);
-                }
-            };
-            Thread newThread= new Thread(r);
-            newThread.start();
+            if (mLastLocation != null) {
+                final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        CatchLocation location = new CatchLocation();
+                        location.setLatitude(mLastLocation.getLatitude());
+                        location.setLongitude(mLastLocation.getLongitude());
+                        location.setTimestamp(new Date());
+                        db.catchDao().insertLocations(location);
+                    }
+                };
+                Thread newThread = new Thread(r);
+                newThread.start();
+            }
         }
     }
 

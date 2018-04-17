@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
 
 @Entity(tableName = "location")
@@ -117,6 +119,10 @@ public class CatchLocation {
 
     public String getCoordinates() {
         return this.getLatitudeString() + " " + this.getLongitudeString();
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(this.getLatitude(), this.getLongitude());
     }
 
     public Date getTimestamp() {

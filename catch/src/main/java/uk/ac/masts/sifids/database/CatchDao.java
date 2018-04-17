@@ -80,6 +80,9 @@ public interface CatchDao {
     @Query("SELECT * FROM catch_presentation WHERE id = :id")
     public CatchPresentation getPresentationById(int id);
 
+    @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
+    public List<CatchLocation> getLastLocations(int limit);
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 
