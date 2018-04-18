@@ -469,6 +469,10 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
                 intent = new Intent(this, Fish1FormsActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.activity_map:
+                intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

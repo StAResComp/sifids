@@ -27,7 +27,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,6 +47,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.EditFish1FormActivity" />
         </activity>
+        <activity
+            android:name=".activities.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".activities.Fish1FormsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.Fish1FormsActivity" />
+        </activity>
 
         <service
             android:name=".services.CatchLocationService"
@@ -57,7 +64,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        
+
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_api_key"/>
 
     </application>
