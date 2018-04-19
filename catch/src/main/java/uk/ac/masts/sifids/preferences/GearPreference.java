@@ -30,7 +30,6 @@ public class GearPreference extends ListPreference {
             @Override
             public void run() {
                 gear = db.catchDao().getGear();
-                Log.e(TAG, "Got gear: " + gear.size() + " items");
             }
         };
 
@@ -44,7 +43,6 @@ public class GearPreference extends ListPreference {
         }
 
         for (Gear item : gear) {
-            Log.e(TAG, "Got gear item");
             entries.add(item.getName());
             entryValues.add(Integer.toString(item.getId()));
         }

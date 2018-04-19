@@ -29,9 +29,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
@@ -114,7 +117,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
         saveButton = (Button) findViewById(R.id.save_form_button);
         addRowButton = (Button) findViewById(R.id.add_row_button);
 
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.get("id") != null) {
                 final int id = (Integer) extras.get("id");
@@ -127,6 +130,40 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                 };
 
                 Thread newThread= new Thread(r);
+                newThread.start();
+                try {
+                    newThread.join();
+                }
+                catch (InterruptedException ie) {
+
+                }
+            }
+            else if (extras.get("start_date") != null && extras.get("start_date") instanceof java.util.Date && extras.get("end_date") != null && extras.get("end_date") instanceof java.util.Date) {
+                fish1Form = new Fish1Form();
+                Runnable r = new Runnable(){
+                    @Override
+                    public void run() {
+                        long[] ids = db.catchDao().insertFish1Forms();
+                        fish1Form = db.catchDao().getForm((int) ids[0]);
+                    }
+                };
+                Thread newThread= new Thread(r);
+                newThread.start();
+                try {
+                    newThread.join();
+                }
+                catch (InterruptedException ie) {
+
+                }
+                r = new Runnable(){
+                    @Override
+                    public void run() {
+                        Collection<CatchLocation> points = db.catchDao().getLocationsBetweenDates((Date) extras.get("start_date"), (Date) extras.get("end_date"));
+                        Collection<Fish1FormRow> rows = Fish1FormRow.createRowsFromTrackForForm(fish1Form, points);
+                        db.catchDao().insertFish1FormRows(rows);
+                    }
+                };
+                newThread= new Thread(r);
                 newThread.start();
                 try {
                     newThread.join();

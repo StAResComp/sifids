@@ -3,8 +3,6 @@ package uk.ac.masts.sifids.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,8 +31,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         db = CatchDatabase.getInstance(getApplicationContext());
 
@@ -98,7 +94,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         boolean first = true;
         for (CatchLocation point : points) {
-            Log.e("Map", "Got " + point.getCoordinates());
             map.addMarker(new MarkerOptions().position(point.getLatLng()).title(point.getCoordinates()));
             if (first) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(point.getLatLng(), (float) 10.0));

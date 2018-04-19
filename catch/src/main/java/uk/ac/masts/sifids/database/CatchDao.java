@@ -6,6 +6,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 import android.util.SparseArray;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.masts.sifids.entities.CatchLocation;
@@ -36,10 +38,13 @@ public interface CatchDao {
     public void insertGear(List<Gear> gear);
 
     @Insert
-    public void insertFish1Forms(Fish1Form... forms);
+    public long[] insertFish1Forms(Fish1Form... forms);
 
     @Insert
     public void insertFish1FormRows(Fish1FormRow... formRows);
+
+    @Insert
+    public void insertFish1FormRows(Collection<Fish1FormRow> formRows);
 
     @Insert
     public void insertLocations(CatchLocation... locations);
@@ -82,6 +87,9 @@ public interface CatchDao {
 
     @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
     public List<CatchLocation> getLastLocations(int limit);
+
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP <= :end ORDER BY timestamp ASC")
+    public List<CatchLocation> getLocationsBetweenDates(Date start, Date end);
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);

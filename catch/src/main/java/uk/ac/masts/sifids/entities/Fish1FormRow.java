@@ -5,11 +5,16 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import android.text.format.DateFormat;
 /**
  * Created by pgm5 on 19/02/2018.
  */
@@ -103,6 +108,19 @@ public class Fish1FormRow {
 
     @ColumnInfo(name = "modified_at")
     public Date modifiedAt;
+
+    public Fish1FormRow () {
+        this.updateDates();
+    }
+
+    public Fish1FormRow (Fish1Form form, CatchLocation point) {
+        this.formId = form.getId();
+        this.fishingActivityDate = point.getTimestamp();
+        this.latitude = point.getLatitude();
+        this.longitude = point.getLongitude();
+        this.icesArea = point.getIcesRectangle();
+        this.updateDates();
+    }
 
     public int getId() {
         return id;
@@ -318,5 +336,24 @@ public class Fish1FormRow {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getFishingActivityDate());
         return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
+    }
+
+    public static Collection<Fish1FormRow> createRowsFromTrackForForm(Fish1Form form, Collection<CatchLocation> points) {
+        Map<String,Fish1FormRow> rows = new HashMap();
+        int counter = 0;
+        for (CatchLocation point : points) {
+            String dateString = (String) DateFormat.format("yD", point.getTimestamp());
+            if (!rows.containsKey(dateString)) {
+                counter = 1;
+                Fish1FormRow row = new Fish1FormRow(form, point);
+                rows.put(dateString + counter,row);
+            }
+            else if (rows.get(dateString).getIcesArea() != point.getIcesRectangle()) {
+                counter++;
+                Fish1FormRow row = new Fish1FormRow(form, point);
+                rows.put(dateString + counter,row);
+            }
+        }
+        return rows.values();
     }
 }
