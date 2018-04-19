@@ -337,23 +337,4 @@ public class Fish1FormRow {
         cal.setTime(this.getFishingActivityDate());
         return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
     }
-
-    public static Collection<Fish1FormRow> createRowsFromTrackForForm(Fish1Form form, Collection<CatchLocation> points) {
-        Map<String,Fish1FormRow> rows = new HashMap();
-        int counter = 0;
-        for (CatchLocation point : points) {
-            String dateString = (String) DateFormat.format("yD", point.getTimestamp());
-            if (!rows.containsKey(dateString)) {
-                counter = 1;
-                Fish1FormRow row = new Fish1FormRow(form, point);
-                rows.put(dateString + counter,row);
-            }
-            else if (rows.get(dateString).getIcesArea() != point.getIcesRectangle()) {
-                counter++;
-                Fish1FormRow row = new Fish1FormRow(form, point);
-                rows.put(dateString + counter,row);
-            }
-        }
-        return rows.values();
-    }
 }

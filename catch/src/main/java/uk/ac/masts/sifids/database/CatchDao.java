@@ -91,6 +91,9 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP <= :end ORDER BY timestamp ASC")
     public List<CatchLocation> getLocationsBetweenDates(Date start, Date end);
 
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
+    public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 

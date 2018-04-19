@@ -7,6 +7,8 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity(tableName = "location")
 public class CatchLocation {
@@ -25,6 +27,11 @@ public class CatchLocation {
 
     @ColumnInfo(name = "modified_at")
     public Date modifiedAt;
+
+    public final static int LOWER_LAT = 0;
+    public final static int UPPER_LAT = 1;
+    public final static int LOWER_LONG = 2;
+    public final static int UPPER_LONG = 3;
 
     public CatchLocation() {
         this.updateDates();
@@ -163,9 +170,13 @@ public class CatchLocation {
         return CatchLocation.getIcesRectangle(this.getLatitude(), this.getLongitude());
     }
 
+    public Map<Integer,Double> getIcesRectangleBounds() {
+        return CatchLocation.getIcesRectangleBounds(this.getLatitude(), this.getLongitude());
+    }
+
     public static String getIcesRectangle(double lat, double lon) {
         //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
-        if (lat >= 36.0 && lat <= 85.5 && lon >= -44.0 && lon <= 68.3) {
+        if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
             String icesRect = "";
             int latval = (int) Math.floor((lat - 36.0) * 2) + 1;
             icesRect += String.format("%02d",latval);
@@ -182,6 +193,19 @@ public class CatchLocation {
                 icesRect += (int) Math.floor( lon % 10);
             }
             return icesRect;
+        }
+        else return null;
+    }
+
+    public static Map<Integer,Double> getIcesRectangleBounds(double lat, double lon) {
+        //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
+        if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.3) {
+            Map<Integer,Double> bounds = new HashMap();
+            bounds.put(LOWER_LAT,(Math.floor(lat * 2)/2));
+            bounds.put(UPPER_LAT,(Math.ceil(lat * 2)/2));
+            bounds.put(LOWER_LONG,Math.floor(lon));
+            bounds.put(UPPER_LONG,Math.ceil(lon));
+            return bounds;
         }
         else return null;
     }

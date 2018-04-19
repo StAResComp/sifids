@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -145,25 +146,22 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                     public void run() {
                         long[] ids = db.catchDao().insertFish1Forms();
                         fish1Form = db.catchDao().getForm((int) ids[0]);
-                    }
-                };
-                Thread newThread= new Thread(r);
-                newThread.start();
-                try {
-                    newThread.join();
-                }
-                catch (InterruptedException ie) {
-
-                }
-                r = new Runnable(){
-                    @Override
-                    public void run() {
+                        Calendar start = Calendar.getInstance();
+                        start.setTime((Date) extras.get("start_date"));
+                        Calendar end = Calendar.getInstance();
+                        end.setTime((Date) extras.get("end_date"));
+                        List<Fish1FormRow> rows = new ArrayList();
+                        for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+                            
+                            CatchLocation point = db.catchDao().getFirstLocationBetweenDates(date, new Date(date.getTime()+(24*60*60*1000)));
+                            rows.add(new Fish1FormRow(fish1Form, point));
+                        }
                         Collection<CatchLocation> points = db.catchDao().getLocationsBetweenDates((Date) extras.get("start_date"), (Date) extras.get("end_date"));
                         Collection<Fish1FormRow> rows = Fish1FormRow.createRowsFromTrackForForm(fish1Form, points);
                         db.catchDao().insertFish1FormRows(rows);
                     }
                 };
-                newThread= new Thread(r);
+                Thread newThread= new Thread(r);
                 newThread.start();
                 try {
                     newThread.join();
