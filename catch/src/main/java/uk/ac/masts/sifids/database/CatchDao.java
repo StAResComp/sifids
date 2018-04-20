@@ -88,11 +88,14 @@ public interface CatchDao {
     @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
     public List<CatchLocation> getLastLocations(int limit);
 
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP <= :end ORDER BY timestamp ASC")
-    public List<CatchLocation> getLocationsBetweenDates(Date start, Date end);
-
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
+
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= :lower_lat AND latitude < :upper_lat AND longitude >= :lower_long AND longitude < :upper_long ORDER BY timestamp ASC LIMIT 1")
+    public CatchLocation getFirstLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
+
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 ORDER BY timestamp ASC LIMIT 1")
+    public CatchLocation getFirstValidIcesLocationBetweenDates(Date start, Date end);
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);

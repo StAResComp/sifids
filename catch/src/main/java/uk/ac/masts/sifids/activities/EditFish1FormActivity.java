@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
@@ -144,7 +145,7 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                 Runnable r = new Runnable(){
                     @Override
                     public void run() {
-                        long[] ids = db.catchDao().insertFish1Forms();
+                        long[] ids = db.catchDao().insertFish1Forms(fish1Form);
                         fish1Form = db.catchDao().getForm((int) ids[0]);
                         Calendar start = Calendar.getInstance();
                         start.setTime((Date) extras.get("start_date"));
@@ -152,12 +153,22 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                         end.setTime((Date) extras.get("end_date"));
                         List<Fish1FormRow> rows = new ArrayList();
                         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                            
-                            CatchLocation point = db.catchDao().getFirstLocationBetweenDates(date, new Date(date.getTime()+(24*60*60*1000)));
-                            rows.add(new Fish1FormRow(fish1Form, point));
+                            Calendar upper = Calendar.getInstance();
+                            upper.setTime(date);
+                            upper.add(Calendar.DATE, 1);
+                            CatchLocation point = db.catchDao().getFirstLocationBetweenDates(date, upper.getTime());
+                            if (point != null) {
+                                rows.add(new Fish1FormRow(fish1Form, point));
+                                while (point != null && point.getTimestamp().before(upper.getTime())) {
+                                    Map<Integer, Double> bounds = point.getIcesRectangleBounds();
+                                    if (bounds == null) point = db.catchDao().getFirstValidIcesLocationBetweenDates(point.getTimestamp(),upper.getTime());
+                                    else point = db.catchDao().getFirstLocationOutsideBoundsBetweenDates(point.getTimestamp(), upper.getTime(), bounds.get(CatchLocation.LOWER_LAT), bounds.get(CatchLocation.UPPER_LAT), bounds.get(CatchLocation.LOWER_LONG), bounds.get(CatchLocation.UPPER_LONG));
+                                    if (point != null) {
+                                        rows.add(new Fish1FormRow(fish1Form, point));
+                                    }
+                                }
+                            }
                         }
-                        Collection<CatchLocation> points = db.catchDao().getLocationsBetweenDates((Date) extras.get("start_date"), (Date) extras.get("end_date"));
-                        Collection<Fish1FormRow> rows = Fish1FormRow.createRowsFromTrackForForm(fish1Form, points);
                         db.catchDao().insertFish1FormRows(rows);
                     }
                 };

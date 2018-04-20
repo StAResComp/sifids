@@ -74,16 +74,16 @@ public class Fish1FormRow {
     public String icesArea;
 
     @ColumnInfo(name = "gear_id")
-    public int gearId;
+    public Integer gearId;
 
     @ColumnInfo(name = "mesh_size")
     public int meshSize;
 
     @ColumnInfo(name = "species_id")
-    public int speciesId;
+    public Integer speciesId;
 
     @ColumnInfo(name = "state_id")
-    public int stateId;
+    public Integer stateId;
 
     @ColumnInfo(name = "presentation_id")
     public int presentationId;

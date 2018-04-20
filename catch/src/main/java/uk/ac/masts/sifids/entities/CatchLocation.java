@@ -199,7 +199,7 @@ public class CatchLocation {
 
     public static Map<Integer,Double> getIcesRectangleBounds(double lat, double lon) {
         //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
-        if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.3) {
+        if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
             Map<Integer,Double> bounds = new HashMap();
             bounds.put(LOWER_LAT,(Math.floor(lat * 2)/2));
             bounds.put(UPPER_LAT,(Math.ceil(lat * 2)/2));

@@ -37,7 +37,7 @@ import uk.ac.masts.sifids.entities.Gear;
                 CatchSpeciesAllowedPresentation.class,
                 CatchLocation.class
     },
-        version = 3
+        version = 4
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{

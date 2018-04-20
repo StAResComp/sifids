@@ -2,6 +2,10 @@
     <string name="app_name">sifids</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_map">Map</string>
+    <string name="dialog_select_week">Select Week</string>
+    <string name="this_week">This Week (starting %s)</string>
+    <string name="last_week">Last Week (starting %s)</string>
+    <string name="other_week">Other Week</string>
 
     <!-- Strings related to Settings -->
 
@@ -43,5 +47,8 @@
     <string name="presentation">Presentation</string>
 
     <string name="title_activity_catch">FISH1 Forms</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
