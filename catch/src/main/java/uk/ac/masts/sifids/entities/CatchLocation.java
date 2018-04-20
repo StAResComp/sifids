@@ -6,9 +6,13 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Entity(tableName = "location")
 public class CatchLocation {
@@ -208,5 +212,34 @@ public class CatchLocation {
             return bounds;
         }
         else return null;
+    }
+
+    public static List<CatchLocation> createTestLocations() {
+        List<CatchLocation> locations = new ArrayList();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+        cal.set(Calendar.HOUR_OF_DAY,0);
+        cal.set(Calendar.MINUTE,0);
+        cal.set(Calendar.SECOND,0);
+        cal.add(Calendar.DATE, -7);
+        Calendar now = Calendar.getInstance();
+        for (Calendar c = cal; cal.before(now); cal.add(Calendar.DATE, 1)) {
+            Calendar s = (Calendar) cal.clone();
+            s.set(Calendar.HOUR_OF_DAY,9);
+            Random rand = new Random();
+            double lat = 36.0 + ((85.5 - 36.0) * rand.nextDouble());
+            double lon = -44.0 +((68.5 - -44.0) * rand.nextDouble());
+            while (s.get(Calendar.HOUR_OF_DAY) < 16 && lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
+                CatchLocation location = new CatchLocation();
+                location.setLatitude(lat);
+                location.setLongitude(lon);
+                location.setTimestamp(s.getTime());
+                locations.add(location);
+                lat = (lat - 0.0001) + (((lat + 0.0001) - (lat - 0.0001)) * rand.nextDouble());
+                lon = (lon - 0.0001) + (((lon + 0.0001) - (lon - 0.0001)) * rand.nextDouble());
+                s.add(Calendar.SECOND,10);
+            }
+        }
+        return locations;
     }
 }

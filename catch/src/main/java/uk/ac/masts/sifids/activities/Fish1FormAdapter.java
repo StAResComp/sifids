@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Fish1Form;
 
 /**
@@ -20,6 +24,7 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.ViewHolder> {
 
     private List<Fish1Form> forms;
+    CatchDatabase db;
 
     public Fish1FormAdapter(List<Fish1Form> forms) {
         this.forms = forms;
@@ -33,7 +38,28 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
 
     @Override
     public void onBindViewHolder(Fish1FormAdapter.ViewHolder holder, int position) {
-        holder.createdAt.setText(forms.get(position).toString());
+        final Fish1Form form = forms.get(position);
+        db = CatchDatabase.getInstance(holder.itemView.getContext());
+        final Calendar lowerCal = Calendar.getInstance();
+        final Calendar upperCal = Calendar.getInstance();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Date lowerDate = db.catchDao().getDateOfEarliestRow(form.getId());
+                lowerCal.setTime(lowerDate);
+                Date upperDate = db.catchDao().getDateOfLatestRow(form.getId());
+                upperCal.setTime(upperDate);
+            }
+        };
+        Thread newThread= new Thread(r);
+        newThread.start();
+        try {
+            newThread.join();
+        }
+        catch (InterruptedException ie) {
+
+        }
+        holder.createdAt.setText(form.getPln() + " " + new SimpleDateFormat("dd MMM yyyy").format(lowerCal.getTime()) + " - " + new SimpleDateFormat("dd MMM yyyy").format(upperCal.getTime()));
         holder.button.setTag(R.id.form_to_edit, Integer.valueOf(forms.get(position).getId()));
     }
 

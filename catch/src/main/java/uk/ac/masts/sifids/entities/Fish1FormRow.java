@@ -86,7 +86,7 @@ public class Fish1FormRow {
     public Integer stateId;
 
     @ColumnInfo(name = "presentation_id")
-    public int presentationId;
+    public Integer presentationId;
 
     public double weight;
 

@@ -49,6 +49,9 @@ public interface CatchDao {
     @Insert
     public void insertLocations(CatchLocation... locations);
 
+    @Insert
+    public void insertLocations(Collection<CatchLocation> locations);
+
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
 
@@ -63,6 +66,12 @@ public interface CatchDao {
 
     @Query("SELECT * FROM fish_1_form_row WHERE id = :id")
     public Fish1FormRow getFormRow(int id);
+
+    @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date ASC LIMIT 1")
+    public Date getDateOfEarliestRow(int formId);
+
+    @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date DESC LIMIT 1")
+    public Date getDateOfLatestRow(int formId);
 
     @Query("SELECT * FROM gear")
     public List<Gear> getGear();
@@ -91,7 +100,7 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
 
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= :lower_lat AND latitude < :upper_lat AND longitude >= :lower_long AND longitude < :upper_long ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND (latitude < :lower_lat OR latitude >= :upper_lat OR longitude < :lower_long OR longitude >= :upper_long) ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
 
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 ORDER BY timestamp ASC LIMIT 1")
