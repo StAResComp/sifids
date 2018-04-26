@@ -176,20 +176,16 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
             formId = fish1FormRow.getFormId();
             latitude.setText(Double.toString(fish1FormRow.getLatitude()));
             longitude.setText(Double.toString(fish1FormRow.getLongitude()));
-            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
-                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
-                    spinners.get(GEAR_KEY).setSelection(i);
-            }
             for (int i = 0; i < adapters.get(SPECIES_KEY).getCount(); i++) {
-                if (((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId() == fish1FormRow.getSpeciesId())
+                if (fish1FormRow.getSpeciesId() != null && ((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId() == fish1FormRow.getSpeciesId())
                     spinners.get(SPECIES_KEY).setSelection(i);
             }
             for (int i = 0; i < adapters.get(STATE_KEY).getCount(); i++) {
-                if (((CatchState) adapters.get(STATE_KEY).getItem(i)).getId() == fish1FormRow.getStateId())
+                if (fish1FormRow.getStateId() != null && ((CatchState) adapters.get(STATE_KEY).getItem(i)).getId() == fish1FormRow.getStateId())
                     spinners.get(STATE_KEY).setSelection(i);
             }
             for (int i = 0; i < adapters.get(PRESENTATION_KEY).getCount(); i++) {
-                if (((CatchPresentation) adapters.get(PRESENTATION_KEY).getItem(i)).getId() == fish1FormRow.getPresentationId())
+                if (fish1FormRow.getPresentationId() != null && ((CatchPresentation) adapters.get(PRESENTATION_KEY).getItem(i)).getId() == fish1FormRow.getPresentationId())
                     spinners.get(PRESENTATION_KEY).setSelection(i);
             }
             weight.setText(Double.toString(fish1FormRow.getWeight()));
@@ -199,7 +195,7 @@ public class EditFish1FormRowActivity extends AppCompatActivity implements Adapt
         }
         if (fish1FormRow != null) {
             for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
-                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
+                if (fish1FormRow.getGearId() != null && ((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
                     spinners.get(GEAR_KEY).setSelection(i);
             }
         }

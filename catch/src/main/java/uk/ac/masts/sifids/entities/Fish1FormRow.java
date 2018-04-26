@@ -188,7 +188,7 @@ public class Fish1FormRow {
         }
     }
 
-    public int getGearId() {
+    public Integer getGearId() {
         return gearId;
     }
 
@@ -210,7 +210,7 @@ public class Fish1FormRow {
         }
     }
 
-    public int getSpeciesId() {
+    public Integer getSpeciesId() {
         return speciesId;
     }
 
@@ -221,7 +221,7 @@ public class Fish1FormRow {
         }
     }
 
-    public int getStateId() {
+    public Integer getStateId() {
         return stateId;
     }
 
@@ -232,7 +232,7 @@ public class Fish1FormRow {
         }
     }
 
-    public int getPresentationId() {
+    public Integer getPresentationId() {
         return presentationId;
     }
 
