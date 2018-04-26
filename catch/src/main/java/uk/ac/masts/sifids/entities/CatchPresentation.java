@@ -14,7 +14,7 @@ import java.util.List;
 @Entity(tableName = "catch_presentation")
 public class CatchPresentation {
 
-    private static final String[] PRESENTATIONS = {"Whole", "Gutted"};
+    private static final String[] PRESENTATIONS = {"Whole", "Gutted", "Parts", "Tails"};
 
     @PrimaryKey(autoGenerate = true)
     public int id;

@@ -14,7 +14,41 @@ import java.util.List;
 @Entity(tableName = "gear")
 public class Gear {
 
-    private static final String[] GEAR = {"Pots", "Traps"};
+    private static final String[] GEAR = {
+            "Beam trawls",
+            "Boat dredges",
+            "Cast nets",
+            "Danish seines",
+            "Diving",
+            "Drifting longlines",
+            "Driftnets",
+            "Encircling gillnets",
+            "Fyke nets",
+            "Gillnets",
+            "Hand dredges",
+            "Hooks and lines",
+            "Lift nets",
+            "Longlines",
+            "Mechanized dredges",
+            "Midwater trawls",
+            "Nephrops trawls",
+            "Otter trawls",
+            "Otter twin trawls",
+            "Pair Seines",
+            "Portable lift nets",
+            "Pots creels",
+            "Pumps",
+            "Scottish seines",
+            "Seines",
+            "Set longlines",
+            "Stake net",
+            "Shrimp trawls",
+            "Stake net",
+            "Stow nets",
+            "Trammel nets",
+            "Traps",
+            "Trolling lines"
+    };
 
     @PrimaryKey(autoGenerate = true)
     public int id;

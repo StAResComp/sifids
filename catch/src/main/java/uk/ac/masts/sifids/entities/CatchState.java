@@ -14,7 +14,7 @@ import java.util.List;
 @Entity(tableName = "catch_state")
 public class CatchState {
 
-    private static final String[] STATES = {"Fresh", "Frozen", "Alive"};
+    private static final String[] STATES = {"Alive", "Boiled", "Dried", "Fresh", "Frozen", "Salted", "Smoked"};
 
     @PrimaryKey(autoGenerate = true)
     public int id;
