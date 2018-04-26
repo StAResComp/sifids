@@ -19,6 +19,7 @@ import uk.ac.masts.sifids.entities.CatchSpeciesAllowedState;
 import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
 
 /**
@@ -35,9 +36,10 @@ import uk.ac.masts.sifids.entities.Gear;
                 Gear.class,
                 CatchSpeciesAllowedState.class,
                 CatchSpeciesAllowedPresentation.class,
-                CatchLocation.class
+                CatchLocation.class,
+                FisheryOffice.class
     },
-        version = 6
+        version = 7
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -68,6 +70,7 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 getInstance(context).catchDao().insertSpecies(CatchSpecies.createSpecies());
                                 getInstance(context).catchDao().insertStates(CatchState.createStates());
                                 getInstance(context).catchDao().insertGear(Gear.createGear());
+                                getInstance(context).catchDao().insertFisheryOffices(FisheryOffice.createFisheryOffices());
                                 getInstance(context).catchDao().insertLocations(CatchLocation.createTestLocations());
                             }
                         });

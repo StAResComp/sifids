@@ -16,6 +16,7 @@ import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
 
 /**
@@ -36,6 +37,9 @@ public interface CatchDao {
 
     @Insert
     public void insertGear(List<Gear> gear);
+
+    @Insert
+    public void insertFisheryOffices(List<FisheryOffice> gear);
 
     @Insert
     public long[] insertFish1Forms(Fish1Form... forms);
