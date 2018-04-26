@@ -2,6 +2,7 @@ package uk.ac.masts.sifids.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +30,13 @@ public class FisheryOffice {
             {"Ullapool", "West Shore Street, ULLAPOOL IV26 2UR, Tel: 01854 612704", "fo.ullapool@gov.scot"}
     };
 
+    @PrimaryKey(autoGenerate = true)
     public int id;
     public String name;
     public String address;
     public String email;
+
+    public FisheryOffice() {};
 
     public int getId() {
         return id;

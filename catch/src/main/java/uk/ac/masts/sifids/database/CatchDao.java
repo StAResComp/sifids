@@ -18,6 +18,7 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
+import uk.ac.masts.sifids.entities.Port;
 
 /**
  * Created by pgm5 on 19/02/2018.
@@ -39,7 +40,10 @@ public interface CatchDao {
     public void insertGear(List<Gear> gear);
 
     @Insert
-    public void insertFisheryOffices(List<FisheryOffice> gear);
+    public void insertFisheryOffices(List<FisheryOffice> fisheryOffices);
+
+    @Insert
+    public void insertPorts(List<Port> ports);
 
     @Insert
     public long[] insertFish1Forms(Fish1Form... forms);
