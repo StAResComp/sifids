@@ -157,15 +157,15 @@ public class EditFish1FormActivity extends AppCompatActivity implements AdapterV
                             Calendar upper = Calendar.getInstance();
                             upper.setTime(date);
                             upper.add(Calendar.DATE, 1);
-                            CatchLocation point = db.catchDao().getFirstLocationBetweenDates(date, upper.getTime());
+                            CatchLocation point = db.catchDao().getFirstFishingLocationBetweenDates(date, upper.getTime());
                             if (point != null) {
                                 rows.add(new Fish1FormRow(fish1Form, point));
                                 Log.e("EditFish1FormActivity","created row for: " + point.getLatitude() + "/" + point.getLongitude() + " at " + point.getTimestamp());
                                 while (point != null && point.getTimestamp().before(upper.getTime())) {
                                     Map<Integer, Double> bounds = point.getIcesRectangleBounds();
                                     Log.e("EditFish1FormActivity", "Got bounds: " + bounds.get(CatchLocation.LOWER_LAT) + "/" + bounds.get(CatchLocation.UPPER_LAT) + "/" + bounds.get(CatchLocation.LOWER_LONG) + "/" + bounds.get(CatchLocation.UPPER_LONG));
-                                    if (bounds == null) point = db.catchDao().getFirstValidIcesLocationBetweenDates(point.getTimestamp(),upper.getTime());
-                                    else point = db.catchDao().getFirstLocationOutsideBoundsBetweenDates(point.getTimestamp(), upper.getTime(), bounds.get(CatchLocation.LOWER_LAT), bounds.get(CatchLocation.UPPER_LAT), bounds.get(CatchLocation.LOWER_LONG), bounds.get(CatchLocation.UPPER_LONG));
+                                    if (bounds == null) point = db.catchDao().getFirstValidIcesFishingLocationBetweenDates(point.getTimestamp(),upper.getTime());
+                                    else point = db.catchDao().getFirstFishingLocationOutsideBoundsBetweenDates(point.getTimestamp(), upper.getTime(), bounds.get(CatchLocation.LOWER_LAT), bounds.get(CatchLocation.UPPER_LAT), bounds.get(CatchLocation.LOWER_LONG), bounds.get(CatchLocation.UPPER_LONG));
                                     if (point != null) {
                                         rows.add(new Fish1FormRow(fish1Form, point));
                                         Log.e("EditFish1FormActivity","created row for: " + point.getLatitude() + "/" + point.getLongitude() + " at " + point.getTimestamp());

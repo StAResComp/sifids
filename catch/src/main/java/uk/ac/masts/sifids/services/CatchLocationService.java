@@ -21,6 +21,7 @@ import android.util.Log;
 
 import java.util.Date;
 
+import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.activities.Fish1FormsActivity;
 import uk.ac.masts.sifids.database.CatchDatabase;
@@ -34,7 +35,8 @@ public class CatchLocationService extends Service {
 	private static final float LOCATION_DISTANCE = 10f;
 
 	private class LocationListener implements android.location.LocationListener {
-        Location mLastLocation;
+
+	    Location mLastLocation;
 
         public LocationListener(String provider) {
             mLastLocation = new Location(provider);
@@ -68,6 +70,7 @@ public class CatchLocationService extends Service {
                         location.setLatitude(mLastLocation.getLatitude());
                         location.setLongitude(mLastLocation.getLongitude());
                         location.setTimestamp(new Date());
+                        location.setFishing(((CatchApplication) getApplication()).isFishing());
                         db.catchDao().insertLocations(location);
                     }
                 };
@@ -81,10 +84,6 @@ public class CatchLocationService extends Service {
 			new LocationListener(LocationManager.GPS_PROVIDER),
 			new LocationListener(LocationManager.NETWORK_PROVIDER)
 	};
-
-//	LocationListener[] mLocationListeners = new LocationListener[]{
-//			new LocationListener(LocationManager.PASSIVE_PROVIDER)
-//	};
 
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -102,60 +101,57 @@ public class CatchLocationService extends Service {
 
 		initializeLocationManager();
 
-//		try {
-//			mLocationManager.requestLocationUpdates(
-//				LocationManager.PASSIVE_PROVIDER,
-//				LOCATION_INTERVAL,
-//				LOCATION_DISTANCE,
-//				mLocationListeners[0]
-//			);
-//		} catch (java.lang.SecurityException ex) {
-//			Log.i(TAG, "fail to request location update, ignore", ex);
-//		} catch (IllegalArgumentException ex) {
-//			Log.d(TAG, "network provider does not exist, " + ex.getMessage());
-//		}
+		try {
+			mLocationManager.requestLocationUpdates(
+				LocationManager.GPS_PROVIDER,
+				LOCATION_INTERVAL,
+				LOCATION_DISTANCE,
+				mLocationListeners[0]
+			);
+		} catch (java.lang.SecurityException ex) {
+		} catch (IllegalArgumentException ex) {
+		}
 
 		try {
 			mLocationManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER,
+					LocationManager.NETWORK_PROVIDER,
 					LOCATION_INTERVAL,
 					LOCATION_DISTANCE,
 					mLocationListeners[1]
 			);
-            Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
-            PendingIntent pendingIntent =
-                    PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                String channelId = "sifids_location_tracking_channel";
-                String channelName = "SIFIDS Location Tracking";
-                NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                manager.createNotificationChannel(channel);
-                Notification notification =
-                        new Notification.Builder(this, channelId)
-                                .setContentTitle("Tracking Location")
-                                .setContentText("Tracking Location")
-                                .setSmallIcon(R.drawable.ic_info_black_24dp)
-                                .setContentIntent(pendingIntent)
-                                .setTicker("Ticker text")
-                                .build();
-                startForeground(121, notification);
-            }
-            else {
-                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, null)
-                        .setContentTitle("Tracking Location")
-                        .setContentText("Tracking Location")
-                        .setContentIntent(pendingIntent)
-                        .setTicker("Ticker text");
-                manager.notify(1, builder.build());
-            }
-
-
 		} catch (java.lang.SecurityException ex) {
 		} catch (IllegalArgumentException ex) {
 		}
+
+        Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "sifids_location_tracking_channel";
+            String channelName = "SIFIDS Location Tracking";
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+            Notification notification =
+                    new Notification.Builder(this, channelId)
+                            .setContentTitle("Tracking Location")
+                            .setContentText("Tracking Location")
+                            .setSmallIcon(R.drawable.ic_info_black_24dp)
+                            .setContentIntent(pendingIntent)
+                            .setTicker("Ticker text")
+                            .build();
+            startForeground(121, notification);
+        }
+        else {
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, null)
+                    .setContentTitle("Tracking Location")
+                    .setContentText("Tracking Location")
+                    .setContentIntent(pendingIntent)
+                    .setTicker("Ticker text");
+            manager.notify(1, builder.build());
+        }
 	}
 
 	@Override

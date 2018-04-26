@@ -42,9 +42,27 @@ tools:context="uk.ac.masts.sifids.activities.Fish1FormsActivity">
             android:text="Stop Tracking Location"
             android:onClick="stopTrackingLocation" />
 
+        <Button
+            android:id="@+id/start_fishing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:layout_centerHorizontal="true"
+            android:text="Start Fishing"
+            android:onClick="startFishing" />
+
+        <Button
+            android:id="@+id/stop_fishing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="240dp"
+            android:layout_centerHorizontal="true"
+            android:text="Stop Fishing"
+            android:onClick="stopFishing" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/form_recycler_view"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="300dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

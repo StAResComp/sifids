@@ -26,6 +26,8 @@ public class CatchLocation {
 
     public Date timestamp;
 
+    public boolean fishing;
+
     @ColumnInfo(name = "created_at")
     public Date createdAt;
 
@@ -147,6 +149,17 @@ public class CatchLocation {
         }
     }
 
+    public boolean isFishing() {
+        return fishing;
+    }
+
+    public void setFishing(boolean fishing) {
+        if (fishing != this.isFishing()) {
+            this.fishing = fishing;
+            this.updateDates();
+        }
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -234,6 +247,7 @@ public class CatchLocation {
                 location.setLatitude(lat);
                 location.setLongitude(lon);
                 location.setTimestamp(s.getTime());
+                location.setFishing(true);
                 locations.add(location);
                 lat = (lat - 0.0001) + (((lat + 0.0001) - (lat - 0.0001)) * rand.nextDouble());
                 lon = (lon - 0.0001) + (((lon + 0.0001) - (lon - 0.0001)) * rand.nextDouble());

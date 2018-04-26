@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Fish1Form;
@@ -144,5 +145,14 @@ public class Fish1FormsActivity extends AppCompatActivity {
 
     public void stopTrackingLocation(View v) {
         stopService(new Intent(this, CatchLocationService.class));
+    }
+
+    public void startFishing(View v) {
+        ((CatchApplication) this.getApplication()).setFishing(true);
+        this.startTrackingLocation(v);
+    }
+
+    public void stopFishing(View v) {
+        ((CatchApplication) this.getApplication()).setFishing(false);
     }
 }

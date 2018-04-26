@@ -37,7 +37,7 @@ import uk.ac.masts.sifids.entities.Gear;
                 CatchSpeciesAllowedPresentation.class,
                 CatchLocation.class
     },
-        version = 5
+        version = 6
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -68,7 +68,7 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 getInstance(context).catchDao().insertSpecies(CatchSpecies.createSpecies());
                                 getInstance(context).catchDao().insertStates(CatchState.createStates());
                                 getInstance(context).catchDao().insertGear(Gear.createGear());
-                                //getInstance(context).catchDao().insertLocations(CatchLocation.createTestLocations());
+                                getInstance(context).catchDao().insertLocations(CatchLocation.createTestLocations());
                             }
                         });
 
