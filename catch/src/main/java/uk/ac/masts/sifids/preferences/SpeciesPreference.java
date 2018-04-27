@@ -1,23 +1,22 @@
 package uk.ac.masts.sifids.preferences;
 
 import android.content.Context;
-import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.Gear;
 
-public class GearPreference extends MultiSelectListPreference {
+public class SpeciesPreference extends MultiSelectListPreference {
 
-    List<Gear> gear;
-    private static final String TAG = "GearPreference";
+    List<CatchSpecies> species;
+    private static final String TAG = "SpeciesPreference";
 
-    public GearPreference (Context context, AttributeSet attrs) {
+    public SpeciesPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         List<String> entries;
@@ -31,7 +30,7 @@ public class GearPreference extends MultiSelectListPreference {
         Runnable r = new Runnable(){
             @Override
             public void run() {
-                gear = db.catchDao().getGear();
+                species = db.catchDao().getSpecies();
             }
         };
 
@@ -44,8 +43,8 @@ public class GearPreference extends MultiSelectListPreference {
 
         }
 
-        for (Gear item : gear) {
-            entries.add(item.getName());
+        for (CatchSpecies item : species) {
+            entries.add(item.toString());
             entryValues.add(Integer.toString(item.getId()));
         }
 
@@ -53,7 +52,7 @@ public class GearPreference extends MultiSelectListPreference {
         setEntryValues(entryValues.toArray(new String[0]));
     }
 
-    public GearPreference (Context context) {
+    public SpeciesPreference(Context context) {
         this(context, null);
     }
 }

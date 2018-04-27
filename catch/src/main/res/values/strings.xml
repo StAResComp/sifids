@@ -38,6 +38,9 @@
     <string name="pref_mesh_size_title">Mesh Size</string>
     <string name="pref_total_pots_fishing_title">Total Pots Fishing</string>
 
+    <string name="pref_header_species_details">Species Details</string>
+    <string name="pref_species_title">Species</string>
+
     <string name="port_of_departure">Port of Departure</string>
     <string name="port_of_landing">Port of Landing</string>
 

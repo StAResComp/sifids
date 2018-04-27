@@ -1,0 +1,7 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uk.ac.masts.sifids.preferences.SpeciesPreference
+        android:key="pref_species"
+        android:title="@string/pref_species_title" />
+
+</PreferenceScreen>
