@@ -2,6 +2,7 @@ package uk.ac.masts.sifids.preferences;
 
 import android.content.Context;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Gear;
 
-public class GearPreference extends ListPreference {
+public class GearPreference extends MultiSelectListPreference {
 
     List<Gear> gear;
     List<String> entries;
