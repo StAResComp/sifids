@@ -326,4 +326,8 @@ public class Fish1FormRow extends ChangeLoggingEntity{
         cal.setTime(this.getFishingActivityDate());
         return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
     }
+
+    public String getCoordinates() {
+        return CatchLocation.getCoordinates(this.getLatitude(), this.getLongitude());
+    }
 }

@@ -382,7 +382,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                     writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
                 }
                 else writer.write(",");
-                writer.write(CatchLocation.getCoordinates(formRow.getLatitude(), formRow.getLongitude()) + ",");
+                writer.write(formRow.getCoordinates() + ",");
                 if (formRow.getIcesArea() != null)
                     writer.write("\"" + formRow.getIcesArea() + "\",");
                 else writer.write(",");
