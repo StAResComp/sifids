@@ -57,9 +57,6 @@ import android.text.format.DateFormat;
 )
 public class Fish1FormRow extends ChangeLoggingEntity{
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
     @ColumnInfo(name = "form_id")
     public int formId;
 
@@ -114,19 +111,6 @@ public class Fish1FormRow extends ChangeLoggingEntity{
         this.longitude = point.getLongitude();
         this.icesArea = point.getIcesRectangle();
         this.updateDates();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public boolean setId(int id) {
-        if (this.getId() == 0) {
-            this.id = id;
-            this.updateDates();
-            return true;
-        }
-        return false;
     }
 
     public int getFormId() {

@@ -12,12 +12,9 @@ import java.util.List;
  */
 
 @Entity(tableName = "catch_presentation")
-public class CatchPresentation {
+public class CatchPresentation extends EntityWithId {
 
     private static final String[] PRESENTATIONS = {"Whole", "Gutted", "Parts", "Tails"};
-
-    @PrimaryKey(autoGenerate = true)
-    public int id;
 
     public String name;
 
@@ -33,14 +30,6 @@ public class CatchPresentation {
     }
 
     public CatchPresentation(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

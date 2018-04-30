@@ -17,9 +17,6 @@ import java.util.Random;
 @Entity(tableName = "location")
 public class CatchLocation extends ChangeLoggingEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
     public double latitude;
 
     public double longitude;
@@ -37,17 +34,6 @@ public class CatchLocation extends ChangeLoggingEntity {
         this.updateDates();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        if (this.getId() == 0) {
-            this.id = id;
-            this.updateDates();
-        }
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -56,8 +42,17 @@ public class CatchLocation extends ChangeLoggingEntity {
         return String.format("%02d",this.getLatitudeDegrees()) + " " + String.format("%02d",this.getLatitudeMinutes()) + " " + this.getLatitudeDirection();
     }
 
+    public static String getLatitudeString(double lat) {
+        return String.format("%02d",getLatitudeDegrees(lat)) + " " + String.format("%02d",getLatitudeMinutes(lat)) + " " + getLatitudeDirection(lat);
+    }
+
     public char getLatitudeDirection() {
         double lat = this.getLatitude();
+        if (lat >= 0.0) return 'N';
+        else return 'S';
+    }
+
+    public static char getLatitudeDirection(double lat) {
         if (lat >= 0.0) return 'N';
         else return 'S';
     }
@@ -67,9 +62,18 @@ public class CatchLocation extends ChangeLoggingEntity {
         return (int) Math.floor(lat);
     }
 
+    public static int getLatitudeDegrees(double lat) {
+        return (int) Math.floor(lat);
+    }
+
     public int getLatitudeMinutes() {
         double lat = Math.abs(this.getLatitude());
         int deg = this.getLatitudeDegrees();
+        return (int) Math.round((lat - deg) * 60);
+    }
+
+    public static int getLatitudeMinutes(double lat) {
+        int deg = getLatitudeDegrees(lat);
         return (int) Math.round((lat - deg) * 60);
     }
 
@@ -94,21 +98,39 @@ public class CatchLocation extends ChangeLoggingEntity {
         return String.format("%02d",this.getLongitudeDegrees()) + " " + String.format("%02d",this.getLongitudeMinutes()) + " " + this.getLongitudeDirection();
     }
 
+    public static String getLongitudeString(double lon) {
+        return String.format("%02d",getLongitudeDegrees(lon)) + " " + String.format("%02d",getLongitudeMinutes(lon)) + " " + getLongitudeDirection(lon);
+    }
+
     public char getLongitudeDirection() {
-        double lat = this.getLongitude();
-        if (lat >= 0.0) return 'E';
+        double lon = this.getLongitude();
+        if (lon >= 0.0) return 'E';
+        else return 'W';
+    }
+
+    public static char getLongitudeDirection(double lon) {
+        if (lon >= 0.0) return 'E';
         else return 'W';
     }
 
     public int getLongitudeDegrees() {
-        double lat = Math.abs(this.getLongitude());
-        return (int) Math.floor(lat);
+        double lon = Math.abs(this.getLongitude());
+        return (int) Math.floor(lon);
+    }
+
+    public static int getLongitudeDegrees(double lon) {
+        return (int) Math.floor(lon);
     }
 
     public int getLongitudeMinutes() {
-        double lat = Math.abs(this.getLongitude());
+        double lon = Math.abs(this.getLongitude());
         int deg = this.getLongitudeDegrees();
-        return (int) Math.round((lat - deg) * 60);
+        return (int) Math.round((lon - deg) * 60);
+    }
+
+    public static int getLongitudeMinutes(double lon) {
+        int deg = getLongitudeDegrees(lon);
+        return (int) Math.round((lon - deg) * 60);
     }
 
     public void setLongitude(double longitude) {
@@ -126,6 +148,10 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public String getCoordinates() {
         return this.getLatitudeString() + " " + this.getLongitudeString();
+    }
+
+    public static String getCoordinates(double lat, double lon) {
+        return getLatitudeString(lat) + " " + getLongitudeString(lon);
     }
 
     public LatLng getLatLng() {

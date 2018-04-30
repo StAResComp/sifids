@@ -9,13 +9,21 @@ import java.util.Date;
  * These should be any entities which can be modified by the user. Classes extending this should
  * call updateDates() at the end of setters and constructors.
  */
-public abstract class ChangeLoggingEntity {
+public abstract class ChangeLoggingEntity extends EntityWithId {
 
     @ColumnInfo(name = "created_at")
     private Date createdAt;
 
     @ColumnInfo(name = "modified_at")
     private Date modifiedAt;
+
+    @Override
+    public void setId(int id) {
+        if (this.getId() == 0) {
+            this.id = id;
+            this.updateDates();
+        }
+    }
 
     /**
      * The timestamp of the creation of the entity

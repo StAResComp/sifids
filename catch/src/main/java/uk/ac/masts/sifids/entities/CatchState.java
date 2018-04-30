@@ -12,12 +12,9 @@ import java.util.List;
  */
 
 @Entity(tableName = "catch_state")
-public class CatchState {
+public class CatchState extends EntityWithId {
 
     private static final String[] STATES = {"Alive", "Boiled", "Dried", "Fresh", "Frozen", "Salted", "Smoked"};
-
-    @PrimaryKey(autoGenerate = true)
-    public int id;
 
     public String name;
 
@@ -33,14 +30,6 @@ public class CatchState {
     }
 
     public CatchState() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

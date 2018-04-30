@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "port")
-public class Port {
+public class Port extends EntityWithId {
 
     private static final String[] PORTS = {
             "Aberdeen",
@@ -303,17 +303,7 @@ public class Port {
             "Yell, Fetlar & Unst"
     };
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
     public String name;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

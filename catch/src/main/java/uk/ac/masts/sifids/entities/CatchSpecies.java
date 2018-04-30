@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Entity(tableName = "catch_species")
-public class CatchSpecies {
+public class CatchSpecies extends EntityWithId {
 
     //Species from https://www.gov.uk/government/publications/buyers-and-sellers-of-first-sale-fish-and-submission-of-sales-notes/list-of-common-species-codes-for-fish-landed-in-the-united-kingdom
 //    private static final String[][] SPECIES = {
@@ -144,9 +144,6 @@ public class CatchSpecies {
             {"Witches", "WIT", null}
     };
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
     @ColumnInfo(name = "species_name")
     public String speciesName;
 
@@ -170,14 +167,6 @@ public class CatchSpecies {
     }
 
     public CatchSpecies(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getSpeciesName() {
         return speciesName;

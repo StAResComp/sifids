@@ -15,9 +15,6 @@ import java.util.Date;
 @Entity(tableName = "fish_1_form")
 public class Fish1Form extends ChangeLoggingEntity {
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
     @ColumnInfo(name = "fishery_office")
     public String fisheryOffice;
 
@@ -47,17 +44,6 @@ public class Fish1Form extends ChangeLoggingEntity {
 
     public Fish1Form() {
         this.updateDates();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        if (this.getId() == 0) {
-            this.id = id;
-            this.updateDates();
-        }
     }
 
     public String getFisheryOffice() {

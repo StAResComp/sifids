@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 @Entity(tableName = "gear")
-public class Gear {
+public class Gear extends EntityWithId {
 
     private static final String[] GEAR = {
             "Beam trawls",
@@ -50,9 +50,6 @@ public class Gear {
             "Trolling lines"
     };
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
-
     public String name;
 
     public boolean hasMeshSize;
@@ -69,14 +66,6 @@ public class Gear {
     }
 
     public Gear() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

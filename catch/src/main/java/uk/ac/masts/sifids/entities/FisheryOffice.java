@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "fishery_office")
-public class FisheryOffice {
+public class FisheryOffice extends EntityWithId {
 
     private static final String[][] OFFICES = {
             {"Anstruther", "28 Cunzie Street, ANSTRUTHER KY10 3DF, Tel: 0300 244 9100", "fo.anstruther@gov.scot"},
@@ -30,21 +30,11 @@ public class FisheryOffice {
             {"Ullapool", "West Shore Street, ULLAPOOL IV26 2UR, Tel: 01854 612704", "fo.ullapool@gov.scot"}
     };
 
-    @PrimaryKey(autoGenerate = true)
-    public int id;
     public String name;
     public String address;
     public String email;
 
-    public FisheryOffice() {};
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    public FisheryOffice() {}
 
     public String getName() {
         return name;
