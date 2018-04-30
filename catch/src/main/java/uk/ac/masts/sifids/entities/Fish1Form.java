@@ -64,110 +64,130 @@ public class Fish1Form extends ChangeLoggingEntity {
         return fisheryOffice;
     }
 
-    public void setFisheryOffice(String fisheryOffice) {
+    public boolean setFisheryOffice(String fisheryOffice) {
         if (!fisheryOffice.equals(this.getFisheryOffice())) {
             this.fisheryOffice = fisheryOffice;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public boolean setEmail(String email) {
         if (!email.equals(this.getEmail())) {
             this.email = email;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getPortOfDeparture() {
         return portOfDeparture;
     }
 
-    public void setPortOfDeparture(String portOfDeparture) {
+    public boolean setPortOfDeparture(String portOfDeparture) {
         if (portOfDeparture != null && !portOfDeparture.equals(this.getPortOfDeparture())) {
             this.portOfDeparture = portOfDeparture;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getPortOfLanding() {
         return portOfLanding;
     }
 
-    public void setPortOfLanding(String portOfLanding) {
+    public boolean setPortOfLanding(String portOfLanding) {
         if (portOfLanding != null && !portOfLanding.equals(this.getPortOfLanding())) {
             this.portOfLanding = portOfLanding;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getPln() {
         return pln;
     }
 
-    public void setPln(String pln) {
+    public boolean setPln(String pln) {
         if (!pln.equals(this.getPln())) {
             this.pln = pln;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getVesselName() {
         return vesselName;
     }
 
-    public void setVesselName(String vesselName) {
+    public boolean setVesselName(String vesselName) {
         if (!vesselName.equals(this.getVesselName())) {
             this.vesselName = vesselName;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getOwnerMaster() {
         return ownerMaster;
     }
 
-    public void setOwnerMaster(String ownerMaster) {
+    public boolean setOwnerMaster(String ownerMaster) {
         if (!ownerMaster.equals(this.getOwnerMaster())) {
             this.ownerMaster = ownerMaster;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public boolean setAddress(String address) {
         if (!address.equals(this.getAddress())) {
             this.address = address;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public int getTotalPotsFishing() {
         return totalPotsFishing;
     }
 
-    public void setTotalPotsFishing(int totalPotsFishing) {
+    public boolean setTotalPotsFishing(int totalPotsFishing) {
         if (totalPotsFishing != this.getTotalPotsFishing()) {
             this.totalPotsFishing = totalPotsFishing;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getCommentsAndBuyersInformation() {
         return commentsAndBuyersInformation;
     }
 
-    public void setCommentsAndBuyersInformation(String commentsAndBuyersInformation) {
+    public boolean setCommentsAndBuyersInformation(String commentsAndBuyersInformation) {
         if (!commentsAndBuyersInformation.equals(this.getCommentsAndBuyersInformation())) {
             this.commentsAndBuyersInformation = commentsAndBuyersInformation;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String toString() {

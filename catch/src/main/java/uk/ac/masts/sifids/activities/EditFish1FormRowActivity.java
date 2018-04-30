@@ -223,148 +223,46 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
             @Override
             public void onClick(View v) {
 
-                if (fish1FormRow == null) {
-                    if (fishingActivityDate != null
-                            || !latitude.getText().toString().equals("")
-                            || !longitude.getText().toString().equals("")
-                            || !icesArea.getText().toString().equals("")
-                            || !meshSize.getText().toString().equals("")
-                            || !weight.getText().toString().equals("")
-                            || !numberOfPotsHauled.getText().toString().equals("")
-                            || landingOrDiscardDate != null
-                            || !transporterRegEtc.getText().toString().equals("")) {
-                        if (formId != 0) {
-                            fish1FormRow = new Fish1FormRow();
-                            fish1FormRow.setFormId(formId);
-                            fish1FormRow.setFishingActivityDate(fishingActivityDate);
-                            double latitudeDbl;
-                            try {
-                                latitudeDbl = Double.parseDouble(latitude.getText().toString());
-                            } catch (Exception e) {
-                                latitudeDbl = 100;
+                boolean create = false;
+
+                if (fish1FormRow == null  && formId != 0) {
+                    create = true;
+                    fish1FormRow = new Fish1FormRow();
+                    fish1FormRow.setFormId(formId);
+                }
+                if (
+                        fish1FormRow.setFishingActivityDate(fishingActivityDate)
+                        || fish1FormRow.setLatitude(Double.parseDouble(latitude.getText().toString()))
+                        || fish1FormRow.setLongitude(Double.parseDouble(longitude.getText().toString()))
+                        || fish1FormRow.setIcesArea(icesArea.getText().toString())
+                        || fish1FormRow.setGearId(gearIdValue)
+                        || fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()))
+                        || fish1FormRow.setSpeciesId(speciesIdValue)
+                        || fish1FormRow.setStateId(stateIdValue)
+                        || fish1FormRow.setPresentationId(presentationIdValue)
+                        || fish1FormRow.setWeight(Double.parseDouble(weight.getText().toString()))
+                        || fish1FormRow.setDis(dis.isChecked())
+                        || fish1FormRow.setBms(bms.isChecked())
+                        || fish1FormRow.setNumberOfPotsHauled(Integer.parseInt(numberOfPotsHauled.getText().toString()))
+                        || fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate)
+                        ) {
+                    if (create) {
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.catchDao().insertFish1FormRows(fish1FormRow);
                             }
-                            fish1FormRow.setLatitude(latitudeDbl);
-                            double longitudeDbl;
-                            try {
-                                longitudeDbl = Double.parseDouble(longitude.getText().toString());
-                            } catch (Exception e) {
-                                longitudeDbl = 100;
-                            }
-                            fish1FormRow.setLongitude(longitudeDbl);
-                            fish1FormRow.setIcesArea(icesArea.getText().toString());
-                            fish1FormRow.setGearId(gearIdValue);
-                            int meshSizeInt;
-                            try {
-                                meshSizeInt = Integer.parseInt(meshSize.getText().toString());
-                            } catch (Exception e) {
-                                meshSizeInt = 0;
-                            }
-                            fish1FormRow.setMeshSize(meshSizeInt);
-                            fish1FormRow.setSpeciesId(speciesIdValue);
-                            fish1FormRow.setStateId(stateIdValue);
-                            fish1FormRow.setPresentationId(presentationIdValue);
-                            double weightDbl;
-                            try {
-                                weightDbl = Double.parseDouble(weight.getText().toString());
-                            } catch (Exception e) {
-                                weightDbl = 100;
-                            }
-                            fish1FormRow.setWeight(weightDbl);
-                            fish1FormRow.setDis(dis.isChecked());
-                            fish1FormRow.setBms(bms.isChecked());
-                            int numberOfPotsHauledInt;
-                            try {
-                                numberOfPotsHauledInt = Integer.parseInt(numberOfPotsHauled.getText().toString());
-                            } catch (Exception e) {
-                                numberOfPotsHauledInt = 0;
-                            }
-                            fish1FormRow.setNumberOfPotsHauled(numberOfPotsHauledInt);
-                            fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate);
-
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    db.catchDao().insertFish1FormRows(fish1FormRow);
-                                }
-                            });
-                        }
+                        });
                     }
-                } else {
-
-                    boolean changes = false;
-
-                    if (fishingActivityDate != null && !fishingActivityDate.equals(fish1FormRow.getFishingActivityDate())) {
-                        fish1FormRow.setFishingActivityDate(fishingActivityDate);
-                        changes = true;
-                    }
-                    if (Double.parseDouble(latitude.getText().toString()) != fish1FormRow.getLatitude()) {
-                        fish1FormRow.setLatitude(Double.parseDouble(latitude.getText().toString()));
-                        changes = true;
-                    }
-                    if (Double.parseDouble(longitude.getText().toString()) != fish1FormRow.getLongitude()) {
-                        fish1FormRow.setLongitude(Double.parseDouble(longitude.getText().toString()));
-                        changes = true;
-                    }
-                    if (!icesArea.getText().toString().equals(fish1FormRow.getIcesArea())) {
-                        fish1FormRow.setIcesArea(icesArea.getText().toString());
-                        changes = true;
-                    }
-                    if (gearIdValue != fish1FormRow.getGearId()) {
-                        fish1FormRow.setGearId(gearIdValue);
-                        changes = true;
-                    }
-                    if (Integer.parseInt(meshSize.getText().toString()) != fish1FormRow.getMeshSize()) {
-                        fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()));
-                        changes = true;
-                    }
-                    if (speciesIdValue != fish1FormRow.getSpeciesId()) {
-                        fish1FormRow.setSpeciesId(speciesIdValue);
-                        changes = true;
-                    }
-                    if (stateIdValue != fish1FormRow.getStateId()) {
-                        fish1FormRow.setSpeciesId(stateIdValue);
-                        changes = true;
-                    }
-                    if (presentationIdValue != fish1FormRow.getPresentationId()) {
-                        fish1FormRow.setSpeciesId(presentationIdValue);
-                        changes = true;
-                    }
-                    if (Double.parseDouble(weight.getText().toString()) != fish1FormRow.getWeight()) {
-                        fish1FormRow.setWeight(Double.parseDouble(weight.getText().toString()));
-                        changes = true;
-                    }
-                    if (dis.isChecked() != fish1FormRow.isDis()) {
-                        fish1FormRow.setDis(dis.isChecked());
-                        changes = true;
-                    }
-                    if (bms.isChecked() != fish1FormRow.isBms()) {
-                        fish1FormRow.setBms(bms.isChecked());
-                        changes = true;
-                    }
-                    if (Integer.parseInt(numberOfPotsHauled.getText().toString()) != fish1FormRow.getNumberOfPotsHauled()) {
-                        fish1FormRow.setNumberOfPotsHauled(Integer.parseInt(numberOfPotsHauled.getText().toString()));
-                        changes = true;
-                    }
-                    if (!transporterRegEtc.getText().toString().equals(fish1FormRow.getTransporterRegEtc())) {
-                        fish1FormRow.setTransporterRegEtc(transporterRegEtc.getText().toString());
-                        changes = true;
-                    }
-
-                    if (changes) {
-
-                        //save the item before leaving the activity
-
+                    else {
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
                                 db.catchDao().updateFish1FormRows(fish1FormRow);
                             }
                         });
-
                     }
-
                 }
-
                 Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
                 i.putExtra("id", EditFish1FormRowActivity.this.formId);
                 EditFish1FormRowActivity.this.startActivity(i);

@@ -120,187 +120,221 @@ public class Fish1FormRow extends ChangeLoggingEntity{
         return id;
     }
 
-    public void setId(int id) {
+    public boolean setId(int id) {
         if (this.getId() == 0) {
             this.id = id;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public int getFormId() {
         return formId;
     }
 
-    public void setFormId(int formId) {
+    public boolean setFormId(int formId) {
         if (formId != this.getFormId()) {
             this.formId = formId;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Date getFishingActivityDate() {
         return fishingActivityDate;
     }
 
-    public void setFishingActivityDate(Date fishingActivityDate) {
+    public boolean setFishingActivityDate(Date fishingActivityDate) {
         if (fishingActivityDate == null || !fishingActivityDate.equals(this.getFishingActivityDate())) {
             this.fishingActivityDate = fishingActivityDate;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public boolean setLatitude(double latitude) {
         if (latitude != this.getLatitude()) {
             this.latitude = latitude;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public boolean setLongitude(double longitude) {
         if (longitude != this.getLongitude()) {
             this.longitude = longitude;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getIcesArea() {
         return icesArea;
     }
 
-    public void setIcesArea(String icesArea) {
+    public boolean setIcesArea(String icesArea) {
         if (!icesArea.equals(this.getIcesArea())) {
             this.icesArea = icesArea;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Integer getGearId() {
         return gearId;
     }
 
-    public void setGearId(int gearId) {
+    public boolean setGearId(int gearId) {
         if (gearId != this.getGearId()) {
             this.gearId = gearId;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public int getMeshSize() {
         return meshSize;
     }
 
-    public void setMeshSize(int meshSize) {
+    public boolean setMeshSize(int meshSize) {
         if (meshSize != this.getMeshSize()) {
             this.meshSize = meshSize;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Integer getSpeciesId() {
         return speciesId;
     }
 
-    public void setSpeciesId(int speciesId) {
+    public boolean setSpeciesId(int speciesId) {
         if (speciesId != this.getSpeciesId()) {
             this.speciesId = speciesId;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Integer getStateId() {
         return stateId;
     }
 
-    public void setStateId(int stateId) {
+    public boolean setStateId(int stateId) {
         if (stateId != this.getStateId()) {
             this.stateId = stateId;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Integer getPresentationId() {
         return presentationId;
     }
 
-    public void setPresentationId(int presentationId) {
+    public boolean setPresentationId(int presentationId) {
         if (presentationId != this.getPresentationId()) {
             this.presentationId = presentationId;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public boolean setWeight(double weight) {
         if (weight != this.getWeight()) {
             this.weight = weight;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public boolean isDis() {
         return dis;
     }
 
-    public void setDis(boolean dis) {
+    public boolean setDis(boolean dis) {
         if (dis != this.isDis()) {
             this.dis = dis;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public boolean isBms() {
         return bms;
     }
 
-    public void setBms(boolean bms) {
+    public boolean setBms(boolean bms) {
         if (bms != this.isBms()) {
             this.bms = bms;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public int getNumberOfPotsHauled() {
         return numberOfPotsHauled;
     }
 
-    public void setNumberOfPotsHauled(int numberOfPotsHauled) {
+    public boolean setNumberOfPotsHauled(int numberOfPotsHauled) {
         if (numberOfPotsHauled != this.getNumberOfPotsHauled()) {
             this.numberOfPotsHauled = numberOfPotsHauled;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public Date getLandingOrDiscardDate() {
         return landingOrDiscardDate;
     }
 
-    public void setLandingOrDiscardDate(Date landingOrDiscardDate) {
+    public boolean setLandingOrDiscardDate(Date landingOrDiscardDate) {
         if (landingOrDiscardDate == null || !landingOrDiscardDate.equals(this.getLandingOrDiscardDate())) {
             this.landingOrDiscardDate = landingOrDiscardDate;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String getTransporterRegEtc() {
         return transporterRegEtc;
     }
 
-    public void setTransporterRegEtc(String transporterRegEtc) {
+    public boolean setTransporterRegEtc(String transporterRegEtc) {
         if (!transporterRegEtc.equals(this.getTransporterRegEtc())) {
             this.transporterRegEtc = transporterRegEtc;
             this.updateDates();
+            return true;
         }
+        return false;
     }
 
     public String toString() {
