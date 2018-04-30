@@ -27,7 +27,7 @@ import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.services.CatchLocationService;
 
-public class Fish1FormsActivity extends AppCompatActivity {
+public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
     FloatingActionButton fab;
     public static RecyclerView recyclerView;
@@ -108,35 +108,6 @@ public class Fish1FormsActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.activity_catch:
-                intent = new Intent(this, Fish1FormsActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.activity_map:
-                intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void startTrackingLocation(View v) {

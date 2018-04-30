@@ -13,7 +13,7 @@ import java.util.Date;
  */
 
 @Entity(tableName = "fish_1_form")
-public class Fish1Form {
+public class Fish1Form extends ChangeLoggingEntity {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -44,12 +44,6 @@ public class Fish1Form {
 
     @ColumnInfo(name = "comments_and_buyers_information")
     public String commentsAndBuyersInformation;
-
-    @ColumnInfo(name = "created_at")
-    public Date createdAt;
-
-    @ColumnInfo(name = "modified_at")
-    public Date modifiedAt;
 
     public Fish1Form() {
         this.updateDates();
@@ -174,29 +168,6 @@ public class Fish1Form {
             this.commentsAndBuyersInformation = commentsAndBuyersInformation;
             this.updateDates();
         }
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    private void updateDates() {
-        if (this.getCreatedAt() == null) {
-            this.setCreatedAt(new Date());
-        }
-        this.setModifiedAt(new Date());
     }
 
     public String toString() {

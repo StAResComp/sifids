@@ -55,7 +55,7 @@ import android.text.format.DateFormat;
                 @Index(value = "presentation_id", name = "form_row_presentation_id"),
         }
 )
-public class Fish1FormRow {
+public class Fish1FormRow extends ChangeLoggingEntity{
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -102,12 +102,6 @@ public class Fish1FormRow {
 
     @ColumnInfo(name = "transporter_reg_etc")
     public String transporterRegEtc;
-
-    @ColumnInfo(name = "created_at")
-    public Date createdAt;
-
-    @ColumnInfo(name = "modified_at")
-    public Date modifiedAt;
 
     public Fish1FormRow () {
         this.updateDates();
@@ -307,29 +301,6 @@ public class Fish1FormRow {
             this.transporterRegEtc = transporterRegEtc;
             this.updateDates();
         }
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    private void updateDates() {
-        if (this.getCreatedAt() == null) {
-            this.setCreatedAt(new Date());
-        }
-        this.setModifiedAt(new Date());
     }
 
     public String toString() {

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Entity(tableName = "location")
-public class CatchLocation {
+public class CatchLocation extends ChangeLoggingEntity {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -27,12 +27,6 @@ public class CatchLocation {
     public Date timestamp;
 
     public boolean fishing;
-
-    @ColumnInfo(name = "created_at")
-    public Date createdAt;
-
-    @ColumnInfo(name = "modified_at")
-    public Date modifiedAt;
 
     public final static int LOWER_LAT = 0;
     public final static int UPPER_LAT = 1;
@@ -158,29 +152,6 @@ public class CatchLocation {
             this.fishing = fishing;
             this.updateDates();
         }
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    private void updateDates() {
-        if (this.getCreatedAt() == null) {
-            this.setCreatedAt(new Date());
-        }
-        this.setModifiedAt(new Date());
     }
 
     public String getIcesRectangle() {
