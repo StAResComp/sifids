@@ -1,10 +1,14 @@
 package uk.ac.masts.sifids.activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +39,8 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     List<Fish1Form> forms;
     CatchDatabase db;
     Calendar selectedWeekStart;
+
+    final static int PERMISSION_REQUEST_FINE_LOCATION = 568;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +117,19 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     }
 
     public void startTrackingLocation(View v) {
-        startService(new Intent(this, CatchLocationService.class));
+        if (
+                ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_REQUEST_FINE_LOCATION);
+        }
+        else {
+            startLocationService();
+        }
     }
 
     public void stopTrackingLocation(View v) {
@@ -125,5 +143,20 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
     public void stopFishing(View v) {
         ((CatchApplication) this.getApplication()).setFishing(false);
+    }
+
+    private void startLocationService() {
+        startService(new Intent(this, CatchLocationService.class));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (
+                requestCode == PERMISSION_REQUEST_FINE_LOCATION
+                        && grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startLocationService();
+        }
     }
 }

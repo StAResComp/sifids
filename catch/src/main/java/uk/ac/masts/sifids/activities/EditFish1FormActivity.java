@@ -1,13 +1,17 @@
 package uk.ac.masts.sifids.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,6 +82,8 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     List<Fish1FormRow> formRows;
     public static RecyclerView recyclerView;
     public static RecyclerView.Adapter adapter;
+
+    final static int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 6954;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,14 +284,30 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "pgm5@st-andrews.ac.uk", null));
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "FISH1 Form");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find FISH1 Form attached.");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"pgm5@st-andrews.ac.uk"});
-                emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + createFileToSend().getAbsoluteFile()));
-                startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                if (
+                        ContextCompat.checkSelfPermission(
+                                EditFish1FormActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            EditFish1FormActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
+                }
+                else {
+                    createAndEmailFile();
+                }
             }
         });
+    }
+
+    private void createAndEmailFile() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "pgm5@st-andrews.ac.uk", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "FISH1 Form");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find FISH1 Form attached.");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"pgm5@st-andrews.ac.uk"});
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + createFileToSend().getAbsoluteFile()));
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void saveForm() {
@@ -442,6 +464,17 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             e.printStackTrace();
         }
         return file;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (
+                requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE
+                        && grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            createAndEmailFile();
+        }
     }
 
 }

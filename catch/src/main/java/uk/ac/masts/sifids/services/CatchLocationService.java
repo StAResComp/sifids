@@ -176,8 +176,11 @@ public class CatchLocationService extends Service {
 		super.onDestroy();
 		if (mLocationManager != null) {
             try {
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (
+                        ActivityCompat.checkSelfPermission(
+                                this,
+                                android.Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 mLocationManager.removeUpdates(mLocationListener);
@@ -189,7 +192,8 @@ public class CatchLocationService extends Service {
 	private void initializeLocationManager() {
 		if (mLocationManager == null) {
 			mLocationManager =
-                    (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+                    (LocationManager) getApplicationContext()
+                            .getSystemService(Context.LOCATION_SERVICE);
 		}
 	}
 }
