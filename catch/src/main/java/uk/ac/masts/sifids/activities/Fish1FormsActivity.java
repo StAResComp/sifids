@@ -111,7 +111,6 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                             selectedWeekStart.add(Calendar.DATE, 7);
                             i.putExtra("end_date", selectedWeekStart.getTime());
                             startActivity(i);
-                            finish();
                         }
                         else {
                             DatePickerDialog picker = new DatePickerDialog(
@@ -127,7 +126,6 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                                             chosenDate.add(Calendar.DATE, 7);
                                             i.putExtra("end_date", chosenDate.getTime());
                                             startActivity(i);
-                                            finish();
                                         }
                                     },
                                     sundayPreviousToMostRecent.get(Calendar.YEAR),

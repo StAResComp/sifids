@@ -265,7 +265,6 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 Intent i = new Intent(EditFish1FormActivity.this, EditFish1FormRowActivity.class);
                 i.putExtra("form_id", fish1Form.getId());
                 startActivity(i);
-                finish();
             }
         });
 
@@ -275,7 +274,6 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 saveForm();
                 Intent i = new Intent(EditFish1FormActivity.this, Fish1FormsActivity.class);
                 startActivity(i);
-                finish();
             }
         });
     }
