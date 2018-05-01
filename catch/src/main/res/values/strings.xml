@@ -10,12 +10,7 @@
     <!-- Strings related to Settings -->
 
     <string name="pref_header_fishery_office_details">Fishery Office Details</string>
-    <string name="pref_fishery_office_name_title">Fishery Office Name</string>
-    <string name="pref_fishery_office_address_title">Fishery Office Address</string>
-    <string name="pref_fishery_office_email_title">Fishery Office Email</string>
-    <string name="pref_fishery_office_name_default">Buckie</string>
-    <string name="pref_fishery_office_address_default">Suites 3-5, Douglas Centre, March Road, BUCKIE AB56 4BT</string>
-    <string name="pref_fishery_office_email_default">fo.buckie@gov.scot</string>
+    <string name="pref_fishery_office_title">Fishery Office</string>
 
     <string name="pref_header_vessel_details">Vessel Details</string>
     <string name="pref_vessel_pln_title">Vessel PLN</string>
@@ -26,12 +21,7 @@
     <string name="pref_owner_master_address_title">Owner/Master Address</string>
 
     <string name="pref_header_port_details">Usual Ports</string>
-    <string name="pref_port_1_title">Port 1</string>
-    <string name="pref_port_2_title">Port 2</string>
-    <string name="pref_port_3_title">Port 3</string>
-    <string name="pref_port_4_title">Port 4</string>
-    <string name="pref_port_5_title">Port 5</string>
-    <string name="pref_port_6_title">Port 6</string>
+    <string name="pref_port_title">Ports</string>
 
     <string name="pref_header_gear_details">Gear Details</string>
     <string name="pref_gear_title">Gear</string>

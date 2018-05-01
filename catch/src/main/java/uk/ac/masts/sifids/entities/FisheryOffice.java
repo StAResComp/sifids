@@ -72,4 +72,8 @@ public class FisheryOffice extends EntityWithId {
         this.setAddress(fisheryOfficeDetails[1]);
         this.setEmail(fisheryOfficeDetails[2]);
     }
+
+    public String toString() {
+        return this.getName();
+    }
 }

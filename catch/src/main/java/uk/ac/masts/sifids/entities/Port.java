@@ -322,4 +322,8 @@ public class Port extends EntityWithId {
         }
         return portObjects;
     }
+
+    public String toString() {
+        return this.getName();
+    }
 }
