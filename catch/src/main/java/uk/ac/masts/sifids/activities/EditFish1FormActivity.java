@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,9 @@ import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
+import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
+import uk.ac.masts.sifids.entities.Port;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -71,6 +74,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     Button saveButton;
     Button addRowButton;
 
+    List<String> ports;
     String portOfDepartureValue;
     String portOfLandingValue;
     ArrayAdapter<CharSequence> portOfDepartureAdapter;
@@ -129,6 +133,27 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
+                        FisheryOffice fisheryOfficeObject =
+                                db.catchDao()
+                                        .getOffice(
+                                                Integer.parseInt(
+                                                        prefs.getString(
+                                                                "pref_fishery_office",
+                                                                ""
+                                                        )
+                                                )
+                                        );
+                        if (fisheryOfficeObject != null) {
+                            fish1Form.setFisheryOffice(
+                                    fisheryOfficeObject.getName() + " (" + fisheryOfficeObject.getAddress() + ")"
+                            );
+                            fish1Form.setEmail(fisheryOfficeObject.getEmail());
+                        }
+                        fish1Form.setPln(prefs.getString("pref_vessel_pln", ""));
+                        fish1Form.setVesselName(prefs.getString("pref_vessel_name", ""));
+                        fish1Form.setOwnerMaster(prefs.getString("pref_owner_master_name", ""));
+                        fish1Form.setAddress(prefs.getString("pref_owner_master_address", ""));
+                        fish1Form.setTotalPotsFishing(Integer.parseInt(prefs.getString("pref_total_pots_fishing", "0")));
                         long[] ids = db.catchDao().insertFish1Forms(fish1Form);
                         fish1Form = db.catchDao().getForm((int) ids[0]);
                         Calendar start = Calendar.getInstance();
@@ -182,10 +207,18 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
         totalPotsFishing = (EditText) findViewById(R.id.total_pots_fishing);
         comment = (EditText) findViewById(R.id.comment);
 
-        ArrayList<String> ports = new ArrayList();
-        for (int i = 1; i <= 6; i++) {
-            String port = prefs.getString("pref_port_"+i,"");
-            if (port != null && port != "") ports.add(port);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                ports = db.catchDao().getPortNames(prefs.getStringSet("pref_port", new HashSet<String>()));
+            }
+        };
+        Thread newThread = new Thread(r);
+        newThread.start();
+        try {
+            newThread.join();
+        } catch (InterruptedException ie) {
+
         }
 
         portOfDepartureAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, ports);
@@ -221,15 +254,6 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             totalPotsFishing.setText(Integer.toString(fish1Form.getTotalPotsFishing()));
             portOfDeparture.setSelection(portOfDepartureAdapter.getPosition(fish1Form.getPortOfDeparture()));
             portOfLanding.setSelection(portOfLandingAdapter.getPosition(fish1Form.getPortOfDeparture()));
-        }
-        else {
-            fisheryOffice.setText(prefs.getString("pref_fishery_office_name", "") + " ("+ prefs.getString("pref_fishery_office_address", "") +")");
-            fisheryOfficeEmail.setText(prefs.getString("pref_fishery_office_email", ""));
-            pln.setText(prefs.getString("pref_vessel_pln", ""));
-            vesselName.setText(prefs.getString("pref_vessel_name", ""));
-            ownerMaster.setText(prefs.getString("pref_owner_master_name", ""));
-            address.setText(prefs.getString("pref_owner_master_address", ""));
-            totalPotsFishing.setText(prefs.getString("pref_total_pots_fishing", ""));
         }
     }
 

@@ -9,6 +9,7 @@ import android.util.SparseArray;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
@@ -93,8 +94,14 @@ public interface CatchDao {
     @Query("SELECT * FROM port")
     public List<Port> getPorts();
 
+    @Query("SELECT name FROM port WHERE id IN(:ids)")
+    public List<String> getPortNames(Set<String> ids);
+
     @Query("SELECT * FROM fishery_office")
     public List<FisheryOffice> getOffices();
+
+    @Query("SELECT * FROM fishery_office WHERE id = :id")
+    public FisheryOffice getOffice(Integer id);
 
     @Query("SELECT * FROM gear WHERE id = :id")
     public Gear getGearById(Integer id);
