@@ -197,21 +197,15 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
             dis.setChecked(fish1FormRow.isDis());
             bms.setChecked(fish1FormRow.isBms());
             numberOfPotsHauled.setText(Integer.toString(fish1FormRow.getNumberOfPotsHauled()));
-        }
-        if (fish1FormRow != null) {
             for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
                 if (fish1FormRow.getGearId() != null && ((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == fish1FormRow.getGearId())
                     spinners.get(GEAR_KEY).setSelection(i);
             }
+            meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
         }
         else {
-            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
-                if (((Gear) adapters.get(GEAR_KEY).getItem(i)).getId() == Integer.parseInt(prefs.getString("pref_gear", "")));
-                    spinners.get(GEAR_KEY).setSelection(i);
-            }
+            meshSize.setText(prefs.getString("pref_mesh_size", ""));
         }
-        if (fish1FormRow != null) meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
-        else meshSize.setText(prefs.getString("pref_mesh_size", ""));
         if (fish1FormRow != null && fish1FormRow.getIcesArea() != null && !fish1FormRow.getIcesArea().equals(""))
             icesArea.setText(fish1FormRow.getIcesArea());
         if (fish1FormRow != null && fish1FormRow.getLandingOrDiscardDate() != null) {
