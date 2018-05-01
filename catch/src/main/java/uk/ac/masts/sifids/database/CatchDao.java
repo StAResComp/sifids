@@ -90,6 +90,12 @@ public interface CatchDao {
     @Query("SELECT * FROM catch_presentation")
     public List<CatchPresentation> getPresentations();
 
+    @Query("SELECT * FROM port")
+    public List<Port> getPorts();
+
+    @Query("SELECT * FROM fishery_office")
+    public List<FisheryOffice> getOffices();
+
     @Query("SELECT * FROM gear WHERE id = :id")
     public Gear getGearById(Integer id);
 
