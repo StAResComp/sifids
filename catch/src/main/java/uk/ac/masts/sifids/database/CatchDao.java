@@ -91,16 +91,16 @@ public interface CatchDao {
     public List<CatchPresentation> getPresentations();
 
     @Query("SELECT * FROM gear WHERE id = :id")
-    public Gear getGearById(int id);
+    public Gear getGearById(Integer id);
 
     @Query("SELECT * FROM catch_species WHERE id = :id")
-    public CatchSpecies getSpeciesById(int id);
+    public CatchSpecies getSpeciesById(Integer id);
 
     @Query("SELECT * FROM catch_state WHERE id = :id")
-    public CatchState getStateById(int id);
+    public CatchState getStateById(Integer id);
 
     @Query("SELECT * FROM catch_presentation WHERE id = :id")
-    public CatchPresentation getPresentationById(int id);
+    public CatchPresentation getPresentationById(Integer id);
 
     @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
     public List<CatchLocation> getLastLocations(int limit);
