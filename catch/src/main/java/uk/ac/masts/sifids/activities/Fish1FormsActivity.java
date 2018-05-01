@@ -1,6 +1,7 @@
 package uk.ac.masts.sifids.activities;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -108,9 +110,31 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                             i.putExtra("start_date", selectedWeekStart.getTime());
                             selectedWeekStart.add(Calendar.DATE, 7);
                             i.putExtra("end_date", selectedWeekStart.getTime());
-                            //create bundle here...
                             startActivity(i);
                             finish();
+                        }
+                        else {
+                            DatePickerDialog picker = new DatePickerDialog(
+                                    Fish1FormsActivity.this,
+                                    new DatePickerDialog.OnDateSetListener() {
+                                        @Override
+                                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                            Calendar chosenDate = Calendar.getInstance();
+                                            chosenDate.set(year, month, dayOfMonth, 0, 0);
+                                            chosenDate.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+                                            Intent i = new Intent(Fish1FormsActivity.this,EditFish1FormActivity.class);
+                                            i.putExtra("start_date", chosenDate.getTime());
+                                            chosenDate.add(Calendar.DATE, 7);
+                                            i.putExtra("end_date", chosenDate.getTime());
+                                            startActivity(i);
+                                            finish();
+                                        }
+                                    },
+                                    sundayPreviousToMostRecent.get(Calendar.YEAR),
+                                    sundayPreviousToMostRecent.get(Calendar.MONTH),
+                                    sundayPreviousToMostRecent.get(Calendar.DAY_OF_MONTH)
+                            );
+                            picker.show();
                         }
                     }
                 });

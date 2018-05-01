@@ -46,9 +46,9 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
             @Override
             public void run() {
                 Date lowerDate = db.catchDao().getDateOfEarliestRow(form.getId());
-                lowerCal.setTime(lowerDate);
+                if (lowerDate != null) lowerCal.setTime(lowerDate);
                 Date upperDate = db.catchDao().getDateOfLatestRow(form.getId());
-                upperCal.setTime(upperDate);
+                if (upperDate != null) upperCal.setTime(upperDate);
             }
         };
         Thread newThread= new Thread(r);
