@@ -85,6 +85,9 @@ public interface CatchDao {
     @Query("SELECT * FROM gear")
     public List<Gear> getGear();
 
+    @Query("SELECT * FROM gear WHERE id IN(:ids)")
+    public List<Gear> getGear(Set<String> ids);
+
     @Query("SELECT * FROM catch_state")
     public List<CatchState> getStates();
 

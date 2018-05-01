@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,7 @@ import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
+import uk.ac.masts.sifids.entities.EntityWithId;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.Gear;
 
@@ -83,6 +86,8 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
     final String STATE_KEY = "state";
     final String PRESENTATION_KEY = "presentation";
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +96,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
 
         db = CatchDatabase.getInstance(getApplicationContext());
 
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         this.processIntent();
 
@@ -284,8 +289,12 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         Runnable r = new Runnable(){
             @Override
             public void run() {
-                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.GEAR_KEY, EditFish1FormRowActivity.this.db.catchDao().getGear());
-                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.SPECIES_KEY, EditFish1FormRowActivity.this.db.catchDao().getSpecies());
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.GEAR_KEY, EditFish1FormRowActivity.this.db.catchDao().getGear(prefs.getStringSet("pref_gear", new HashSet<String>())));
+                List speciesList = EditFish1FormRowActivity.this.db.catchDao().getSpecies();
+                for (String idString : prefs.getStringSet("pref_species", new HashSet<String>())) {
+                    speciesList = EditFish1FormRowActivity.rearrangeList(speciesList, Integer.parseInt(idString));
+                }
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.SPECIES_KEY, speciesList);
                 EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.STATE_KEY, EditFish1FormRowActivity.this.db.catchDao().getStates());
                 EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.PRESENTATION_KEY, EditFish1FormRowActivity.this.db.catchDao().getPresentations());
             }
@@ -299,6 +308,19 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         catch (InterruptedException ie) {
 
         }
+    }
+
+    private static List<EntityWithId> rearrangeList(List<EntityWithId> list, int id) {
+        Iterator<EntityWithId> it = list.iterator();
+        while (it.hasNext()) {
+            EntityWithId item = it.next();
+            if (item.getId() == id) {
+                it.remove();
+                list.add(0, item);
+                return list;
+            }
+        }
+        return list;
     }
 
     private void createSpinner(String mapKey, int widgetId) {
