@@ -14,6 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import uk.ac.masts.sifids.R;
@@ -48,7 +49,12 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
         Runnable r = new Runnable(){
             @Override
             public void run() {
-                points = db.catchDao().getLastLocations(100);
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+                cal.set(Calendar.HOUR_OF_DAY,0);
+                cal.set(Calendar.MINUTE,0);
+                cal.set(Calendar.SECOND,0);
+                points = db.catchDao().getLocationsSince(cal.getTime());
             }
         };
 

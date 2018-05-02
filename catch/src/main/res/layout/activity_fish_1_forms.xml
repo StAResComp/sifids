@@ -34,7 +34,7 @@
             <Button
                 android:id="@+id/start_tracking_location"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="startTrackingLocation"
                 android:text="Start Tracking Location" />
@@ -42,7 +42,7 @@
             <Button
                 android:id="@+id/stop_tracking_location"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="stopTrackingLocation"
                 android:text="Stop Tracking Location" />
@@ -59,7 +59,7 @@
             <Button
                 android:id="@+id/start_fishing"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="startFishing"
                 android:text="Start Fishing" />
@@ -67,7 +67,7 @@
             <Button
                 android:id="@+id/stop_fishing"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="stopFishing"
                 android:text="Stop Fishing" />

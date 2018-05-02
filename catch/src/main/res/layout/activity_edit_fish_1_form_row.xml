@@ -330,9 +330,17 @@
 
                     <Button
                         android:id="@+id/save_form_row_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Save" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.33"
+                        android:text="Save Form Row" />
+
+                    <Button
+                        android:id="@+id/delete_form_row_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.33"
+                        android:text="Delete Form Row" />
 
                 </LinearLayout>
 

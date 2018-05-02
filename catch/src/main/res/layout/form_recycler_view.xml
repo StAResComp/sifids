@@ -17,21 +17,25 @@
             android:layout_gravity="left"
             android:id="@+id/label"
             android:text="asfs"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"/>
 
         <Button
             android:id="@+id/btn_edit_form"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.25"
             android:text="Edit" />
+
+        <Button
+            android:id="@+id/btn_delete_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="Delete" />
 
     </LinearLayout>
 

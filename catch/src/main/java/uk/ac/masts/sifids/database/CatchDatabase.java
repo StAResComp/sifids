@@ -41,7 +41,7 @@ import uk.ac.masts.sifids.entities.Port;
                 FisheryOffice.class,
                 Port.class
     },
-        version = 8
+        version = 9
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{

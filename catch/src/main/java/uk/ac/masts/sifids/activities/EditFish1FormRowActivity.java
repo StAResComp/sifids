@@ -1,21 +1,16 @@
 package uk.ac.masts.sifids.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -26,7 +21,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +76,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
     Date landingOrDiscardDate;
     EditText transporterRegEtc;
     Button saveButton;
+    Button deleteButton;
 
     Map<String,Spinner> spinners;
     Map<String,Adapter> adapters;
@@ -177,10 +172,11 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         transporterRegEtc = (EditText) findViewById(R.id.transporter_reg_etc);
 
         saveButton = (Button) findViewById(R.id.save_form_row_button);
+        deleteButton = (Button) findViewById(R.id.delete_form_row_button);
 
         this.applyExistingValues();
 
-        this.setSaveListener();
+        this.setListeners();
     }
 
     private void applyExistingValues() {
@@ -242,7 +238,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
             icesArea.setText(fish1FormRow.getTransporterRegEtc());
     }
 
-    private void setSaveListener() {
+    private void setListeners() {
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,6 +301,62 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
                 EditFish1FormRowActivity.this.startActivity(i);
             }
         });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteFormRow();
+            }
+        });
+    }
+
+    private void deleteFormRow() {
+
+        if (fish1FormRow != null) {
+            this.confirmDialog();
+        }
+        else {
+            Intent i = new Intent(this, EditFish1FormActivity.class);
+            i.putExtra("id", EditFish1FormRowActivity.this.formId);
+            this.finish();
+            this.startActivity(i);
+        }
+    }
+
+    private void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setMessage("Are you sure you want to delete this row?")
+                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                db.catchDao().deleteFish1FormRow(fish1FormRow.getId());
+                            }
+                        };
+                        Thread newThread= new Thread(r);
+                        newThread.start();
+                        try {
+                            newThread.join();
+                        }
+                        catch (InterruptedException ie) {
+
+                        }
+                        Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
+                        i.putExtra("id", EditFish1FormRowActivity.this.formId);
+                        EditFish1FormRowActivity.this.finish();
+                        EditFish1FormRowActivity.this.startActivity(i);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void updateDateDisplay(Date date, TextView display, String prefix) {

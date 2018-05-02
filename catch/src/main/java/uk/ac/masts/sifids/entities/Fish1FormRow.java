@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.text.format.DateFormat;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 /**
  * Created by pgm5 on 19/02/2018.
  */
@@ -24,7 +27,8 @@ import android.text.format.DateFormat;
         @ForeignKey(
                 entity = Fish1Form.class,
                 parentColumns = "id",
-                childColumns = "form_id"
+                childColumns = "form_id",
+                onDelete = CASCADE
         ),
         @ForeignKey(
                 entity = Gear.class,

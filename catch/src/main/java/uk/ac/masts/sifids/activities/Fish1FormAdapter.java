@@ -1,5 +1,8 @@
 package uk.ac.masts.sifids.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,8 +62,9 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
         catch (InterruptedException ie) {
 
         }
-        holder.createdAt.setText(form.getPln() + " " + new SimpleDateFormat("dd MMM yyyy").format(lowerCal.getTime()) + " - " + new SimpleDateFormat("dd MMM yyyy").format(upperCal.getTime()));
-        holder.button.setTag(R.id.form_to_edit, Integer.valueOf(forms.get(position).getId()));
+        holder.createdAt.setText(form.getPln() + "\n" + new SimpleDateFormat("dd MMM yyyy").format(lowerCal.getTime()) + " -\n" + new SimpleDateFormat("dd MMM yyyy").format(upperCal.getTime()));
+        holder.editButton.setTag(R.id.form_in_question, Integer.valueOf(forms.get(position).getId()));
+        holder.deleteButton.setTag(R.id.form_in_question, Integer.valueOf(forms.get(position).getId()));
     }
 
     @Override
@@ -70,20 +74,64 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView createdAt;
-        public Button button;
+        public Button editButton;
+        public Button deleteButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
             createdAt = itemView.findViewById(R.id.label);
-            button = (Button) itemView.findViewById(R.id.btn_edit_form);
-            button.setOnClickListener(this);
+            editButton = (Button) itemView.findViewById(R.id.btn_edit_form);
+            editButton.setOnClickListener(this);
+            deleteButton = (Button) itemView.findViewById(R.id.btn_delete_form);
+            deleteButton.setOnClickListener(this);
         }
 
         public void onClick(View view) {
-            Intent i = new Intent(view.getContext(), EditFish1FormActivity.class);
-            int id = (Integer) view.getTag(R.id.form_to_edit);
-            i.putExtra("id", id);
-            view.getContext().startActivity(i);
+            if (view.getId() == R.id.btn_edit_form) {
+                Intent i = new Intent(view.getContext(), EditFish1FormActivity.class);
+                int id = (Integer) view.getTag(R.id.form_in_question);
+                i.putExtra("id", id);
+                view.getContext().startActivity(i);
+            }
+            else if (view.getId() == R.id.btn_delete_form) {
+                this.confirmDialog(view);
+            }
+        }
+
+        private void confirmDialog(final View view) {
+            final int formId = (Integer) view.getTag(R.id.form_in_question);
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder
+                    .setMessage("Are you sure you want to delete this form?")
+                    .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    db.catchDao().deleteFish1Form(formId);
+                                }
+                            };
+                            Thread newThread= new Thread(r);
+                            newThread.start();
+                            try {
+                                newThread.join();
+                            }
+                            catch (InterruptedException ie) {
+
+                            }
+                            Activity activity = (Activity) view.getContext();
+                            activity.finish();
+                            activity.startActivity(activity.getIntent());
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
         }
     }
 }

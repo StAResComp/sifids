@@ -1,6 +1,7 @@
 package uk.ac.masts.sifids.database;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -121,6 +122,9 @@ public interface CatchDao {
     @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
     public List<CatchLocation> getLastLocations(int limit);
 
+    @Query("SELECT * FROM location WHERE timestamp >= :start ORDER BY timestamp DESC")
+    public List<CatchLocation> getLocationsSince(Date start);
+
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
 
@@ -144,5 +148,11 @@ public interface CatchDao {
 
     @Update
     public void updateFish1FormRows(Fish1FormRow... forms);
+
+    @Query("DELETE FROM fish_1_form WHERE id = :id")
+    public void deleteFish1Form(int id);
+
+    @Query("DELETE FROM fish_1_form_row WHERE id = :id")
+    public void deleteFish1FormRow(int id);
 
 }

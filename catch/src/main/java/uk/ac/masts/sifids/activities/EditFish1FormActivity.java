@@ -1,6 +1,9 @@
 package uk.ac.masts.sifids.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -73,6 +76,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     Spinner portOfLanding;
     Button saveButton;
     Button addRowButton;
+    Button deleteButton;
 
     List<String> ports;
     String portOfDepartureValue;
@@ -237,6 +241,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
 
         saveButton = (Button) findViewById(R.id.save_form_button);
         addRowButton = (Button) findViewById(R.id.add_row_button);
+        deleteButton = (Button) findViewById(R.id.delete_form_button);
 
         this.applyExistingValues();
 
@@ -276,6 +281,15 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 startActivity(i);
             }
         });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteForm();
+            }
+        });
+
+
     }
 
     private void doRows() {
@@ -368,6 +382,53 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 });
             }
         }
+    }
+
+    private void deleteForm() {
+
+        if (fish1Form != null) {
+            this.confirmDialog();
+        }
+        else {
+            Intent i = new Intent(this, Fish1FormsActivity.class);
+            this.finish();
+            this.startActivity(i);
+        }
+    }
+
+    private void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setMessage("Are you sure you want to delete this form?")
+                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Runnable r = new Runnable() {
+                            @Override
+                            public void run() {
+                                db.catchDao().deleteFish1Form(fish1Form.getId());
+                            }
+                        };
+                        Thread newThread= new Thread(r);
+                        newThread.start();
+                        try {
+                            newThread.join();
+                        }
+                        catch (InterruptedException ie) {
+
+                        }
+                        Intent i = new Intent(EditFish1FormActivity.this, Fish1FormsActivity.class);
+                        EditFish1FormActivity.this.finish();
+                        EditFish1FormActivity.this.startActivity(i);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
