@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="uk.ac.masts.sifids.activities.Fish1FormsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="uk.ac.masts.sifids.activities.Fish1FormsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -24,47 +24,61 @@ tools:context="uk.ac.masts.sifids.activities.Fish1FormsActivity">
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/start_tracking_location"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_centerHorizontal="true"
-            android:text="Start Tracking Location"
-            android:onClick="startTrackingLocation" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="60dp" >
 
-        <Button
-            android:id="@+id/stop_tracking_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:layout_centerHorizontal="true"
-            android:text="Stop Tracking Location"
-            android:onClick="stopTrackingLocation" />
+            <Button
+                android:id="@+id/start_tracking_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:onClick="startTrackingLocation"
+                android:text="Start Tracking Location" />
 
-        <Button
-            android:id="@+id/start_fishing"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
-            android:layout_centerHorizontal="true"
-            android:text="Start Fishing"
-            android:onClick="startFishing" />
+            <Button
+                android:id="@+id/stop_tracking_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:onClick="stopTrackingLocation"
+                android:text="Stop Tracking Location" />
 
-        <Button
-            android:id="@+id/stop_fishing"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="240dp"
-            android:layout_centerHorizontal="true"
-            android:text="Stop Fishing"
-            android:onClick="stopFishing" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="120dp" >
+
+            <Button
+                android:id="@+id/start_fishing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:onClick="startFishing"
+                android:text="Start Fishing" />
+
+            <Button
+                android:id="@+id/stop_fishing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".50"
+                android:onClick="stopFishing"
+                android:text="Stop Fishing" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/form_recycler_view"
-            android:layout_marginTop="300dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="180dp">
 
         </android.support.v7.widget.RecyclerView>
 

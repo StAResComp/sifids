@@ -1,267 +1,344 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content" >
-<ScrollView android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="24dp"
-        tools:context="uk.ac.masts.sifids.activities.EditFish1FormRowActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            tools:context="uk.ac.masts.sifids.activities.EditFish1FormRowActivity">
 
-            <TextView
-                android:id="@+id/fishing_activity_date"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Fishing Activity Date"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/fishing_activity_date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select Fishing Activity Date"
-                android:onClick="showFishingActivityDatePickerDialog" />
-
-        <LinearLayout
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33" >
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/latitude_degrees"
-                    android:hint="Latitude Degrees"
-                    android:inputType="number"
+                <TextView
+                    android:id="@+id/fishing_activity_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="Fishing Activity Date" />
 
-            </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/fishing_activity_date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="showFishingActivityDatePickerDialog"
+                    android:text="Select Fishing Activity Date" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33" >
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/latitude_minutes"
-                    android:hint="Latitude Minutes"
-                    android:inputType="number"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33">
 
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/latitude_direction"
-                android:prompt="@string/latitude_direction"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33"/>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/latitude_degrees"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude Deg"
+                            android:inputType="number" />
 
-        </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33" >
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/latitude_minutes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude Min"
+                            android:inputType="number" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/longitude_degrees"
-                    android:hint="Longitude Degrees"
-                    android:inputType="number"
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/latitude_direction"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:prompt="@string/latitude_direction"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33" >
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/longitude_degrees"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude Degrees"
+                            android:inputType="number" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/longitude_minutes"
-                    android:hint="Longitude Minutes"
-                    android:inputType="number"
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/longitude_minutes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude Minutes"
+                            android:inputType="number" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/longitude_direction"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33"
+                        android:prompt="@string/longitude_direction"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/ices_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="ICES Area" />
 
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/longitude_direction"
-                android:prompt="@string/longitude_direction"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".33"/>
+                </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/ices_area"
-                    android:hint="ICES Area"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-            </android.support.design.widget.TextInputLayout>
+                    <Spinner
+                        android:id="@+id/gear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:prompt="@string/gear"
+                        android:spinnerMode="dropdown" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Gear:" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5">
 
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/gear"
-                android:prompt="@string/gear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/mesh_size"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Mesh Size"
+                            android:inputType="number" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/mesh_size"
-                    android:hint="Mesh Size"
-                    android:inputType="number"
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <Spinner
+                    android:id="@+id/species"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/species"
+                    android:spinnerMode="dropdown" />
 
-            </android.support.design.widget.TextInputLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Species:" />
-
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/species"
-                android:prompt="@string/species"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="State:" />
-
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/state"
-                android:prompt="@string/state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Presentation:" />
-
-            <Spinner
-                android:spinnerMode="dropdown"
-                android:id="@+id/presentation"
-                android:prompt="@string/presentation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/weight"
-                    android:hint="Weight"
-                    android:inputType="numberDecimal"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-            </android.support.design.widget.TextInputLayout>
+                    <Spinner
+                        android:id="@+id/state"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".40"
+                        android:prompt="@string/state"
+                        android:spinnerMode="dropdown" />
 
-            <CheckBox android:id="@+id/dis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DIS" />
+                    <Spinner
+                        android:id="@+id/presentation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".40"
+                        android:prompt="@string/presentation"
+                        android:spinnerMode="dropdown" />
 
-            <CheckBox android:id="@+id/bms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BMS" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".20">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Weight"
+                            android:inputType="numberDecimal" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/number_of_pots_hauled"
-                    android:hint="Number of Pots Hauled"
-                    android:inputType="number"
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-            </android.support.design.widget.TextInputLayout>
+                    <CheckBox
+                        android:id="@+id/dis"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="DIS" />
 
-            <TextView
-                android:id="@+id/landing_or_discard_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Landing or Discard Date"/>
+                    <CheckBox
+                        android:id="@+id/bms"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:text="BMS" />
 
-            <Button
-                android:id="@+id/landing_or_discard_date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select Landing or Discard Date"
-                android:onClick="showLandingOrDiscardDatePickerDialog" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".50">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/number_of_pots_hauled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Number of Pots Hauled"
+                            android:inputType="number" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/transporter_reg_etc"
-                    android:hint="Transporter Reg. etc."
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <TextView
+                    android:id="@+id/landing_or_discard_date"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="Landing or Discard Date" />
 
-            </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/landing_or_discard_date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="showLandingOrDiscardDatePickerDialog"
+                    android:text="Select Landing or Discard Date" />
 
-            <Button
-                android:text="Save"
-                android:id="@+id/save_form_row_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/transporter_reg_etc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Transporter Reg. etc." />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/save_form_row_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save" />
+
+                </LinearLayout>
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
-</ScrollView>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-    <ScrollView android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -14,15 +17,9 @@
             tools:context="uk.ac.masts.sifids.activities.EditFish1FormActivity">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:textSize="24sp"
-                    android:text="FISH1 Form"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -30,9 +27,9 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/fishery_office"
-                        android:hint="Fishery Office"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="Fishery Office" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -42,61 +39,95 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/fishery_office_email"
-                        android:inputType="textEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:hint="Fishery Office Email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:inputType="textEmailAddress" />
 
                 </android.support.design.widget.TextInputLayout>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Port of Departure:" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <Spinner
-                    android:spinnerMode="dropdown"
-                    android:id="@+id/port_of_departure"
-                    android:prompt="@string/port_of_departure"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.50"
+                        android:orientation="vertical">
 
-                <TextView
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Port of Departure:" />
+
+                        <Spinner
+                            android:id="@+id/port_of_departure"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:prompt="@string/port_of_departure"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.50"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Port of Landing:" />
+
+                        <Spinner
+                            android:id="@+id/port_of_landing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:prompt="@string/port_of_landing"
+                            android:spinnerMode="dropdown" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Port of Landing:" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <Spinner
-                    android:spinnerMode="dropdown"
-                    android:id="@+id/port_of_landing"
-                    android:prompt="@string/port_of_landing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".33">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/pln"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="PLN" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/pln"
-                        android:hint="PLN"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                    </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.67">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/vessel_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Vessel Name"
+                            android:inputType="textCapWords" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/vessel_name"
-                        android:hint="Vessel Name"
-                        android:inputType="textCapWords"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                    </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -104,10 +135,10 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/owner_master"
-                        android:hint="Owner/Master"
-                        android:inputType="textCapWords"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="Owner/Master"
+                        android:inputType="textCapWords" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -117,10 +148,10 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/address"
-                        android:hint="Address"
-                        android:inputType="textCapWords"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="Address"
+                        android:inputType="textCapWords" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -130,10 +161,10 @@
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/total_pots_fishing"
-                        android:hint="Total Pots Fishing"
-                        android:inputType="number"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:hint="Total Pots Fishing"
+                        android:inputType="number" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -149,48 +180,54 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
 
-                <!--<android.support.design.widget.TextInputEditText-->
-                <!--android:id="@+id/time"-->
-                <!--android:hint="Time:"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"/>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <!--</android.support.design.widget.TextInputLayout>-->
+                    <Button
+                        android:id="@+id/add_row_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Row" />
 
-                <Button
-                    android:text="Add Row"
-                    android:id="@+id/add_row_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/save_form_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save Form" />
 
-                <Button
-                    android:text="Save"
-                    android:id="@+id/save_form_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:background="#999999" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_centerHorizontal="true"
-                        android:textColor="#000"
-                        android:textSize="25sp"
-                        android:text="FISH1 Form Rows:"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Form Rows:"
+                        android:textColor="#000"
+                        android:textSize="18sp" />
 
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/form_row_recycler_view"
-                        android:layout_marginTop="60dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="60dp">
 
                     </android.support.v7.widget.RecyclerView>
 
@@ -207,6 +244,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:tint="@android:color/white"
         app:srcCompat="@android:drawable/ic_dialog_email" />
