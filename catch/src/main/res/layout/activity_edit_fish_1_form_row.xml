@@ -31,31 +31,93 @@ android:layout_height="wrap_content" >
                 android:text="Select Fishing Activity Date"
                 android:onClick="showFishingActivityDatePickerDialog" />
 
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33" >
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/latitude"
-                    android:hint="Latitude"
-                    android:inputType="numberSigned|numberDecimal"
+                    android:id="@+id/latitude_degrees"
+                    android:hint="Latitude Degrees"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33" >
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/longitude"
-                    android:hint="Longitude"
-                    android:inputType="numberSigned|numberDecimal"
+                    android:id="@+id/latitude_minutes"
+                    android:hint="Latitude Minutes"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:spinnerMode="dropdown"
+                android:id="@+id/latitude_direction"
+                android:prompt="@string/latitude_direction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33" >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/longitude_degrees"
+                    android:hint="Longitude Degrees"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33" >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/longitude_minutes"
+                    android:hint="Longitude Minutes"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:spinnerMode="dropdown"
+                android:id="@+id/longitude_direction"
+                android:prompt="@string/longitude_direction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"/>
+
+        </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

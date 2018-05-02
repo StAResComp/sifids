@@ -63,7 +63,7 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public static int getLatitudeDegrees(double lat) {
-        return (int) Math.floor(lat);
+        return (int) Math.floor(Math.abs(lat));
     }
 
     public int getLatitudeMinutes() {
@@ -74,7 +74,7 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public static int getLatitudeMinutes(double lat) {
         int deg = getLatitudeDegrees(lat);
-        return (int) Math.round((lat - deg) * 60);
+        return (int) Math.round((Math.abs(lat) - deg) * 60);
     }
 
     public void setLatitude(double latitude) {
@@ -119,7 +119,7 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public static int getLongitudeDegrees(double lon) {
-        return (int) Math.floor(lon);
+        return (int) Math.floor(Math.abs(lon));
     }
 
     public int getLongitudeMinutes() {
@@ -130,7 +130,7 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public static int getLongitudeMinutes(double lon) {
         int deg = getLongitudeDegrees(lon);
-        return (int) Math.round((lon - deg) * 60);
+        return (int) Math.round((Math.abs(lon) - deg) * 60);
     }
 
     public void setLongitude(double longitude) {
@@ -156,6 +156,13 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public LatLng getLatLng() {
         return new LatLng(this.getLatitude(), this.getLongitude());
+    }
+
+    public static double getDecimalCoordinate(int deg, int min, String dir) {
+        double coord = deg + ((double) min/60);
+        if (dir.equals("N") || dir.equals("E")) return coord;
+        else if (dir.equals("S") || dir.equals("W")) return (coord * -1);
+        return 1000;
     }
 
     public Date getTimestamp() {

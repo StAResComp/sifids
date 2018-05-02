@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
@@ -60,8 +62,12 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
 
     TextView fishingActivityDateDisplay;
     Date fishingActivityDate;
-    EditText latitude;
-    EditText longitude;
+    EditText latitudeDegrees;
+    EditText latitudeMinutes;
+    String latitudeDirectionValue;
+    EditText longitudeDegrees;
+    EditText longitudeMinutes;
+    String longitudeDirectionValue;
     EditText icesArea;
     int gearIdValue;
     EditText meshSize;
@@ -85,6 +91,8 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
     final String SPECIES_KEY = "species";
     final String STATE_KEY = "state";
     final String PRESENTATION_KEY = "presentation";
+    final String LATITUDE_DIRECTION_KEY = "latitude_direction";
+    final String LONGITUDE_DIRECTION_KEY = "longitude_direction";
 
     SharedPreferences prefs;
 
@@ -140,6 +148,8 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         this.spinnerLists.put(SPECIES_KEY, new ArrayList<CatchSpecies>());
         this.spinnerLists.put(STATE_KEY, new ArrayList<CatchState>());
         this.spinnerLists.put(PRESENTATION_KEY, new ArrayList<CatchPresentation>());
+        this.spinnerLists.put(LATITUDE_DIRECTION_KEY, new ArrayList<String>(Arrays.asList("N", "S")));
+        this.spinnerLists.put(LONGITUDE_DIRECTION_KEY, new ArrayList<String>(Arrays.asList("E", "W")));
 
         this.adapters = new HashMap();
         this.spinners = new HashMap();
@@ -147,8 +157,12 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         this.loadOptions();
 
         fishingActivityDateDisplay = (TextView) findViewById(R.id.fishing_activity_date);
-        latitude = (EditText) findViewById(R.id.latitude);
-        longitude = (EditText) findViewById(R.id.longitude);
+        latitudeDegrees = (EditText) findViewById(R.id.latitude_degrees);
+        latitudeMinutes = (EditText) findViewById(R.id.latitude_minutes);
+        this.createSpinner(LATITUDE_DIRECTION_KEY, R.id.latitude_direction);
+        longitudeDegrees = (EditText) findViewById(R.id.longitude_degrees);
+        longitudeMinutes = (EditText) findViewById(R.id.longitude_minutes);
+        this.createSpinner(LONGITUDE_DIRECTION_KEY, R.id.longitude_direction);
         icesArea = (EditText) findViewById(R.id.ices_area);
         this.createSpinner(GEAR_KEY, R.id.gear);
         meshSize = (EditText) findViewById(R.id.mesh_size);
@@ -179,8 +193,20 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         }
         if (fish1FormRow != null) {
             formId = fish1FormRow.getFormId();
-            latitude.setText(Double.toString(fish1FormRow.getLatitude()));
-            longitude.setText(Double.toString(fish1FormRow.getLongitude()));
+            latitudeDegrees.setText(Integer.toString(CatchLocation.getLatitudeDegrees(fish1FormRow.getLatitude())));
+            latitudeMinutes.setText(Integer.toString(CatchLocation.getLatitudeMinutes(fish1FormRow.getLatitude())));
+            for (int i = 0; i < adapters.get(LATITUDE_DIRECTION_KEY).getCount(); i++) {
+                if (((String) adapters.get(LATITUDE_DIRECTION_KEY).getItem(i)).charAt(0) == CatchLocation.getLatitudeDirection(fish1FormRow.getLatitude())) {
+                    spinners.get(LATITUDE_DIRECTION_KEY).setSelection(i);
+                }
+            }
+            longitudeDegrees.setText(Integer.toString(CatchLocation.getLongitudeDegrees(fish1FormRow.getLongitude())));
+            longitudeMinutes.setText(Integer.toString(CatchLocation.getLongitudeMinutes(fish1FormRow.getLongitude())));
+            for (int i = 0; i < adapters.get(LONGITUDE_DIRECTION_KEY).getCount(); i++) {
+                if (((String) adapters.get(LONGITUDE_DIRECTION_KEY).getItem(i)).charAt(0) == CatchLocation.getLongitudeDirection(fish1FormRow.getLongitude())) {
+                    spinners.get(LONGITUDE_DIRECTION_KEY).setSelection(i);
+                }
+            }
             for (int i = 0; i < adapters.get(SPECIES_KEY).getCount(); i++) {
                 if (fish1FormRow.getSpeciesId() != null && ((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId() == fish1FormRow.getSpeciesId())
                     spinners.get(SPECIES_KEY).setSelection(i);
@@ -231,8 +257,20 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
                 }
                 if (
                         fish1FormRow.setFishingActivityDate(fishingActivityDate)
-                        || fish1FormRow.setLatitude(Double.parseDouble(latitude.getText().toString()))
-                        || fish1FormRow.setLongitude(Double.parseDouble(longitude.getText().toString()))
+                        || fish1FormRow.setLatitude(
+                                CatchLocation.getDecimalCoordinate(
+                                        Integer.parseInt(latitudeDegrees.getText().toString()),
+                                        Integer.parseInt(latitudeDegrees.getText().toString()),
+                                        latitudeDirectionValue
+                                )
+                        )
+                                || fish1FormRow.setLongitude(
+                                CatchLocation.getDecimalCoordinate(
+                                        Integer.parseInt(longitudeDegrees.getText().toString()),
+                                        Integer.parseInt(longitudeDegrees.getText().toString()),
+                                        longitudeDirectionValue
+                                )
+                        )
                         || fish1FormRow.setIcesArea(icesArea.getText().toString())
                         || fish1FormRow.setGearId(gearIdValue)
                         || fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()))
@@ -350,6 +388,12 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
                 break;
             case R.id.presentation:
                 this.presentationIdValue = ((CatchPresentation)parent.getItemAtPosition(pos)).getId();
+                break;
+            case R.id.latitude_direction:
+                this.latitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
+                break;
+            case R.id.longitude_direction:
+                this.longitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
                 break;
         }
     }
