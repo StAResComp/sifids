@@ -2,6 +2,7 @@ package uk.ac.masts.sifids.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 
 /**
@@ -25,9 +27,11 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
 
     private List<Fish1FormRow> formRows;
     CatchDatabase db;
+    Context context;
 
-    public Fish1FormRowAdapter(List<Fish1FormRow> formRows) {
+    public Fish1FormRowAdapter(List<Fish1FormRow> formRows, Context context) {
         this.formRows = formRows;
+        this.context = context;
     }
 
     @Override
@@ -40,10 +44,10 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
     public void onBindViewHolder(Fish1FormRowAdapter.ViewHolder holder, int position) {
         db = CatchDatabase.getInstance(holder.itemView.getContext());
         holder.label.setText(formRows.get(position).toString());
-        holder.editButton.setTag(R.id.parent_form, Integer.valueOf(formRows.get(position).getFormId()));
-        holder.editButton.setTag(R.id.form_row_in_question, Integer.valueOf(formRows.get(position).getId()));
-        holder.deleteButton.setTag(R.id.parent_form, Integer.valueOf(formRows.get(position).getFormId()));
-        holder.deleteButton.setTag(R.id.form_row_in_question, Integer.valueOf(formRows.get(position).getId()));
+        holder.editButton.setTag(R.id.parent_form, formRows.get(position).getFormId());
+        holder.editButton.setTag(R.id.form_row_in_question, formRows.get(position).getId());
+        holder.deleteButton.setTag(R.id.parent_form, formRows.get(position).getFormId());
+        holder.deleteButton.setTag(R.id.form_row_in_question, formRows.get(position).getId());
     }
 
     @Override
@@ -70,8 +74,8 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
                 Intent i = new Intent(view.getContext(), EditFish1FormRowActivity.class);
                 int id = (Integer) view.getTag(R.id.form_row_in_question);
                 int form_id = (Integer) view.getTag(R.id.parent_form);
-                i.putExtra("id", id);
-                i.putExtra("form_row_id", form_id);
+                i.putExtra(Fish1FormRow.ID, id);
+                i.putExtra(Fish1FormRow.FORM_ID, form_id);
                 view.getContext().startActivity(i);
             }
             else if (view.getId() == R.id.btn_delete_form_row) {
@@ -83,8 +87,8 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
             final int formRowId = (Integer) view.getTag(R.id.form_row_in_question);
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder
-                    .setMessage("Are you sure you want to delete this row?")
-                    .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    .setMessage(context.getString(R.string.fish_1_form_row_deletion_confirmation_message))
+                    .setPositiveButton(context.getString(R.string.yes),  new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Runnable r = new Runnable() {
@@ -104,13 +108,13 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
                             Activity activity = (Activity) view.getContext();
                             Intent i = new Intent(activity, EditFish1FormActivity.class);
                             int formId = (Integer) view.getTag(R.id.parent_form);
-                            i.putExtra("id", formId);
+                            i.putExtra(Fish1Form.ID, formId);
                             i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                             activity.finish();
                             activity.startActivity(i);
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
