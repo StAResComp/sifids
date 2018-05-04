@@ -1,13 +1,9 @@
 <resources>
     <string name="app_name">sifids</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_map">Map</string>
-    <string name="dialog_select_week">Select Week</string>
-    <string name="this_week">This Week (starting %s)</string>
-    <string name="last_week">Last Week (starting %s)</string>
-    <string name="other_week">Other Week</string>
 
-    <!-- Strings related to Settings -->
+    <!-- Settings -->
+
+    <string name="title_activity_settings">Settings</string>
 
     <string name="pref_header_fishery_office_details">Fishery Office Details</string>
     <string name="pref_fishery_office_title">Fishery Office</string>
@@ -30,9 +26,65 @@
 
     <string name="pref_header_species_details">Species Details</string>
     <string name="pref_species_title">Species</string>
+    
+    <!-- FISH1 Forms -->
 
-    <string name="port_of_departure">Port of Departure</string>
-    <string name="port_of_landing">Port of Landing</string>
+    <string name="title_activity_catch">FISH1 Forms</string>
+
+    <!-- FISH1 Form Creation -->
+
+    <string name="dialog_select_week">Select Week</string>
+    <string name="this_week">This Week (starting %s)</string>
+    <string name="last_week">Last Week (starting %s)</string>
+    <string name="other_week">Other Week</string>
+
+    <!-- FISH1 Form Editing -->
+
+    <string name="fish_1_form_fishery_office_string">%s (%s)</string>
+    <string name="fish_1_form_fishery_office">Fishery Office</string>
+    <string name="fish_1_form_fishery_office_email">Fishery Office Email</string>
+    <string name="fish_1_form_port_of_departure">Port of Departure</string>
+    <string name="fish_1_form_port_of_landing">Port of Landing</string>
+    <string name="fish_1_form_pln">PLN</string>
+    <string name="fish_1_form_vessel_name">Vessel Name</string>
+    <string name="fish_1_form_owner_master">Owner/Master</string>
+    <string name="fish_1_form_address">Address</string>
+    <string name="fish_1_form_total_pots_fishing">Total Pots Fishing</string>
+    <string name="fish_1_form_comment_buyers_information">Comment and Buyers Information</string>
+    <string name="fish_1_form_add_row">Add Row Below</string>
+    <string name="fish_1_form_save">Save Form</string>
+    <string name="fish_1_form_delete">Delete Form</string>
+
+    <!-- FISH1 Form Deletion -->
+
+    <string name="fish_1_form_deletion_confirmation_message">"Are you sure you want to delete this form?"</string>
+
+    <!-- FISH1 Form Email -->
+
+    <string name="fish_1_form_email_subject">FISH1 Form</string>
+    <string name="fish_1_form_email_text">Please find FISH1 Form attached.</string>
+    <string name="fish_1_form_email_intent_title">Send message&#8230;</string>
+
+    <!-- FISH1 Form CSV -->
+
+    <string name="csv_file_name">%s.csv</string>
+    <string name="csv_fishery_office"># Fishery Office: %s</string>
+    <string name="csv_email"># Email: %s</string>
+    <string name="csv_port_of_departure"># Port of Departure: %s</string>
+    <string name="csv_port_of_landing"># Port of Landing: %s</string>
+    <string name="csv_pln"># PLN: %s</string>
+    <string name="csv_vessel_name"># Vessel Name: %s</string>
+    <string name="csv_owner_master"># Owner/Master: %s</string>
+    <string name="csv_address"># Address: %s</string>
+    <string name="csv_total_pots_fishing"># Total Pots Fishing: %s</string>
+    <string name="csv_comments_buyers_information"># Owner/Master: %s</string>
+    <string name="csv_header_row">
+        Fishing Activity Date,Lat/Long,Stat Rect / ICES Area,Gear,Mesh Size,Species,State,Presentation,Weight,DIS,BMS,Number of Pots Hauled,Landing or Discard Date,"Transporter Reg, Not Transported or Landed to Keeps"
+    </string>
+    <string name="csv_saved">CSV file saved for attaching to email as %s</string>
+    <string name="csv_not_saved">Unable to create email attachment</string>
+
+    <!-- FISH1 Form Row Spinner Prompts -->
 
     <string name="gear">Gear</string>
     <string name="species">Species</string>
@@ -41,9 +93,34 @@
     <string name="latitude_direction">Latitude</string>
     <string name="longitude_direction">Longitude</string>
 
-    <string name="title_activity_catch">FISH1 Forms</string>
+    <!-- FISH1 Form Row Editing -->
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- FISH1 Form Row Dates -->
+
+    <string name="fish_1_form_row_fishing_activity_date">Fishing Activity Date: </string>
+    <string name="fish_1_form_row_landing_or_discard_date">Landing or Discard Date: </string>
+
+    <!-- FISH1 Form Row Deletion -->
+
+    <string name="fish_1_form_row_deletion_confirmation_message">"Are you sure you want to delete this row?"</string>
+
+    <!-- Map -->
+
+    <string name="title_activity_map">Map</string>
+
+    <!-- General Purpose -->
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ymd">yyyy-MM-dd</string>
+    <string name="dmonthy">dd MMM yyyy</string>
+    <string name="n">N</string>
+    <string name="north">North</string>
+    <string name="s">S</string>
+    <string name="south">South</string>
+    <string name="e">E</string>
+    <string name="east">East</string>
+    <string name="w">W</string>
+    <string name="west">West</string>
 
 </resources>

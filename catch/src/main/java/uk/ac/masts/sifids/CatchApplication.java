@@ -39,7 +39,7 @@ public class CatchApplication extends Application {
      */
     public void checkFirstRun() {
 
-        final String PREF_VERSION_CODE_KEY = "version_code";
+        final String PREF_VERSION_CODE_KEY = getString(R.string.pref_version_code_key);
         final int DOESNT_EXIST = -1;
 
         // Get current version code

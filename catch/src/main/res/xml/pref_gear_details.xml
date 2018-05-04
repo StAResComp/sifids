@@ -1,17 +1,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uk.ac.masts.sifids.preferences.GearPreference
-        android:key="pref_gear"
+        android:key="@string/pref_gear_key"
         android:title="@string/pref_gear_title" />
 
     <EditTextPreference
         android:inputType="number"
-        android:key="pref_mesh_size"
+        android:key="@string/pref_mesh_size_key"
         android:title="@string/pref_mesh_size_title" />
 
     <EditTextPreference
         android:inputType="number"
-        android:key="pref_total_pots_fishing"
+        android:key="@string/pref_total_pots_fishing_key"
         android:title="@string/pref_total_pots_fishing_title" />
 
 </PreferenceScreen>

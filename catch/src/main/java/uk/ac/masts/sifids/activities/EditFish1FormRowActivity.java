@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -39,6 +40,7 @@ import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.CatchState;
 import uk.ac.masts.sifids.entities.EntityWithId;
+import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.Gear;
 
@@ -110,11 +112,11 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         Intent intent = this.getIntent();
         if (intent != null) {
             Bundle extras = intent.getExtras();
-            if (!extras.isEmpty() && extras.containsKey("form_id")) {
-                this.formId = extras.getInt("form_id");
+            if (!extras.isEmpty() && extras.containsKey(Fish1FormRow.FORM_ID)) {
+                this.formId = extras.getInt(Fish1FormRow.FORM_ID);
             }
-            if (!extras.isEmpty() && extras.containsKey("id")) {
-                final int id = extras.getInt("id");
+            if (!extras.isEmpty() && extras.containsKey(Fish1FormRow.ID)) {
+                final int id = extras.getInt(Fish1FormRow.ID);
 
                 Runnable r = new Runnable(){
                     @Override
@@ -143,8 +145,10 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         this.spinnerLists.put(SPECIES_KEY, new ArrayList<CatchSpecies>());
         this.spinnerLists.put(STATE_KEY, new ArrayList<CatchState>());
         this.spinnerLists.put(PRESENTATION_KEY, new ArrayList<CatchPresentation>());
-        this.spinnerLists.put(LATITUDE_DIRECTION_KEY, new ArrayList<String>(Arrays.asList("N", "S")));
-        this.spinnerLists.put(LONGITUDE_DIRECTION_KEY, new ArrayList<String>(Arrays.asList("E", "W")));
+        this.spinnerLists.put(LATITUDE_DIRECTION_KEY,
+                new ArrayList<String>(Arrays.asList(getString(R.string.n), getString(R.string.s))));
+        this.spinnerLists.put(LONGITUDE_DIRECTION_KEY,
+                new ArrayList<String>(Arrays.asList(getString(R.string.e), getString(R.string.w))));
 
         this.adapters = new HashMap();
         this.spinners = new HashMap();
@@ -181,11 +185,13 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
 
     private void applyExistingValues() {
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if (fish1FormRow != null && fish1FormRow.getFishingActivityDate() != null) {
             fishingActivityDate = fish1FormRow.getFishingActivityDate();
-            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
+            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay,
+                    getString(R.string.fish_1_form_row_fishing_activity_date));
         }
         if (fish1FormRow != null) {
             formId = fish1FormRow.getFormId();
@@ -226,13 +232,14 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
             meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
         }
         else {
-            meshSize.setText(prefs.getString("pref_mesh_size", ""));
+            meshSize.setText(prefs.getString(getString(R.string.pref_mesh_size_key), ""));
         }
         if (fish1FormRow != null && fish1FormRow.getIcesArea() != null && !fish1FormRow.getIcesArea().equals(""))
             icesArea.setText(fish1FormRow.getIcesArea());
         if (fish1FormRow != null && fish1FormRow.getLandingOrDiscardDate() != null) {
             landingOrDiscardDate = fish1FormRow.getLandingOrDiscardDate();
-            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay, "Landing or Discard Date: ");
+            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay,
+                    getString(R.string.fish_1_form_row_landing_or_discard_date));
         }
         if (fish1FormRow != null && fish1FormRow.getTransporterRegEtc() != null && !fish1FormRow.getTransporterRegEtc().equals(""))
             icesArea.setText(fish1FormRow.getTransporterRegEtc());
@@ -297,7 +304,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
                     }
                 }
                 Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
-                i.putExtra("id", EditFish1FormRowActivity.this.formId);
+                i.putExtra(Fish1Form.ID, EditFish1FormRowActivity.this.formId);
                 EditFish1FormRowActivity.this.startActivity(i);
             }
         });
@@ -317,7 +324,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         }
         else {
             Intent i = new Intent(this, EditFish1FormActivity.class);
-            i.putExtra("id", EditFish1FormRowActivity.this.formId);
+            i.putExtra(Fish1Form.ID, EditFish1FormRowActivity.this.formId);
             this.finish();
             this.startActivity(i);
         }
@@ -326,8 +333,8 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
-                .setMessage("Are you sure you want to delete this row?")
-                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                .setMessage(getString(R.string.fish_1_form_row_deletion_confirmation_message))
+                .setPositiveButton(R.string.yes,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Runnable r = new Runnable() {
@@ -345,12 +352,12 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
 
                         }
                         Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
-                        i.putExtra("id", EditFish1FormRowActivity.this.formId);
+                        i.putExtra(Fish1Form.ID, EditFish1FormRowActivity.this.formId);
                         EditFish1FormRowActivity.this.finish();
                         EditFish1FormRowActivity.this.startActivity(i);
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -362,20 +369,16 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
     private void updateDateDisplay(Date date, TextView display, String prefix) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        String dateString = day + "-" + month + "-" + year;
-        display.setText(prefix + dateString);
+        display.setText(new SimpleDateFormat(getString(R.string.dmonthy)).format(cal.getTime()));
     }
 
     private void loadOptions() {
         Runnable r = new Runnable(){
             @Override
             public void run() {
-                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.GEAR_KEY, EditFish1FormRowActivity.this.db.catchDao().getGear(prefs.getStringSet("pref_gear", new HashSet<String>())));
+                EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.GEAR_KEY, EditFish1FormRowActivity.this.db.catchDao().getGear(prefs.getStringSet(getString(R.string.pref_gear_key), new HashSet<String>())));
                 List speciesList = EditFish1FormRowActivity.this.db.catchDao().getSpecies();
-                for (String idString : prefs.getStringSet("pref_species", new HashSet<String>())) {
+                for (String idString : prefs.getStringSet(getString(R.string.pref_species_key), new HashSet<String>())) {
                     speciesList = EditFish1FormRowActivity.rearrangeList(speciesList, Integer.parseInt(idString));
                 }
                 EditFish1FormRowActivity.this.spinnerLists.put(EditFish1FormRowActivity.this.SPECIES_KEY, speciesList);
@@ -461,11 +464,13 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
         c.set(year, month, day);
         if (tag == "fishing_activity_date") {
             this.fishingActivityDate = c.getTime();
-            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay, "Fishing Activity Date: ");
+            this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay,
+                    getString(R.string.fish_1_form_row_fishing_activity_date));
         }
         else if (tag == "landing_or_discard_date") {
             this.landingOrDiscardDate = c.getTime();
-            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay, "Landing or Discard Date: ");
+            this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay,
+                    getString(R.string.fish_1_form_row_landing_or_discard_date));
         }
     }
 

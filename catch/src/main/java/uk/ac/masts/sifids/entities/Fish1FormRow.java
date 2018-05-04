@@ -61,6 +61,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 )
 public class Fish1FormRow extends ChangeLoggingEntity{
 
+    public final static String ID = "id";
+    public final static String FORM_ID = "form_id";
+
     @ColumnInfo(name = "form_id")
     public int formId;
 

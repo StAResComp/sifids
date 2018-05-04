@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="pref_fishery_office_key">
+        <xliff:g id="preference_key">pref_fishery_office</xliff:g>
+    </string>
+
+    <string name="pref_gear_key">
+        <xliff:g id="preference_key">pref_gear</xliff:g>
+    </string>
+
+    <string name="pref_mesh_size_key">
+        <xliff:g id="preference_key">pref_mesh_size</xliff:g>
+    </string>
+
+    <string name="pref_total_pots_fishing_key">
+        <xliff:g id="preference_key">pref_total_pots_fishing</xliff:g>
+    </string>
+
+    <string name="pref_owner_master_name_key">
+        <xliff:g id="preference_key">pref_owner_master_name</xliff:g>
+    </string>
+
+    <string name="pref_owner_master_address_key">
+        <xliff:g id="preference_key">pref_owner_master_address</xliff:g>
+    </string>
+
+    <string name="pref_port_key">
+        <xliff:g id="preference_key">pref_port</xliff:g>
+    </string>
+
+    <string name="pref_species_key">
+        <xliff:g id="preference_key">pref_species</xliff:g>
+    </string>
+
+    <string name="pref_vessel_pln_key">
+        <xliff:g id="preference_key">pref_vessel_pln</xliff:g>
+    </string>
+
+    <string name="pref_vessel_name_key">
+        <xliff:g id="preference_key">pref_vessel_name</xliff:g>
+    </string>
+
+    <string name="pref_version_code_key">
+        <xliff:g id="preference_key">pref_version_code</xliff:g>
+    </string>
+
+</resources>

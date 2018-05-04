@@ -3,13 +3,13 @@
     <EditTextPreference
         android:capitalize="words"
         android:inputType="textCapWords"
-        android:key="pref_owner_master_name"
+        android:key="@string/pref_owner_master_name_key"
         android:title="@string/pref_owner_master_name_title" />
 
     <EditTextPreference
         android:capitalize="words"
         android:inputType="textCapWords"
-        android:key="pref_owner_master_address"
+        android:key="@string/pref_owner_master_address_key"
         android:title="@string/pref_owner_master_address_title" />
 
 </PreferenceScreen>

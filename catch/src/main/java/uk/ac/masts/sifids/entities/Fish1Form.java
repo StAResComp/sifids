@@ -15,6 +15,12 @@ import java.util.Date;
 @Entity(tableName = "fish_1_form")
 public class Fish1Form extends ChangeLoggingEntity {
 
+    public static final String START_DATE = "start_date";
+    public static final String END_DATE = "start_date";
+    public static final String ID = "id";
+    public static final String MAILTO = "mailto";
+    public static final String ATTACHMENT_URL = "file://%s";
+
     @ColumnInfo(name = "fishery_office")
     public String fisheryOffice;
 
@@ -180,5 +186,9 @@ public class Fish1Form extends ChangeLoggingEntity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(this.getCreatedAt());
         return this.getPln() + " " + new SimpleDateFormat("dd MMM yyyy").format(cal.getTime());
+    }
+
+    public String getCsvFileName() {
+        return this.toString() + ".csv";
     }
 }

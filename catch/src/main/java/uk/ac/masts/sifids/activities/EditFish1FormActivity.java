@@ -115,8 +115,8 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     private void processIntent() {
         final Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.get("id") != null) {
-                final int id = (Integer) extras.get("id");
+            if (extras.get(Fish1Form.ID) != null) {
+                final int id = (Integer) extras.get(Fish1Form.ID);
 
                 Runnable r = new Runnable() {
                     @Override
@@ -132,7 +132,12 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 } catch (InterruptedException ie) {
 
                 }
-            } else if (extras.get("start_date") != null && extras.get("start_date") instanceof java.util.Date && extras.get("end_date") != null && extras.get("end_date") instanceof java.util.Date) {
+            } else if (
+                    extras.get(Fish1Form.START_DATE) != null
+                            && extras.get(Fish1Form.START_DATE) instanceof java.util.Date
+                            && extras.get(Fish1Form.END_DATE) != null
+                            && extras.get(Fish1Form.END_DATE) instanceof java.util.Date
+                    ) {
                 fish1Form = new Fish1Form();
                 Runnable r = new Runnable() {
                     @Override
@@ -142,28 +147,32 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                                         .getOffice(
                                                 Integer.parseInt(
                                                         prefs.getString(
-                                                                "pref_fishery_office",
+                                                                getString(R.string.pref_fishery_office_key),
                                                                 ""
                                                         )
                                                 )
                                         );
                         if (fisheryOfficeObject != null) {
                             fish1Form.setFisheryOffice(
-                                    fisheryOfficeObject.getName() + " (" + fisheryOfficeObject.getAddress() + ")"
+                                    String.format(
+                                            getString(R.string.fish_1_form_fishery_office_string),
+                                            fisheryOfficeObject.getName(),
+                                            fisheryOfficeObject.getAddress()
+                                    )
                             );
                             fish1Form.setEmail(fisheryOfficeObject.getEmail());
                         }
-                        fish1Form.setPln(prefs.getString("pref_vessel_pln", ""));
-                        fish1Form.setVesselName(prefs.getString("pref_vessel_name", ""));
-                        fish1Form.setOwnerMaster(prefs.getString("pref_owner_master_name", ""));
-                        fish1Form.setAddress(prefs.getString("pref_owner_master_address", ""));
-                        fish1Form.setTotalPotsFishing(Integer.parseInt(prefs.getString("pref_total_pots_fishing", "0")));
+                        fish1Form.setPln(prefs.getString(getString(R.string.pref_vessel_pln_key), ""));
+                        fish1Form.setVesselName(prefs.getString(getString(R.string.pref_vessel_name_key), ""));
+                        fish1Form.setOwnerMaster(prefs.getString(getString(R.string.pref_owner_master_name_key), ""));
+                        fish1Form.setAddress(prefs.getString(getString(R.string.pref_owner_master_address_key), ""));
+                        fish1Form.setTotalPotsFishing(Integer.parseInt(prefs.getString(getString(R.string.pref_total_pots_fishing_key), "0")));
                         long[] ids = db.catchDao().insertFish1Forms(fish1Form);
                         fish1Form = db.catchDao().getForm((int) ids[0]);
                         Calendar start = Calendar.getInstance();
-                        start.setTime((Date) extras.get("start_date"));
+                        start.setTime((Date) extras.get(Fish1Form.START_DATE));
                         Calendar end = Calendar.getInstance();
-                        end.setTime((Date) extras.get("end_date"));
+                        end.setTime((Date) extras.get(Fish1Form.END_DATE));
                         List<Fish1FormRow> rows = new ArrayList();
                         for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
                             Calendar upper = Calendar.getInstance();
@@ -172,17 +181,14 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                             CatchLocation point = db.catchDao().getFirstFishingLocationBetweenDates(date, upper.getTime());
                             if (point != null) {
                                 rows.add(new Fish1FormRow(fish1Form, point));
-                                Log.e("EditFish1FormActivity", "created row for: " + point.getLatitude() + "/" + point.getLongitude() + " at " + point.getTimestamp());
                                 while (point != null && point.getTimestamp().before(upper.getTime())) {
                                     Map<Integer, Double> bounds = point.getIcesRectangleBounds();
-                                    Log.e("EditFish1FormActivity", "Got bounds: " + bounds.get(CatchLocation.LOWER_LAT) + "/" + bounds.get(CatchLocation.UPPER_LAT) + "/" + bounds.get(CatchLocation.LOWER_LONG) + "/" + bounds.get(CatchLocation.UPPER_LONG));
                                     if (bounds == null)
                                         point = db.catchDao().getFirstValidIcesFishingLocationBetweenDates(point.getTimestamp(), upper.getTime());
                                     else
                                         point = db.catchDao().getFirstFishingLocationOutsideBoundsBetweenDates(point.getTimestamp(), upper.getTime(), bounds.get(CatchLocation.LOWER_LAT), bounds.get(CatchLocation.UPPER_LAT), bounds.get(CatchLocation.LOWER_LONG), bounds.get(CatchLocation.UPPER_LONG));
                                     if (point != null) {
                                         rows.add(new Fish1FormRow(fish1Form, point));
-                                        Log.e("EditFish1FormActivity", "created row for: " + point.getLatitude() + "/" + point.getLongitude() + " at " + point.getTimestamp());
                                     }
                                 }
                             }
@@ -214,7 +220,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                ports = db.catchDao().getPortNames(prefs.getStringSet("pref_port", new HashSet<String>()));
+                ports = db.catchDao().getPortNames(prefs.getStringSet(getString(R.string.pref_port_key), new HashSet<String>()));
             }
         };
         Thread newThread = new Thread(r);
@@ -268,7 +274,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             public void onClick(View v) {
                 saveForm();
                 Intent i = new Intent(EditFish1FormActivity.this, EditFish1FormRowActivity.class);
-                i.putExtra("form_id", fish1Form.getId());
+                i.putExtra(Fish1FormRow.FORM_ID, fish1Form.getId());
                 startActivity(i);
             }
         });
@@ -338,12 +344,12 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     }
 
     private void createAndEmailFile() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "pgm5@st-andrews.ac.uk", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "FISH1 Form");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find FISH1 Form attached.");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"pgm5@st-andrews.ac.uk"});
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + createFileToSend().getAbsoluteFile()));
-        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(Fish1Form.MAILTO, fish1Form.getEmail(), null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.fish_1_form_email_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.fish_1_form_email_text));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{fish1Form.getEmail()});
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(String.format(Fish1Form.ATTACHMENT_URL, createFileToSend().getAbsoluteFile())));
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.fish_1_form_email_intent_title)));
     }
 
     private void saveForm() {
@@ -399,8 +405,8 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     private void confirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
-                .setMessage("Are you sure you want to delete this form?")
-                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                .setMessage(getString(R.string.fish_1_form_deletion_confirmation_message))
+                .setPositiveButton(getString(R.string.yes),  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Runnable r = new Runnable() {
@@ -422,7 +428,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                         EditFish1FormActivity.this.startActivity(i);
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -452,39 +458,26 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
         this.saveForm();
         File file = null;
         try {
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fish1Form.toString() + ".csv");
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fish1Form.getCsvFileName());
             final FileWriter writer= new FileWriter(file);
 
-            writer.write("# Fishery Office: " + this.fisheryOffice.getText().toString() + "\n");
-            writer.write("# Email: " + this.fisheryOfficeEmail.getText().toString() + "\n");
-            writer.write("# Port of Departure: " + this.portOfDepartureValue + "\n");
-            writer.write("# Port of Landing: " + this.portOfLandingValue + "\n");
-            writer.write("# PLN: " + pln.getText().toString() + "\n");
-            writer.write("# Vessel Name: " + vesselName.getText().toString() + "\n");
-            writer.write("# Owner/Master: " + ownerMaster.getText().toString() + "\n");
-            writer.write("# Address: " + address.getText().toString() + "\n");
-            writer.write("# Total Pots Fishing: " + totalPotsFishing.getText().toString() + "\n");
-            writer.write("# Comments and Buyers Information: " + comment.getText().toString());
+            writer.write(String.format(getString(R.string.csv_fishery_office), this.fisheryOffice.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_email), this.fisheryOfficeEmail.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_port_of_departure), this.portOfDepartureValue) + "\n");
+            writer.write(String.format(getString(R.string.csv_port_of_landing), this.portOfLandingValue) + "\n");
+            writer.write(String.format(getString(R.string.csv_pln), pln.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_vessel_name), vesselName.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_owner_master), ownerMaster.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_address), address.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_total_pots_fishing), totalPotsFishing.getText().toString()) + "\n");
+            writer.write(String.format(getString(R.string.csv_comments_buyers_information), comment.getText().toString()));
             writer.write("\n");
-            writer.write("Fishing Activity Date,"
-                    + "Lat/Long,"
-                    + "Stat Rect / ICES Area,"
-                    + "Gear,"
-                    + "Mesh Size,"
-                    + "Species,"
-                    + "State,"
-                    + "Presentation,"
-                    + "Weight,"
-                    + "DIS,"
-                    + "BMS,"
-                    + "Number of Pots Hauled,"
-                    + "Landing or Discard Date,"
-                    + "\"Transporter Reg, Not Transported or Landed to Keeps\"\n");
+            writer.write(getString(R.string.csv_header_row) + "\n");
             for (final Fish1FormRow formRow : formRows) {
                 Calendar cal = Calendar.getInstance();
                 if (formRow.getFishingActivityDate() != null) {
                     cal.setTime(formRow.getFishingActivityDate());
-                    writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
+                    writer.write(new SimpleDateFormat(getString(R.string.ymd)).format(cal.getTime()) + ",");
                 }
                 else writer.write(",");
                 writer.write(formRow.getCoordinates() + ",");
@@ -530,7 +523,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 writer.write( Integer.toString(formRow.getNumberOfPotsHauled()) + ",");
                 if (formRow.getLandingOrDiscardDate() != null) {
                     cal.setTime(formRow.getLandingOrDiscardDate());
-                    writer.write(new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()) + ",");
+                    writer.write(new SimpleDateFormat(getString(R.string.ymd)).format(cal.getTime()) + ",");
                 }
                 else writer.write(",");
                 if (formRow.getTransporterRegEtc() != null) {
@@ -540,10 +533,10 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             }
 
             writer.close();
-            Toast.makeText(getBaseContext(), "Temporarily saved contents in " + file.getPath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), String.format(getString(R.string.csv_saved), file.getPath()), Toast.LENGTH_LONG).show();
         }
         catch (IOException e) {
-            Toast.makeText(getBaseContext(), "Unable create temp file. Check logcat for stackTrace", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), getString(R.string.csv_not_saved), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return file;

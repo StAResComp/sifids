@@ -183,7 +183,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_fishery_office"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_fishery_office_key)));
         }
     }
 
@@ -203,8 +203,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_vessel_pln"));
-            bindPreferenceSummaryToValue(findPreference("pref_vessel_name"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_pln_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_name_key)));
         }
     }
 
@@ -224,8 +224,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_owner_master_name"));
-            bindPreferenceSummaryToValue(findPreference("pref_owner_master_address"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_name_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_address_key)));
         }
     }
 
@@ -245,7 +245,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_port"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_port_key)));
         }
     }
 
@@ -265,9 +265,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_gear"));
-            bindPreferenceSummaryToValue(findPreference("pref_mesh_size"));
-            bindPreferenceSummaryToValue(findPreference("pref_total_pots_fishing"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_gear_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_mesh_size_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_total_pots_fishing_key)));
         }
     }
 
@@ -287,7 +287,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("pref_species"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_species_key)));
         }
     }
 

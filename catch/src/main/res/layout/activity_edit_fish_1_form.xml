@@ -29,7 +29,7 @@
                         android:id="@+id/fishery_office"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Fishery Office" />
+                        android:hint="@string/fish_1_form_fishery_office" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -41,7 +41,7 @@
                         android:id="@+id/fishery_office_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Fishery Office Email"
+                        android:hint="@string/fish_1_form_fishery_office_email"
                         android:inputType="textEmailAddress" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -61,13 +61,13 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Port of Departure:" />
+                            android:text="@string/fish_1_form_port_of_departure" />
 
                         <Spinner
                             android:id="@+id/port_of_departure"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:prompt="@string/port_of_departure"
+                            android:prompt="@string/fish_1_form_port_of_departure"
                             android:spinnerMode="dropdown" />
 
                     </LinearLayout>
@@ -81,13 +81,13 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Port of Landing:" />
+                            android:text="@string/fish_1_form_port_of_landing" />
 
                         <Spinner
                             android:id="@+id/port_of_landing"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:prompt="@string/port_of_landing"
+                            android:prompt="@string/fish_1_form_port_of_landing"
                             android:spinnerMode="dropdown" />
 
                     </LinearLayout>
@@ -109,7 +109,7 @@
                             android:id="@+id/pln"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="PLN" />
+                            android:hint="@string/fish_1_form_pln" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -122,7 +122,7 @@
                             android:id="@+id/vessel_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Vessel Name"
+                            android:hint="@string/fish_1_form_vessel_name"
                             android:inputType="textCapWords" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -137,7 +137,7 @@
                         android:id="@+id/owner_master"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Owner/Master"
+                        android:hint="@string/fish_1_form_owner_master"
                         android:inputType="textCapWords" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -150,7 +150,7 @@
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Address"
+                        android:hint="@string/fish_1_form_address"
                         android:inputType="textCapWords" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -163,7 +163,7 @@
                         android:id="@+id/total_pots_fishing"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Total Pots Fishing"
+                        android:hint="@string/fish_1_form_total_pots_fishing"
                         android:inputType="number" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -176,7 +176,7 @@
                         android:id="@+id/comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Comment and Buyers Information" />
+                        android:hint="@string/fish_1_form_comment_buyers_information" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -196,21 +196,21 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
-                        android:text="Add Row Below" />
+                        android:text="@string/fish_1_form_add_row" />
 
                     <Button
                         android:id="@+id/save_form_button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
-                        android:text="Save Form" />
+                        android:text="@string/fish_1_form_save" />
 
                     <Button
                         android:id="@+id/delete_form_button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.33"
-                        android:text="Delete Form" />
+                        android:text="@string/fish_1_form_delete" />
 
                 </LinearLayout>
 
