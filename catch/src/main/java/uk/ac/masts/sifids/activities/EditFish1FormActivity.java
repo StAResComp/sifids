@@ -304,7 +304,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 @Override
                 public void run() {
                     formRows = db.catchDao().getRowsForForm(fish1Form.getId());
-                    adapter = new Fish1FormRowAdapter(formRows);
+                    adapter = new Fish1FormRowAdapter(formRows, EditFish1FormActivity.this);
                     adapter.notifyDataSetChanged();
                     runOnUiThread(new Runnable() {
                         @Override
