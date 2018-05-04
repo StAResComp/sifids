@@ -30,6 +30,10 @@
     <!-- FISH1 Forms -->
 
     <string name="title_activity_catch">FISH1 Forms</string>
+    <string name="start_tracking_location">Start Tracking Location</string>
+    <string name="stop_tracking_location">Stop Tracking Location</string>
+    <string name="start_fishing">Start Fishing</string>
+    <string name="stop_fishing">Stop Fishing</string>
 
     <!-- FISH1 Form Creation -->
 
@@ -84,21 +88,31 @@
     <string name="csv_saved">CSV file saved for attaching to email as %s</string>
     <string name="csv_not_saved">Unable to create email attachment</string>
 
-    <!-- FISH1 Form Row Spinner Prompts -->
-
-    <string name="gear">Gear</string>
-    <string name="species">Species</string>
-    <string name="state">State</string>
-    <string name="presentation">Presentation</string>
-    <string name="latitude_direction">Latitude</string>
-    <string name="longitude_direction">Longitude</string>
-
     <!-- FISH1 Form Row Editing -->
 
-    <!-- FISH1 Form Row Dates -->
-
     <string name="fish_1_form_row_fishing_activity_date">Fishing Activity Date: </string>
+    <string name="fish_1_form_row_select_fishing_activity_date">Select Fishing Activity Date</string>
+    <string name="fish_1_form_row_latitude_degrees">Latitude Deg</string>
+    <string name="fish_1_form_row_latitude_minutes">Latitude Min</string>
+    <string name="fish_1_form_row_latitude_direction">Latitude Dir</string>
+    <string name="fish_1_form_row_longitude_degrees">Longitude Deg</string>
+    <string name="fish_1_form_row_longitude_minutes">Longitude Min</string>
+    <string name="fish_1_form_row_longitude_direction">Longitude Dir</string>
+    <string name="fish_1_form_row_ices_area">ICES Area</string>
+    <string name="fish_1_form_row_gear">Gear</string>
+    <string name="fish_1_form_row_mesh_size">Mesh Size</string>
+    <string name="fish_1_form_row_species">Species</string>
+    <string name="fish_1_form_row_state">State</string>
+    <string name="fish_1_form_row_presentation">Presentation</string>
+    <string name="fish_1_form_row_weight">Weight</string>
+    <string name="fish_1_form_row_dis">DIS</string>
+    <string name="fish_1_form_row_bms">BMS</string>
+    <string name="fish_1_form_row_number_pots_hauled">Number of Pots Hauled</string>
     <string name="fish_1_form_row_landing_or_discard_date">Landing or Discard Date: </string>
+    <string name="fish_1_form_row_select_landing_or_discard_date">Select Landing or Discard Date</string>
+    <string name="fish_1_form_row_transporter_reg_etc">Transporter Reg. etc.</string>
+    <string name="fish_1_form_row_save">Save Form Row</string>
+    <string name="fish_1_form_row_delete">Delete Form Row</string>
 
     <!-- FISH1 Form Row Deletion -->
 

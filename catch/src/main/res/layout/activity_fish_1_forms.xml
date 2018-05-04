@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="startTrackingLocation"
-                android:text="Start Tracking Location" />
+                android:text="@string/start_tracking_location" />
 
             <Button
                 android:id="@+id/stop_tracking_location"
@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="stopTrackingLocation"
-                android:text="Stop Tracking Location" />
+                android:text="@string/stop_tracking_location" />
 
         </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="startFishing"
-                android:text="Start Fishing" />
+                android:text="@string/start_fishing" />
 
             <Button
                 android:id="@+id/stop_fishing"
@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
                 android:onClick="stopFishing"
-                android:text="Stop Fishing" />
+                android:text="@string/stop_fishing" />
 
         </LinearLayout>
 
@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="@dimen/fab_margin"
             android:tint="@android:color/white"
             app:srcCompat="@android:drawable/ic_input_add" />

@@ -16,7 +16,7 @@
         <TextView
             android:layout_gravity="left"
             android:id="@+id/label"
-            android:text="asfs"
+            android:text=""
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_width="0dp"
