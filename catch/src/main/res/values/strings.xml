@@ -34,6 +34,7 @@
     <string name="stop_tracking_location">Stop Tracking Location</string>
     <string name="start_fishing">Start Fishing</string>
     <string name="stop_fishing">Stop Fishing</string>
+    <string name="fish_1_form_summary">%s\n%s -\n%s</string>
 
     <!-- FISH1 Form Creation -->
 
@@ -136,5 +137,7 @@
     <string name="east">East</string>
     <string name="w">W</string>
     <string name="west">West</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

@@ -2,6 +2,7 @@ package uk.ac.masts.sifids.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -27,10 +28,12 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.ViewHolder> {
 
     private List<Fish1Form> forms;
-    CatchDatabase db;
+    private CatchDatabase db;
+    private Context context;
 
-    public Fish1FormAdapter(List<Fish1Form> forms) {
+    public Fish1FormAdapter(List<Fish1Form> forms, Context context) {
         this.forms = forms;
+        this.context = context;
     }
 
     @Override
@@ -62,9 +65,16 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
         catch (InterruptedException ie) {
 
         }
-        holder.createdAt.setText(form.getPln() + "\n" + new SimpleDateFormat("dd MMM yyyy").format(lowerCal.getTime()) + " -\n" + new SimpleDateFormat("dd MMM yyyy").format(upperCal.getTime()));
-        holder.editButton.setTag(R.id.form_in_question, Integer.valueOf(forms.get(position).getId()));
-        holder.deleteButton.setTag(R.id.form_in_question, Integer.valueOf(forms.get(position).getId()));
+        holder.createdAt.setText(
+                String.format(
+                        context.getString(R.string.fish_1_form_summary),
+                        form.getPln(),
+                        new SimpleDateFormat(context.getString(R.string.dmonthy)).format(lowerCal.getTime()),
+                        new SimpleDateFormat(context.getString(R.string.dmonthy)).format(upperCal.getTime())
+                )
+        );
+        holder.editButton.setTag(R.id.form_in_question, forms.get(position).getId());
+        holder.deleteButton.setTag(R.id.form_in_question, forms.get(position).getId());
     }
 
     @Override
@@ -90,7 +100,7 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
             if (view.getId() == R.id.btn_edit_form) {
                 Intent i = new Intent(view.getContext(), EditFish1FormActivity.class);
                 int id = (Integer) view.getTag(R.id.form_in_question);
-                i.putExtra("id", id);
+                i.putExtra(Fish1Form.ID, id);
                 view.getContext().startActivity(i);
             }
             else if (view.getId() == R.id.btn_delete_form) {
@@ -102,8 +112,8 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
             final int formId = (Integer) view.getTag(R.id.form_in_question);
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder
-                    .setMessage("Are you sure you want to delete this form?")
-                    .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    .setMessage(context.getString(R.string.fish_1_form_deletion_confirmation_message))
+                    .setPositiveButton(context.getString(R.string.yes),  new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Runnable r = new Runnable() {
@@ -125,7 +135,7 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
                             activity.startActivity(activity.getIntent());
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();

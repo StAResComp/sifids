@@ -14,9 +14,9 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:id="@+id/label"
-            android:text="asfs"
+            android:text=""
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_width="0dp"
@@ -28,14 +28,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="Edit" />
+            android:text="@string/edit" />
 
         <Button
             android:id="@+id/btn_delete_form_row"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.25"
-            android:text="Delete" />
+            android:text="@string/delete" />
 
     </LinearLayout>
 

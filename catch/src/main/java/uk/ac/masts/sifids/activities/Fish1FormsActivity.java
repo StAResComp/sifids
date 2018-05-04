@@ -64,7 +64,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
             @Override
             public void run() {
                 forms = db.catchDao().getForms();
-                adapter= new Fish1FormAdapter(forms);
+                adapter= new Fish1FormAdapter(forms, Fish1FormsActivity.this);
                 adapter.notifyDataSetChanged();
                 runOnUiThread(new Runnable() {
                     @Override
