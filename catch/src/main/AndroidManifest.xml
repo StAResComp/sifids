@@ -24,6 +24,7 @@
         <activity
             android:name=".activities.Fish1FormsActivity"
             android:label="@string/title_activity_catch"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +34,6 @@
         <activity
             android:name=".activities.EditFish1FormActivity"
             android:label="FISH1 Form"
-            android:launchMode="singleTop"
             android:parentActivityName=".activities.Fish1FormsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

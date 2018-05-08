@@ -35,6 +35,9 @@ public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
                 intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

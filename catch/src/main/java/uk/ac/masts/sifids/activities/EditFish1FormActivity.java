@@ -148,7 +148,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                                                 Integer.parseInt(
                                                         prefs.getString(
                                                                 getString(R.string.pref_fishery_office_key),
-                                                                ""
+                                                                "1"
                                                         )
                                                 )
                                         );

@@ -192,7 +192,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class VesselDetailsPreferenceFragment extends PreferenceFragment {
+    public static class VesselDetailsPreferenceFragment extends BasePreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -206,6 +206,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_pln_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_name_key)));
         }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    // this takes the user 'back', as if they pressed the left-facing triangle icon on the main android toolbar.
+                    // if this doesn't work as desired, another possibility is to call `finish()` here.
+                    getActivity().onBackPressed();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     /**
@@ -213,7 +226,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class OwnerMasterDetailsPreferenceFragment extends PreferenceFragment {
+    public static class OwnerMasterDetailsPreferenceFragment extends BasePreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -234,7 +247,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class PortDetailsPreferenceFragment extends PreferenceFragment {
+    public static class PortDetailsPreferenceFragment extends BasePreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -254,7 +267,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GearDetailsPreferenceFragment extends PreferenceFragment {
+    public static class GearDetailsPreferenceFragment extends BasePreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -276,7 +289,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class SpeciesDetailsPreferenceFragment extends PreferenceFragment {
+    public static class SpeciesDetailsPreferenceFragment extends BasePreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -314,6 +327,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             case R.id.activity_map:
                 intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
+                return true;
+            case android.R.id.home:
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
