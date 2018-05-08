@@ -353,6 +353,7 @@ public class EditFish1FormRowActivity extends AppCompatActivityWithMenuBar imple
                         }
                         Intent i = new Intent(EditFish1FormRowActivity.this, EditFish1FormActivity.class);
                         i.putExtra(Fish1Form.ID, EditFish1FormRowActivity.this.formId);
+                        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         EditFish1FormRowActivity.this.finish();
                         EditFish1FormRowActivity.this.startActivity(i);
                     }

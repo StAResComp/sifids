@@ -11,10 +11,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,6 +57,7 @@ import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
 import uk.ac.masts.sifids.entities.Port;
+import uk.ac.masts.sifids.providers.GenericFileProvider;
 
 /**
  * Created by pgm5 on 21/02/2018.
@@ -344,12 +347,16 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     }
 
     private void createAndEmailFile() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(Fish1Form.MAILTO, fish1Form.getEmail(), null));
+        Intent emailIntent = new Intent();
+        emailIntent.setAction(Intent.ACTION_SEND);
+        emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{fish1Form.getEmail()});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.fish_1_form_email_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.fish_1_form_email_text));
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{fish1Form.getEmail()});
-        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(String.format(Fish1Form.ATTACHMENT_URL, createFileToSend().getAbsoluteFile())));
-        startActivity(Intent.createChooser(emailIntent, getString(R.string.fish_1_form_email_intent_title)));
+        emailIntent.putExtra(Intent.EXTRA_STREAM, GenericFileProvider.getUriForFile(this, "uk.ac.masts.sifids", createFileToSend()));
+        startActivityForResult(emailIntent, 101);
     }
 
     private void saveForm() {
@@ -424,6 +431,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
 
                         }
                         Intent i = new Intent(EditFish1FormActivity.this, Fish1FormsActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         EditFish1FormActivity.this.finish();
                         EditFish1FormActivity.this.startActivity(i);
                     }
@@ -545,11 +553,15 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        if (
-                requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE
+        if (requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE
                         && grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            createAndEmailFile();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    createAndEmailFile();
+                }
+            }, 500);
         }
     }
 
