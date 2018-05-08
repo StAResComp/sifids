@@ -165,6 +165,7 @@ public class CatchLocationService extends Service {
                     new NotificationCompat.Builder(this, null)
                             .setContentTitle("Tracking Location")
                             .setContentText("Tracking Location")
+                            .setSmallIcon(R.drawable.ic_info_black_24dp)
                             .setContentIntent(pendingIntent)
                             .setTicker("Ticker text");
             manager.notify(1, builder.build());
