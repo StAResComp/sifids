@@ -1,7 +1,7 @@
 language: android
 
 before_install:
-  - yes | sdkmanager "platforms;android-27.0.3"
+  - yes | sdkmanager "platforms;android-27"
 
 android:
   components:
