@@ -3,6 +3,9 @@ language: android
 before_install:
   - yes | sdkmanager "platforms;android-27"
 
+before_script:
+  - ./add_keys-xml_for_travis.sh
+
 android:
   components:
     # Uncomment the lines below if you want to
