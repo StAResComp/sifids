@@ -7,7 +7,7 @@ before_install:
 before_script:
   - ./add_keys-xml_for_travis.sh
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-16 --abi android/armeabi-v7a
+  - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a
   - QEMU_AUDIO_DRV=none emulator -avd test -no-window &
   #- emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
