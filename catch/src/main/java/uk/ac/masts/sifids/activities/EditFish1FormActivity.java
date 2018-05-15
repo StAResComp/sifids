@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -585,50 +586,62 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             file = new File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                     fish1Form.getCsvFileName());
-            final FileWriter writer = new FileWriter(file);
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(fw);
             //Write form info as comments above CSV rows
             writer.write(
                     String.format(
                             getString(R.string.csv_fishery_office),
-                            this.fisheryOffice.getText().toString()) + "\r\n");
+                            this.fisheryOffice.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_email),
-                            this.fisheryOfficeEmail.getText().toString()) + "\r\n");
+                            this.fisheryOfficeEmail.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_port_of_departure),
-                            this.portOfDepartureValue) + "\r\n");
+                            this.portOfDepartureValue));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_port_of_landing),
-                            this.portOfLandingValue) + "\r\n");
+                            this.portOfLandingValue));
+            writer.newLine();
             writer.write(
                     String.format(
-                            getString(R.string.csv_pln), pln.getText().toString()) + "\r\n");
+                            getString(R.string.csv_pln), pln.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_vessel_name),
-                            vesselName.getText().toString()) + "\r\n");
+                            vesselName.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_owner_master),
-                            ownerMaster.getText().toString()) + "\r\n");
+                            ownerMaster.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_address),
-                            address.getText().toString()) + "\r\n");
+                            address.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_total_pots_fishing),
-                            totalPotsFishing.getText().toString()) + "\r\n");
+                            totalPotsFishing.getText().toString()));
+            writer.newLine();
             writer.write(
                     String.format(
                             getString(R.string.csv_comments_buyers_information),
-                            comment.getText().toString()) + "\r\n");
+                            comment.getText().toString()));
+            writer.newLine();
             //Do the header row
-            writer.write("\r\n");
-            writer.write(getString(R.string.csv_header_row) + "\r\n");
+            writer.newLine();
+            writer.write(getString(R.string.csv_header_row));
+            writer.newLine();
             //Write the rows
             for (final Fish1FormRow formRow : formRows) {
                 String rowToWrite = "";
@@ -709,9 +722,11 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 rowToWrite = appendToCsvRow(rowToWrite, cal, false);
                 rowToWrite = appendToCsvRow(rowToWrite, formRow.getTransporterRegEtc(),
                         true);
-                writer.write(rowToWrite + "\r\n");
+                writer.write(rowToWrite);
+                writer.newLine();
             }
             writer.close();
+            fw.close();
             Toast.makeText(getBaseContext(),
                     String.format(getString(R.string.csv_saved), file.getPath()),
                     Toast.LENGTH_LONG).show();
