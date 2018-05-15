@@ -9,8 +9,17 @@ import android.view.MenuItem;
 
 import uk.ac.masts.sifids.R;
 
+/**
+ * Base class to allow MenuBar stuff to be handled in one place for most Activities. Inheritance for
+ * SettingsActivity is different; these methods must be implemented separately there.
+ */
 public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
 
+    /**
+     * Inflates supplied menu. Should always return true.
+     * @param menu Menu to be inflated
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -18,6 +27,11 @@ public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles selection of items in the menu
+     * @param item Selected item
+     * @return true if item is processed successfully
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection

@@ -59,6 +59,10 @@
     <string name="fish_1_form_add_row">Add Row Below</string>
     <string name="fish_1_form_save">Save Form</string>
     <string name="fish_1_form_delete">Delete Form</string>
+    <string name="fish_1_form_error_retrieving_from_database">Error retrieving FISH1 form from database</string>
+    <string name="fish_1_form_error_creating_new_form">Error creating new FISH1 form</string>
+    <string name="fish_1_form_loading_ports_list">Error loading ports from database</string>
+    <string name="fish_1_form_error_deleting_form">Error deleting form</string>
 
     <!-- FISH1 Form Deletion -->
 
