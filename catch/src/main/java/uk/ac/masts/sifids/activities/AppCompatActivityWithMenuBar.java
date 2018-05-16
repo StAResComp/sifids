@@ -50,7 +50,10 @@ public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.home:
-                onBackPressed();
+                this.onBackPressed();
+                return true;
+            case android.R.id.home:
+                this.onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

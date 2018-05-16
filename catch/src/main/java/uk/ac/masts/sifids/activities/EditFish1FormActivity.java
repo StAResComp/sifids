@@ -1,30 +1,19 @@
 package uk.ac.masts.sifids.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,10 +27,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +38,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
@@ -61,14 +47,13 @@ import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
-import uk.ac.masts.sifids.entities.Port;
 import uk.ac.masts.sifids.providers.GenericFileProvider;
 
 /**
  * Activity for editing (and creating/deleting) a FISH1 Form.
  * Created by pgm5 on 21/02/2018.
  */
-public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implements AdapterView.OnItemSelectedListener {
+public class EditFish1FormActivity extends EditingActivity implements AdapterView.OnItemSelectedListener {
 
     //FISH1 Form being edited
     Fish1Form fish1Form;
@@ -95,10 +80,6 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     ArrayAdapter<CharSequence> portOfDepartureAdapter;
     ArrayAdapter<CharSequence> portOfLandingAdapter;
 
-    //Data sources
-    SharedPreferences prefs;
-    CatchDatabase db;
-
     //Associated FISH1 Form Rows
     List<Fish1FormRow> formRows;
     public static RecyclerView recyclerView;
@@ -106,6 +87,9 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
 
     //Permission request needs a value
     final static int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 6954;
+
+    //Key for saving form state
+    final static String INSTANCE_FORM_ID = "instanceFormId";
 
     /**
      * Runs when activity is created
@@ -115,25 +99,9 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-
-        //Set up the action bar/menu
-        setupActionBar();
-
-        //Bind to layout
         setContentView(R.layout.activity_edit_fish_1_form);
 
-        //Initialise database
-        db = CatchDatabase.getInstance(getApplicationContext());
-
-        //Get user preferences
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        //Handle whatever has been passed to this by previous Activity
-        this.processIntent();
-
-        //Put the user interface form together
-        this.buildForm();
+        super.onCreate(savedInstanceState);
 
         //Handle associated FISH1 Form rows
         this.doRows();
@@ -145,10 +113,10 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     /**
      * Handles whatever has been passed to this activity by the previous one
      */
-    private void processIntent() {
+    protected void processIntent() {
         final Bundle extras = getIntent().getExtras();
-        String error_msg = "";
-        Runnable r = null;
+        String error_msg;
+        Runnable r;
         if (extras != null) {
             //Load form with supplied id
             if (extras.get(Fish1Form.ID) != null) {
@@ -157,11 +125,12 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 r = new Runnable() {
                     @Override
                     public void run() {
-                        fish1Form = db.catchDao().getForm(id);
+                        fish1Form = EditFish1FormActivity.this.db.catchDao().getForm(id);
                     }
                 };
                 error_msg = getString(R.string.fish_1_form_error_retrieving_from_database);
-            } else {
+            }
+            else {
                 //No ID supplied - create new form
                 fish1Form = new Fish1Form();
                 //Database queries can't be run on the UI thread
@@ -170,10 +139,10 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                     public void run() {
                         //Use user preferences to create form
                         FisheryOffice fisheryOfficeObject =
-                                db.catchDao()
+                                EditFish1FormActivity.this.db.catchDao()
                                         .getOffice(
                                                 Integer.parseInt(
-                                                        prefs.getString(
+                                                        EditFish1FormActivity.this.prefs.getString(
                                                                 getString(R.string.pref_fishery_office_key),
                                                                 "1"
                                                         )
@@ -189,15 +158,28 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                             );
                             fish1Form.setEmail(fisheryOfficeObject.getEmail());
                         }
-                        fish1Form.setPln(prefs.getString(getString(R.string.pref_vessel_pln_key), ""));
-                        fish1Form.setVesselName(prefs.getString(getString(R.string.pref_vessel_name_key), ""));
-                        fish1Form.setOwnerMaster(prefs.getString(getString(R.string.pref_owner_master_name_key), ""));
-                        fish1Form.setAddress(prefs.getString(getString(R.string.pref_owner_master_address_key), ""));
+                        fish1Form.setPln(
+                                EditFish1FormActivity.this.prefs.getString(
+                                        getString(R.string.pref_vessel_pln_key), ""));
+                        fish1Form.setVesselName(
+                                EditFish1FormActivity.this.prefs.getString(
+                                        getString(R.string.pref_vessel_name_key), ""));
+                        fish1Form.setOwnerMaster(
+                                EditFish1FormActivity.this.prefs.getString(
+                                        getString(R.string.pref_owner_master_name_key),
+                                        ""));
+                        fish1Form.setAddress(
+                                EditFish1FormActivity.this.prefs.getString(
+                                        getString(R.string.pref_owner_master_address_key),
+                                        ""));
                         fish1Form.setTotalPotsFishing(
                                 Integer.parseInt(
-                                        prefs.getString(getString(R.string.pref_total_pots_fishing_key), "0")));
-                        long[] ids = db.catchDao().insertFish1Forms(fish1Form);
-                        fish1Form = db.catchDao().getForm((int) ids[0]);
+                                        EditFish1FormActivity.this.prefs.getString(
+                                                getString(R.string.pref_total_pots_fishing_key),
+                                                "0")));
+                        long[] ids = EditFish1FormActivity.this.db
+                                .catchDao().insertFish1Forms(fish1Form);
+                        fish1Form = EditFish1FormActivity.this.db.catchDao().getForm((int) ids[0]);
                         //Have dates been supplied with which to create form rows?
                         if (
                                 extras.get(Fish1Form.START_DATE) != null
@@ -220,7 +202,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                                 upper.add(Calendar.DATE, 1);
                                 //Get location where fishing started...
                                 CatchLocation point =
-                                        db.catchDao()
+                                        EditFish1FormActivity.this.db.catchDao()
                                                 .getFirstFishingLocationBetweenDates(date,
                                                         upper.getTime());
                                 if (point != null) {
@@ -231,11 +213,11 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                                         Map<Integer, Double> bounds =
                                                 point.getIcesRectangleBounds();
                                         if (bounds == null)
-                                            point = db.catchDao()
+                                            point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstValidIcesFishingLocationBetweenDates(
                                                             point.getTimestamp(), upper.getTime());
                                         else
-                                            point = db.catchDao()
+                                            point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstFishingLocationOutsideBoundsBetweenDates(
                                                             point.getTimestamp(),
                                                             upper.getTime(),
@@ -249,7 +231,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                                     }
                                 }
                             }
-                            db.catchDao().insertFish1FormRows(rows);
+                            EditFish1FormActivity.this.db.catchDao().insertFish1FormRows(rows);
                         }
                     }
                 };
@@ -268,7 +250,7 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
     /**
      * Build the user form - bind variables to XML elements
      */
-    private void buildForm() {
+    protected void buildForm() {
         fisheryOffice = findViewById(R.id.fishery_office);
         fisheryOfficeEmail = findViewById(R.id.fishery_office_email);
         pln = findViewById(R.id.pln);
@@ -281,8 +263,9 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                ports = db.catchDao().getPortNames(
-                        prefs.getStringSet(getString(R.string.pref_port_key), new HashSet<String>()));
+                ports = EditFish1FormActivity.this.db.catchDao().getPortNames(
+                        EditFish1FormActivity.this.prefs.getStringSet(
+                                getString(R.string.pref_port_key), new HashSet<String>()));
             }
         };
         Thread newThread = new Thread(r);
@@ -385,7 +368,8 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    formRows = db.catchDao().getRowsForForm(fish1Form.getId());
+                    formRows = EditFish1FormActivity.this.db.catchDao()
+                            .getRowsForForm(fish1Form.getId());
                     adapter = new Fish1FormRowAdapter(formRows, EditFish1FormActivity.this);
                     adapter.notifyDataSetChanged();
                     runOnUiThread(new Runnable() {
@@ -476,14 +460,14 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        db.catchDao().insertFish1Forms(fish1Form);
+                        EditFish1FormActivity.this.db.catchDao().insertFish1Forms(fish1Form);
                     }
                 });
             } else {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        db.catchDao().updateFish1Forms(fish1Form);
+                        EditFish1FormActivity.this.db.catchDao().updateFish1Forms(fish1Form);
                     }
                 });
             }
@@ -515,7 +499,8 @@ public class EditFish1FormActivity extends AppCompatActivityWithMenuBar implemen
                         Runnable r = new Runnable() {
                             @Override
                             public void run() {
-                                db.catchDao().deleteFish1Form(fish1Form.getId());
+                                EditFish1FormActivity.this.db
+                                        .catchDao().deleteFish1Form(fish1Form.getId());
                             }
                         };
                         Thread newThread = new Thread(r);
