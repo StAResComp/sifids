@@ -3,6 +3,7 @@ package uk.ac.masts.sifids.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -73,7 +74,7 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
         for (CatchLocation point : points) {
             map.addMarker(new MarkerOptions().position(point.getLatLng()).title(point.getCoordinates()));
             if (first) {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(point.getLatLng(), (float) 10.0));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(point.getLatLng(), (float) 5.0));
                 first = false;
             }
         }

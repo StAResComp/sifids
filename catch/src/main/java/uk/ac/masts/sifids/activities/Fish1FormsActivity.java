@@ -4,8 +4,11 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -15,21 +18,55 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.services.CatchLocationService;
 
@@ -172,6 +209,156 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
     private void startLocationService() {
         startService(new Intent(this, CatchLocationService.class));
+    }
+
+    public void submitTrack(View v) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String pln = prefs.getString(getString(R.string.pref_vessel_pln_key),"");
+        Callable<List<CatchLocation>> c = new Callable<List<CatchLocation>>() {
+            @Override
+            public List<CatchLocation> call() throws Exception {
+                return db.catchDao().getLastLocations(1000);
+            }
+        };
+        ExecutorService service =  Executors.newSingleThreadExecutor();
+        Future<List<CatchLocation>> future = service.submit(c);
+        List<CatchLocation> locations = null;
+        try {
+            locations = future.get();
+        }
+        catch (Exception e) {
+            Toast.makeText(getBaseContext(),
+                    getString(R.string.csv_not_saved), Toast.LENGTH_LONG).show();
+        }
+        if (locations != null) {
+            File file = null;
+            try {
+                file = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                        "last_1000_locations");
+                FileWriter fw = new FileWriter(file);
+                BufferedWriter writer = new BufferedWriter(fw);
+                for (final CatchLocation loc : locations) {
+                    String rowToWrite = loc.getTimestamp().toString();
+                    rowToWrite = appendToCsvRow(rowToWrite, loc.isFishing() ? 1 : 0, false);
+                    rowToWrite = appendToCsvRow(rowToWrite, loc.getLatitude(), false);
+                    rowToWrite = appendToCsvRow(rowToWrite, loc.getLongitude(), false);
+                    Log.e("CSV", rowToWrite);
+                    writer.write(rowToWrite);
+                    writer.newLine();
+                }
+                writer.close();
+                fw.close();
+                Toast.makeText(getBaseContext(),
+                        String.format(getString(R.string.csv_saved), file.getPath()),
+                        Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(getBaseContext(), getString(R.string.csv_not_saved), Toast.LENGTH_LONG)
+                        .show();
+                Log.e("IOException", e.getMessage());
+            }
+            new SubmitPost().execute();
+        }
+    }
+
+    /**
+     * Appends data to a string intended to be a row of a CSV file by adding a comma, followed by
+     * a string representing the data
+     * @param rowSoFar the row to which data should be appended
+     * @param dataToAppend the data to be appended
+     * @param isComplex if this is true, the data will be enclosed in double quotes
+     * @return the row with the data appended
+     */
+    private String appendToCsvRow(String rowSoFar, Object dataToAppend, boolean isComplex) {
+        String row = rowSoFar + ",";
+        if (dataToAppend != null) {
+            if (dataToAppend instanceof Calendar) {
+                Calendar cal = (Calendar) dataToAppend;
+                row += new SimpleDateFormat(getString(R.string.ymd)).format(cal.getTime());
+            }
+            else {
+                if (isComplex) {
+                    row += "\"" + dataToAppend + "\"";
+                }
+                else {
+                    row += dataToAppend;
+                }
+            }
+        }
+        return row;
+    }
+
+    private class SubmitPost extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String urlString = "http://rescomp-dev-1.st-andrews.ac.uk/~sifids/";
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestMethod("POST");
+
+                MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+                meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                meBuilder.addTextBody("vessel_name", "PLN");
+
+                File f = new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                        "last_1000_locations");
+                FileBody csvBody = new FileBody(f, ContentType.TEXT_PLAIN);
+
+                meBuilder.addPart("tracks", csvBody);
+
+                HttpEntity mpe = meBuilder.build();
+
+                urlConnection.setRequestProperty("Connection", "Keep-Alive");
+                urlConnection.addRequestProperty("Content-length", mpe.getContentLength()+"");
+                urlConnection.addRequestProperty(mpe.getContentType().getName(), mpe.getContentType().getValue());
+
+                OutputStream out = urlConnection.getOutputStream();
+
+                mpe.writeTo(out);
+                Log.e("HTTPRequest", out.toString());
+                urlConnection.connect();
+                out.flush();
+                out.close();
+
+                Log.e("HTTPResponse", Integer.toString(urlConnection.getResponseCode()));
+
+                InputStream input;
+
+                if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                    input = urlConnection.getInputStream();
+                }
+                else {
+                    input = urlConnection.getErrorStream();
+                }
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                StringBuilder result = new StringBuilder();
+                String line;
+                while((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                urlConnection.disconnect();
+
+                Log.e("HTTPResponse", result.toString());
+
+            }
+            catch (Exception e) {
+                Log.e( "FileUpload ", e.getMessage() );
+            }
+            return "";
+        }
+
     }
 
     @Override

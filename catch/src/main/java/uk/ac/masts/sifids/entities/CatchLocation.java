@@ -1,8 +1,7 @@
 package uk.ac.masts.sifids.entities;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -221,7 +220,7 @@ public class CatchLocation extends ChangeLoggingEntity {
     public static Map<Integer,Double> getIcesRectangleBounds(double lat, double lon) {
         //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
         if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
-            Map<Integer,Double> bounds = new HashMap();
+            Map<Integer,Double> bounds = new HashMap<>();
             bounds.put(LOWER_LAT,(Math.floor(lat * 2)/2));
             bounds.put(UPPER_LAT,(Math.ceil(lat * 2)/2));
             bounds.put(LOWER_LONG,Math.floor(lon));
@@ -232,15 +231,19 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public static List<CatchLocation> createTestLocations() {
-        List<CatchLocation> locations = new ArrayList();
+        Log.e("TEST_LOCATIONS", "Creating test locations");
+        List<CatchLocation> locations = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         cal.set(Calendar.HOUR_OF_DAY,0);
         cal.set(Calendar.MINUTE,0);
         cal.set(Calendar.SECOND,0);
+        Calendar today = (Calendar) cal.clone();
+        cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         cal.add(Calendar.DATE, -365);
-        Calendar now = Calendar.getInstance();
-        for (Calendar c = cal; cal.before(now); cal.add(Calendar.DATE, 1)) {
+        Log.e("TEST_LOCATIONS", "Period " + cal.getTime() + " to " + today);
+        Log.e("TEST_LOCATIONS", "Before today:  " + cal.before(today));
+        while (cal.before(today)) {
+            Log.e("TEST_LOCATIONS", "Creating test location");
             Calendar s = (Calendar) cal.clone();
             s.set(Calendar.HOUR_OF_DAY,9);
             Random rand = new Random();
@@ -253,10 +256,11 @@ public class CatchLocation extends ChangeLoggingEntity {
                 location.setTimestamp(s.getTime());
                 location.setFishing(true);
                 locations.add(location);
-                lat = (lat - 0.0001) + (((lat + 0.0001) - (lat - 0.0001)) * rand.nextDouble());
-                lon = (lon - 0.0001) + (((lon + 0.0001) - (lon - 0.0001)) * rand.nextDouble());
+                lat = (lat - 0.001) + (((lat + 0.001) - (lat - 0.001)) * rand.nextDouble());
+                lon = (lon - 0.001) + (((lon + 0.001) - (lon - 0.001)) * rand.nextDouble());
                 s.add(Calendar.SECOND,10);
             }
+            cal.add(Calendar.DATE, 1);
         }
         return locations;
     }
