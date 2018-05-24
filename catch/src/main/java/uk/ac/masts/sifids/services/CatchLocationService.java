@@ -139,37 +139,39 @@ public class CatchLocationService extends Service {
         Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        NotificationManager manager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         //Newer versions of Android need a notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "sifids_location_tracking_channel";
             String channelName = "SIFIDS Location Tracking";
             NotificationChannel channel = new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    channelName, NotificationManager.IMPORTANCE_HIGH);
             manager.createNotificationChannel(channel);
             Notification notification =
                     new Notification.Builder(this, channelId)
-                            .setContentTitle("Tracking Location")
-                            .setContentText("Tracking Location")
+                            .setContentTitle("Tracking location")
+                            .setContentText("The SIFIDS app is tracking your location")
                             .setSmallIcon(R.drawable.ic_info_black_24dp)
                             .setContentIntent(pendingIntent)
                             .setTicker("Ticker text")
+                            .setVisibility(Notification.VISIBILITY_PRIVATE)
                             .build();
             startForeground(121, notification);
         }
         else {
-            NotificationManager manager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this, null)
-                            .setContentTitle("Tracking Location")
-                            .setContentText("Tracking Location")
+                            .setContentTitle("Tracking location")
+                            .setContentText("The SIFIDS app is tracking your location")
                             .setSmallIcon(R.drawable.ic_info_black_24dp)
                             .setContentIntent(pendingIntent)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                            .setDefaults(Notification.DEFAULT_SOUND)
                             .setTicker("Ticker text");
-            manager.notify(1, builder.build());
+            manager.notify(121, builder.build());
         }
 	}
 

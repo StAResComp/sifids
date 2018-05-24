@@ -8,16 +8,13 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.StringBody;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
  * Posts location data to the server for storage in database.
- * Use:
+ * Usage:
  *      new LocationCsvPostTask().execute(String url, String pln, String csv);
  * CSV fields: timestamp (string), isFishing (int), latitude (double), longitude (double)
  */
@@ -52,22 +49,6 @@ public class LocationCsvPostTask extends AsyncTask<String, Void, Void> {
             urlConnection.connect();
             out.flush();
             out.close();
-
-            InputStream input;
-
-            if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                input = urlConnection.getInputStream();
-            }
-            else {
-                input = urlConnection.getErrorStream();
-            }
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null) {
-                result.append(line);
-            }
             urlConnection.disconnect();
 
         }
