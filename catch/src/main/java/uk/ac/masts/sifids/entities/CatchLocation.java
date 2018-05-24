@@ -23,12 +23,15 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public boolean fishing;
 
+    public boolean uploaded;
+
     public final static int LOWER_LAT = 0;
     public final static int UPPER_LAT = 1;
     public final static int LOWER_LONG = 2;
     public final static int UPPER_LONG = 3;
 
     public CatchLocation() {
+        this.uploaded = false;
         this.updateDates();
     }
 
@@ -181,6 +184,17 @@ public class CatchLocation extends ChangeLoggingEntity {
     public void setFishing(boolean fishing) {
         if (fishing != this.isFishing()) {
             this.fishing = fishing;
+            this.updateDates();
+        }
+    }
+
+    public boolean isUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        if (uploaded != this.isUploaded()) {
+            this.uploaded = uploaded;
             this.updateDates();
         }
     }

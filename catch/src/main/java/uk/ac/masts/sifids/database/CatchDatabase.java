@@ -41,7 +41,7 @@ import uk.ac.masts.sifids.entities.Port;
                 FisheryOffice.class,
                 Port.class
     },
-        version = 9
+        version = 10
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -80,7 +80,14 @@ public abstract class CatchDatabase extends RoomDatabase{
 
                     }
                 })
-                .fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_9_10)
                 .build();
     }
+
+    static final Migration MIGRATION_9_10 = new Migration(9, 10) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE location ADD COLUMN uploaded INTEGER NOT NULL DEFAULT 0");
+        }
+    };
 }
