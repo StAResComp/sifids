@@ -37,6 +37,7 @@ public class CatchLocationService extends Service {
 	private static final int LOCATION_INTERVAL = 10000;
 	private static final float LOCATION_DISTANCE = 10f;
     private final int TRACKING_NOTIFICATION_ID = 204;
+    private final String SIFIDS_LOCATION_TRACKING_CHANNEL_ID = "sifids_location_tracking_channel";
 
 	private class LocationListener implements android.location.LocationListener {
 
@@ -144,24 +145,26 @@ public class CatchLocationService extends Service {
         //Need to notify user that app is using location
         Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this, 0,
+                        notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         //Newer versions of Android need a notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "sifids_location_tracking_channel";
-            String channelName = "SIFIDS Location Tracking";
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_HIGH);
+            String channelName = getString(R.string.location_tracking_notification_channel_name);
+            NotificationChannel channel = new NotificationChannel(
+                    SIFIDS_LOCATION_TRACKING_CHANNEL_ID, channelName,
+                    NotificationManager.IMPORTANCE_HIGH);
             mNotificationManager.createNotificationChannel(channel);
             Notification notification =
-                    new Notification.Builder(this, channelId)
-                            .setContentTitle("Tracking location")
-                            .setContentText("The SIFIDS app is tracking your location")
+                    new Notification.Builder(this, SIFIDS_LOCATION_TRACKING_CHANNEL_ID)
+                            .setContentTitle(
+                                    getString(R.string.location_tracking_notification_title))
+                            .setContentText(getString(R.string.location_tracking_notification_text))
                             .setSmallIcon(R.drawable.ic_menu_mylocation)
                             .setContentIntent(pendingIntent)
-                            .setTicker("Ticker text")
+                            .setTicker(getString(R.string.location_tracking_notification_text))
                             .setVisibility(Notification.VISIBILITY_PRIVATE)
                             .build();
             startForeground(TRACKING_NOTIFICATION_ID, notification);
@@ -169,14 +172,16 @@ public class CatchLocationService extends Service {
         else {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this, null)
-                            .setContentTitle("Tracking location")
-                            .setContentText("The SIFIDS app is tracking your location")
+                            .setContentTitle(
+                                    getString(R.string.location_tracking_notification_title))
+                            .setContentText(
+                                    getString(R.string.location_tracking_notification_text))
                             .setSmallIcon(R.drawable.ic_menu_mylocation)
                             .setContentIntent(pendingIntent)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                             .setDefaults(Notification.DEFAULT_SOUND)
-                            .setTicker("Ticker text");
+                            .setTicker(getString(R.string.location_tracking_notification_text));
             mNotificationManager.notify(TRACKING_NOTIFICATION_ID, builder.build());
         }
     }

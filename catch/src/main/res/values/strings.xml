@@ -128,6 +128,12 @@
 
     <string name="title_activity_map">Map</string>
 
+    <!-- Location Tracking -->
+
+    <string name="location_tracking_notification_channel_name">SIFIDS Location Tracking</string>
+    <string name="location_tracking_notification_title">Tracking location</string>
+    <string name="location_tracking_notification_text">The SIFIDS app is tracking your location</string>
+
     <!-- Sending Data to Server -->
 
     <string name="post_request_url">http://rescomp-dev-1.st-andrews.ac.uk/~sifids/</string>
