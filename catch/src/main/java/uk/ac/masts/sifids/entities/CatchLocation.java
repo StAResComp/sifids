@@ -1,7 +1,6 @@
 package uk.ac.masts.sifids.entities;
 
 import android.arch.persistence.room.Entity;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -231,7 +230,6 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public static List<CatchLocation> createTestLocations() {
-        Log.e("TEST_LOCATIONS", "Creating test locations");
         List<CatchLocation> locations = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY,0);
@@ -240,10 +238,7 @@ public class CatchLocation extends ChangeLoggingEntity {
         Calendar today = (Calendar) cal.clone();
         cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
         cal.add(Calendar.DATE, -365);
-        Log.e("TEST_LOCATIONS", "Period " + cal.getTime() + " to " + today);
-        Log.e("TEST_LOCATIONS", "Before today:  " + cal.before(today));
         while (cal.before(today)) {
-            Log.e("TEST_LOCATIONS", "Creating test location");
             Calendar s = (Calendar) cal.clone();
             s.set(Calendar.HOUR_OF_DAY,9);
             Random rand = new Random();

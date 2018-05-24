@@ -48,6 +48,7 @@ import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
 import uk.ac.masts.sifids.providers.GenericFileProvider;
+import uk.ac.masts.sifids.utilities.Csv;
 
 /**
  * Activity for editing (and creating/deleting) a FISH1 Form.
@@ -637,11 +638,11 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                     cal = null;
                 }
                 //strip leading comma
-                rowToWrite = appendToCsvRow(rowToWrite, cal, false).substring(1);
-                rowToWrite = appendToCsvRow(rowToWrite,
-                        formRow.getCoordinates(), false);
-                rowToWrite = appendToCsvRow(rowToWrite,
-                        formRow.getIcesArea(), true);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite, cal, false, this);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite,
+                        formRow.getCoordinates(), false, this);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite,
+                        formRow.getIcesArea(), true, this);
                 final String rowSoFar = rowToWrite;
                 //Need another thread for the database request
                 Callable<String> c = new Callable<String>() {
@@ -657,29 +658,47 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                                 .db.catchDao().getPresentationById(formRow.getPresentationId());
                         String row = rowSoFar;
                         if (gear != null) {
-                            row = appendToCsvRow(row, gear.getName(), true);
+                            row = Csv.appendToCsvRow(
+                                    row, gear.getName(), true,
+                                    EditFish1FormActivity.this);
                         }
                         else {
-                            row = appendToCsvRow(row, null, false);
+                            row = Csv.appendToCsvRow(
+                                    row, null, false,
+                                    EditFish1FormActivity.this);
                         }
-                        row = appendToCsvRow(row, formRow.getMeshSize(), false);
+                        row = Csv.appendToCsvRow(
+                                row, formRow.getMeshSize(), false,
+                                EditFish1FormActivity.this);
                         if (species != null) {
-                            row = appendToCsvRow(row, species.toString(), true);
+                            row = Csv.appendToCsvRow(
+                                    row, species.toString(), true,
+                                    EditFish1FormActivity.this);
                         }
                         else {
-                            row = appendToCsvRow(row, null, false);
+                            row = Csv.appendToCsvRow(
+                                    row, null, false,
+                                    EditFish1FormActivity.this);
                         }
                         if (state != null) {
-                            row = appendToCsvRow(row, state.getName(), true);
+                            row = Csv.appendToCsvRow(
+                                    row, state.getName(), true,
+                                    EditFish1FormActivity.this);
                         }
                         else {
-                            row = appendToCsvRow(row, null, false);
+                            row = Csv.appendToCsvRow(
+                                    row, null, false,
+                                    EditFish1FormActivity.this);
                         }
                         if (presentation != null) {
-                            row = appendToCsvRow(row, presentation.getName(), true);
+                            row = Csv.appendToCsvRow(
+                                    row, presentation.getName(), true,
+                                    EditFish1FormActivity.this);
                         }
                         else {
-                            row = appendToCsvRow(row, null, false);
+                            row = Csv.appendToCsvRow(
+                                    row, null, false,
+                                    EditFish1FormActivity.this);
                         }
                         return row;
                     }
@@ -693,20 +712,24 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                     Toast.makeText(getBaseContext(),
                             getString(R.string.csv_not_saved), Toast.LENGTH_LONG).show();
                 }
-                rowToWrite = appendToCsvRow(rowToWrite, formRow.getWeight(), false);
-                rowToWrite = appendToCsvRow(rowToWrite, formRow.isDis(), false);
-                rowToWrite = appendToCsvRow(rowToWrite, formRow.isBms(), false);
-                rowToWrite = appendToCsvRow(rowToWrite,
-                        formRow.getNumberOfPotsHauled(), false);
+                rowToWrite = Csv.appendToCsvRow(
+                        rowToWrite, formRow.getWeight(), false, this);
+                rowToWrite = Csv.appendToCsvRow(
+                        rowToWrite, formRow.isDis(), false, this);
+                rowToWrite = Csv.appendToCsvRow(
+                        rowToWrite, formRow.isBms(), false, this);
+                rowToWrite = Csv.appendToCsvRow(
+                        rowToWrite,
+                        formRow.getNumberOfPotsHauled(), false, this);
                 cal = Calendar.getInstance();
                 if (formRow.getLandingOrDiscardDate() != null) {
                     cal.setTime(formRow.getLandingOrDiscardDate());
                 } else {
                     cal = null;
                 }
-                rowToWrite = appendToCsvRow(rowToWrite, cal, false);
-                rowToWrite = appendToCsvRow(rowToWrite, formRow.getTransporterRegEtc(),
-                        true);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite, cal, false, this);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite, formRow.getTransporterRegEtc(),
+                        true, this);
                 writer.write(rowToWrite);
                 writer.newLine();
             }
@@ -720,33 +743,6 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                     .show();
         }
         return file;
-    }
-
-    /**
-     * Appends data to a string intended to be a row of a CSV file by adding a comma, followed by
-     * a string representing the data
-     * @param rowSoFar the row to which data should be appended
-     * @param dataToAppend the data to be appended
-     * @param isComplex if this is true, the data will be enclosed in double quotes
-     * @return the row with the data appended
-     */
-    private String appendToCsvRow(String rowSoFar, Object dataToAppend, boolean isComplex) {
-        String row = rowSoFar + ",";
-        if (dataToAppend != null) {
-            if (dataToAppend instanceof Calendar) {
-                Calendar cal = (Calendar) dataToAppend;
-                row += new SimpleDateFormat(getString(R.string.ymd)).format(cal.getTime());
-            }
-            else {
-                if (isComplex) {
-                    row += "\"" + dataToAppend + "\"";
-                }
-                else {
-                    row += dataToAppend;
-                }
-            }
-        }
-        return row;
     }
 
     /**
