@@ -143,11 +143,20 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstValidIcesFishingLocationBetweenDates(Date start, Date end);
 
+    @Query("SELECT COUNT(*) FROM location WHERE uploaded = 0")
+    public int countUnuploadedLocations();
+
+    @Query("SELECT * FROM location WHERE uploaded = 0 LIMIT 999")
+    public List<CatchLocation> getUnuploadedLocations();
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 
     @Update
     public void updateFish1FormRows(Fish1FormRow... forms);
+
+    @Query("UPDATE location SET uploaded = 1 WHERE id IN (:ids)")
+    public void markLocationsUploaded(List<String> ids);
 
     @Query("DELETE FROM fish_1_form WHERE id = :id")
     public void deleteFish1Form(int id);

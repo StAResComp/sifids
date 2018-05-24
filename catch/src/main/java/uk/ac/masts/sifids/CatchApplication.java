@@ -1,11 +1,16 @@
 package uk.ac.masts.sifids;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
 import uk.ac.masts.sifids.activities.SettingsActivity;
+import uk.ac.masts.sifids.receivers.AlarmReceiver;
 
 /**
  * This class is extends android.app.Application to provide a flag which can be used to indicate
@@ -66,5 +71,20 @@ public class CatchApplication extends Application {
 
             // TODO This is an upgrade
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Context context = this.getApplicationContext();
+        AlarmManager alarmManager =
+                (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent alarmIntent =
+                PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC,
+                SystemClock.elapsedRealtime() + 5000,
+                AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
     }
 }

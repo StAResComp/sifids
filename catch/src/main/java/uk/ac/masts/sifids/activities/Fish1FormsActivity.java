@@ -179,38 +179,6 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
         startService(new Intent(this, CatchLocationService.class));
     }
 
-    public void submitTrack(View v) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String pln = prefs.getString(getString(R.string.pref_vessel_pln_key),"");
-        Callable<List<CatchLocation>> c = new Callable<List<CatchLocation>>() {
-            @Override
-            public List<CatchLocation> call() throws Exception {
-                return db.catchDao().getLastLocations(1000);
-            }
-        };
-        ExecutorService service =  Executors.newSingleThreadExecutor();
-        Future<List<CatchLocation>> future = service.submit(c);
-        List<CatchLocation> locations = null;
-        try {
-            locations = future.get();
-        }
-        catch (Exception e) {
-            Toast.makeText(getBaseContext(),
-                    getString(R.string.csv_not_saved), Toast.LENGTH_LONG).show();
-        }
-        if (locations != null) {
-            String csv = "";
-            for (final CatchLocation loc : locations) {
-                String rowToWrite = loc.getTimestamp().toString();
-                rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.isFishing() ? 1 : 0, false, this);
-                rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLatitude(), false, this);
-                rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLongitude(), false, this);
-                csv = Csv.appendRowToCsv(csv, rowToWrite);
-            }
-            new LocationCsvPostTask().execute(getString(R.string.post_request_url), "PLN", csv);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
