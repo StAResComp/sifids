@@ -251,7 +251,7 @@ public class CatchLocation extends ChangeLoggingEntity {
         cal.set(Calendar.SECOND,0);
         Calendar today = (Calendar) cal.clone();
         cal.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
-        cal.add(Calendar.DATE, -365);
+        cal.add(Calendar.DATE, -30);
         while (cal.before(today)) {
             Calendar s = (Calendar) cal.clone();
             s.set(Calendar.HOUR_OF_DAY,9);
