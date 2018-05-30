@@ -142,7 +142,7 @@
 
     <!-- Sending Data to Server -->
 
-    <string name="post_request_url">http://rescomp-dev-1.st-andrews.ac.uk/~sifids/</string>
+    <string name="post_request_url">https://arts.st-andrews.ac.uk/sifids/</string>
 
     <!-- General Purpose -->
 
