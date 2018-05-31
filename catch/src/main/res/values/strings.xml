@@ -144,6 +144,28 @@
 
     <string name="post_request_url">https://arts.st-andrews.ac.uk/sifids/</string>
 
+    <!-- Observations -->
+
+    <string name="observation_what_did_you_see">What did you see?</string>
+    <string name="observation_do_you_know_species">Do you know the species?</string>
+    <string name="observation_select_species">Please select the species from the list</string>
+    <string name="observation_species_prompt">Species</string>
+    <string name="observation_when_did_you_see">When did you see this animal?</string>
+    <string name="observation_now">Just now</string>
+    <string name="observation_select_time">Select other time</string>
+    <string name="observation_where_did_you_see">Where did you see this animal?</string>
+    <string name="observation_suggested_location">Suggested location based on time and tracking data: %s</string>
+    <string name="observation_use_suggested_location">Use suggested location</string>
+    <string name="observation_here">At my current location</string>
+    <string name="observation_select_place_from_map">Select location from map</string>
+    <string name="observation_enter_lat_long">Enter latitude and longitude</string>
+    <string name="observation_how_many">How many did you see?</string>
+    <string name="observation_additional_notes">Additional notes</string>
+    <string name="observation_submit">Submit Observation</string>
+    <string name="observation_thank_you">Thank you for your observation! This is your %s observation.</string>
+    <string name="observation_make_another">Make another observation</string>
+    <string name="observation_done">Finished</string>
+
     <!-- General Purpose -->
 
     <string name="yes">Yes</string>
