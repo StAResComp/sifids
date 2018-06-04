@@ -21,6 +21,9 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
+import uk.ac.masts.sifids.entities.Observation;
+import uk.ac.masts.sifids.entities.ObservationClass;
+import uk.ac.masts.sifids.entities.ObservationSpecies;
 import uk.ac.masts.sifids.entities.Port;
 
 /**
@@ -39,9 +42,12 @@ import uk.ac.masts.sifids.entities.Port;
                 CatchSpeciesAllowedPresentation.class,
                 CatchLocation.class,
                 FisheryOffice.class,
-                Port.class
+                Port.class,
+                ObservationClass.class,
+                ObservationSpecies.class,
+                Observation.class
     },
-        version = 10
+        version = 11
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -68,19 +74,26 @@ public abstract class CatchDatabase extends RoomDatabase{
                         Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                             @Override
                             public void run() {
-                                getInstance(context).catchDao().insertPresentations(CatchPresentation.createPresentations());
-                                getInstance(context).catchDao().insertSpecies(CatchSpecies.createSpecies());
-                                getInstance(context).catchDao().insertStates(CatchState.createStates());
+                                getInstance(context).catchDao()
+                                        .insertPresentations(
+                                                CatchPresentation.createPresentations());
+                                getInstance(context).catchDao()
+                                        .insertSpecies(CatchSpecies.createSpecies());
+                                getInstance(context).catchDao()
+                                        .insertStates(CatchState.createStates());
                                 getInstance(context).catchDao().insertGear(Gear.createGear());
-                                getInstance(context).catchDao().insertFisheryOffices(FisheryOffice.createFisheryOffices());
+                                getInstance(context).catchDao()
+                                        .insertFisheryOffices(FisheryOffice.createFisheryOffices());
                                 getInstance(context).catchDao().insertPorts(Port.createPorts());
-                                getInstance(context).catchDao().insertLocations(CatchLocation.createTestLocations());
+                                getInstance(context).catchDao()
+                                        .insertLocations(CatchLocation.createTestLocations());
                             }
                         });
 
                     }
                 })
                 .addMigrations(MIGRATION_9_10)
+                .addMigrations(MIGRATION_10_11)
                 .build();
     }
 
@@ -88,6 +101,41 @@ public abstract class CatchDatabase extends RoomDatabase{
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE location ADD COLUMN uploaded INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    static final Migration MIGRATION_10_11 = new Migration(10, 11) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS observation_class " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT);"
+            );
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS observation_species " +
+                            "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, " +
+                            "observation_class_id INTEGER NOT NULL, " +
+                            "FOREIGN KEY(observation_class_id) REFERENCES observation_class(id) " +
+                            "ON UPDATE NO ACTION ON DELETE CASCADE);"
+            );
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS observation " +
+                            "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                            "observation_class_id INTEGER NOT NULL, " +
+                            "observation_species_id INTEGER, " +
+                            "timestamp INTEGER, " +
+                            "latitude REAL NOT NULL, " +
+                            "longitude REAL NOT NULL, " +
+                            "count INTEGER NOT NULL, " +
+                            "notes TEXT, " +
+                            "submitted INTEGER NOT NULL DEFAULT(0), " +
+                            "created_at INTEGER, " +
+                            "modified_at INTEGER, " +
+                            "FOREIGN KEY(observation_class_id) REFERENCES observation_class(id) " +
+                            "ON UPDATE NO ACTION ON DELETE NO ACTION, " +
+                            "FOREIGN KEY(observation_species_id) REFERENCES observation_species(id) " +
+                            "ON UPDATE NO ACTION ON DELETE NO ACTION);"
+            );
         }
     };
 }
