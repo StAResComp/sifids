@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:gravity="center">
 
     <LinearLayout
         android:id="@+id/obs_what_seen_section"
@@ -119,11 +118,11 @@
             android:layout_height="wrap_content"
             android:text="@string/observation_where_did_you_see" />
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/observation_suggested_location" />
+            android:text="@string/observation_suggested_location"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"
@@ -251,14 +250,14 @@
         android:id="@+id/obs_count_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/observation_how_many"/>
+            android:text="@string/observation_how_many" />
 
         <Button
             android:layout_width="wrap_content"
@@ -291,14 +290,15 @@
         android:id="@+id/obs_notes_submit_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/observation_additional_notes"/>
+            android:text="@string/observation_additional_notes"
+            android:hint="sdfsdfsdfsdjdshkjdsfh"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -315,14 +315,14 @@
         android:id="@+id/obs_post_submission_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/observation_thank_you"/>
+            android:text="@string/observation_thank_you" />
 
         <Button
             android:layout_width="wrap_content"

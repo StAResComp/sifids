@@ -60,6 +60,9 @@ public interface CatchDao {
     public void insertLocations(CatchLocation... locations);
 
     @Insert
+    public void insertLocation(CatchLocation location);
+
+    @Insert
     public void insertLocations(Collection<CatchLocation> locations);
 
     @Query("SELECT * FROM catch_species")

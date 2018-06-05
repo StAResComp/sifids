@@ -38,6 +38,7 @@ public class CatchLocationService extends Service {
 	private static final float LOCATION_DISTANCE = 10f;
     private final int TRACKING_NOTIFICATION_ID = 204;
     private final String SIFIDS_LOCATION_TRACKING_CHANNEL_ID = "sifids_location_tracking_channel";
+    NotificationManager notificationManager;
 
 	private class LocationListener implements android.location.LocationListener {
 
@@ -86,7 +87,7 @@ public class CatchLocationService extends Service {
                         location.setLongitude(mLastLocation.getLongitude());
                         location.setTimestamp(new Date());
                         location.setFishing(((CatchApplication) getApplication()).isFishing());
-                        db.catchDao().insertLocations(location);
+                        db.catchDao().insertLocation(location);
                     }
                 };
                 Thread newThread = new Thread(r);
@@ -113,6 +114,9 @@ public class CatchLocationService extends Service {
 
 		initializeLocationManager();
 
+        notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
 		/*
 		App is intended for use at sea, where mobile signal will be unreliable and location derived
 		from network triangulation even less so. Need to always use GPS for location, if available.
@@ -137,18 +141,16 @@ public class CatchLocationService extends Service {
 		} catch (IllegalArgumentException ex) {
 		}
 
-		this.doNotification();
+		startForeground(TRACKING_NOTIFICATION_ID, this.getNotification());
 	}
 
-	private void doNotification() {
+	private Notification getNotification() {
 
         //Need to notify user that app is using location
         Intent notificationIntent = new Intent(this, Fish1FormsActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0,
                         notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         //Newer versions of Android need a notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -156,9 +158,8 @@ public class CatchLocationService extends Service {
             NotificationChannel channel = new NotificationChannel(
                     SIFIDS_LOCATION_TRACKING_CHANNEL_ID, channelName,
                     NotificationManager.IMPORTANCE_HIGH);
-            mNotificationManager.createNotificationChannel(channel);
-            Notification notification =
-                    new Notification.Builder(this, SIFIDS_LOCATION_TRACKING_CHANNEL_ID)
+            notificationManager.createNotificationChannel(channel);
+            return new Notification.Builder(this, SIFIDS_LOCATION_TRACKING_CHANNEL_ID)
                             .setContentTitle(
                                     getString(R.string.location_tracking_notification_title))
                             .setContentText(getString(R.string.location_tracking_notification_text))
@@ -167,7 +168,6 @@ public class CatchLocationService extends Service {
                             .setTicker(getString(R.string.location_tracking_notification_text))
                             .setVisibility(Notification.VISIBILITY_PRIVATE)
                             .build();
-            startForeground(TRACKING_NOTIFICATION_ID, notification);
         }
         else {
             NotificationCompat.Builder builder =
@@ -182,7 +182,7 @@ public class CatchLocationService extends Service {
                             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                             .setDefaults(Notification.DEFAULT_SOUND)
                             .setTicker(getString(R.string.location_tracking_notification_text));
-            mNotificationManager.notify(TRACKING_NOTIFICATION_ID, builder.build());
+            return builder.build();
         }
     }
 
