@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import uk.ac.masts.sifids.R;
@@ -34,7 +35,7 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
     CatchDatabase db;
     List<CatchLocation> points;
     int lastPointId = 0;
-    int delay = 10000;
+    int delay = 30000;
     Handler h;
     GoogleMap map;
 
@@ -107,6 +108,9 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
                 public void run() {
                     Calendar cal = Calendar.getInstance();
                     cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+                    if (cal.after(new Date())) {
+                        cal.add(Calendar.DATE, -7);
+                    }
                     cal.set(Calendar.HOUR_OF_DAY, 0);
                     cal.set(Calendar.MINUTE, 0);
                     cal.set(Calendar.SECOND, 0);
