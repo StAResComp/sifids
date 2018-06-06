@@ -92,7 +92,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Fish1FormsActivity.this);
                 final Calendar mostRecentSunday = Calendar.getInstance();
-                mostRecentSunday.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+                mostRecentSunday.add(Calendar.DATE, -1 * (mostRecentSunday.get(Calendar.DAY_OF_WEEK) - 1));
                 mostRecentSunday.set(Calendar.HOUR_OF_DAY,0);
                 mostRecentSunday.set(Calendar.MINUTE,0);
                 mostRecentSunday.set(Calendar.SECOND,0);
@@ -125,7 +125,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                             Calendar chosenDate = Calendar.getInstance();
                                             chosenDate.set(year, month, dayOfMonth, 0, 0);
-                                            chosenDate.set(Calendar.DAY_OF_WEEK,Calendar.SUNDAY);
+                                            chosenDate.add(Calendar.DATE, -1 * (chosenDate.get(Calendar.DAY_OF_WEEK) - 1));
                                             Intent i = new Intent(Fish1FormsActivity.this,EditFish1FormActivity.class);
                                             i.putExtra("start_date", chosenDate.getTime());
                                             chosenDate.add(Calendar.DATE, 7);
