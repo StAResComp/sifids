@@ -164,15 +164,21 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
     public void stopTrackingLocation(View v) {
         stopService(new Intent(this, CatchLocationService.class));
+        Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
+                Toast.LENGTH_LONG).show();
     }
 
     public void startFishing(View v) {
         ((CatchApplication) this.getApplication()).setFishing(true);
         this.startTrackingLocation(v);
+        Toast.makeText(getBaseContext(), getString(R.string.started_fishing),
+                Toast.LENGTH_LONG).show();
     }
 
     public void stopFishing(View v) {
         ((CatchApplication) this.getApplication()).setFishing(false);
+        Toast.makeText(getBaseContext(), getString(R.string.stopped_fishing),
+                Toast.LENGTH_LONG).show();
     }
 
     private void startLocationService() {

@@ -41,6 +41,9 @@
     <string name="stop_fishing">Stop Fishing</string>
     <string name="submit_track">Submit last 1000 location points</string>
     <string name="fish_1_form_summary">%s\n%s -\n%s</string>
+    <string name="stopped_tracking_location">Stopped tracking location</string>
+    <string name="started_fishing">Recorded location information will now indicate that you are fishing</string>
+    <string name="stopped_fishing">Recorded location information will no longer indicate that you are fishing</string>
 
     <!-- FISH1 Form Creation -->
 
