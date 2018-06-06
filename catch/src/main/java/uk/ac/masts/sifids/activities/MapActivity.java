@@ -34,7 +34,7 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
     CatchDatabase db;
     List<CatchLocation> points;
     int lastPointId = 0;
-    int delay = 5000;
+    int delay = 10000;
     Handler h;
     GoogleMap map;
 
@@ -58,7 +58,6 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
     Runnable r = new Runnable(){
         @Override
         public void run(){
-            Log.e("MAP", "Running");
             boolean first = true;
             MapActivity.this.getPoints();
             for (CatchLocation point : points) {
@@ -83,6 +82,18 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
         map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         r.run();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        h.removeCallbacks(r);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        h.removeCallbacks(r);
     }
 
     private void getPoints() {

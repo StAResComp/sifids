@@ -48,11 +48,9 @@ public class LocationCsvPostTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Log.e("ASYNC", "Starting in background...");
         boolean noErrorsEncountered = true;
         while (this.anythingToPost() && noErrorsEncountered) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-            Log.e("ASYNC", "Doing POST...");
             String pln = prefs.getString(context.getString(R.string.pref_vessel_pln_key), "PLN");
             List<CatchLocation> locations = db.catchDao().getUnuploadedLocations();
             String csv = "";
@@ -91,8 +89,6 @@ public class LocationCsvPostTask extends AsyncTask<Void, Void, Void> {
                 out.flush();
                 out.close();
 
-                Log.e("ASYNC", "Response: " + urlConnection.getResponseCode());
-
                 InputStream input;
 
                 if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
@@ -108,8 +104,6 @@ public class LocationCsvPostTask extends AsyncTask<Void, Void, Void> {
                     result.append(line);
                 }
                 urlConnection.disconnect();
-
-                Log.e("HTTPResponse", result.toString());
 
                 if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
                     List<String> ids = new ArrayList<>();
