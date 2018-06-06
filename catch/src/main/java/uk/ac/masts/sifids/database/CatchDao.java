@@ -125,6 +125,9 @@ public interface CatchDao {
     @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
     public List<CatchLocation> getLastLocations(int limit);
 
+    @Query("SELECT * FROM location WHERE id > :id")
+    public List<CatchLocation> getLocationsSince(int id);
+
     @Query("SELECT * FROM location WHERE timestamp >= :start ORDER BY timestamp DESC")
     public List<CatchLocation> getLocationsSince(Date start);
 
