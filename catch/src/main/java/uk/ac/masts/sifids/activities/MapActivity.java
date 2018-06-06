@@ -62,7 +62,7 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
             boolean first = true;
             MapActivity.this.getPoints();
             for (CatchLocation point : points) {
-                map.addMarker(new MarkerOptions().position(point.getLatLng()).title(point.getCoordinates()));
+                map.addMarker(new MarkerOptions().position(point.getLatLng()).title(point.getCoordinates() + "; " + point.getTimestamp().toString()));
                 if (lastPointId == 0 && first) {
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(point.getLatLng(), (float) 9.0));
                     first = false;
