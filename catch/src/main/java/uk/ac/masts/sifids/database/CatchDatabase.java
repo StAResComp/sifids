@@ -85,6 +85,13 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 getInstance(context).catchDao()
                                         .insertFisheryOffices(FisheryOffice.createFisheryOffices());
                                 getInstance(context).catchDao().insertPorts(Port.createPorts());
+                                getInstance(context).catchDao().insertObservationClasses(
+                                        ObservationClass.createObservationClasses());
+                                getInstance(context).catchDao().insertObservationSpecies(
+                                        ObservationSpecies.createObservationSpecies(
+                                                getInstance(context).catchDao()
+                                                        .getObservationClassesById()
+                                        ));
                                 getInstance(context).catchDao()
                                         .insertLocations(CatchLocation.createTestLocations());
                             }

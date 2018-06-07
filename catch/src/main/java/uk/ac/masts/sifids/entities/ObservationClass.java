@@ -29,9 +29,9 @@ public class ObservationClass extends EntityWithId {
         this.name = name;
     }
 
-    public static List<ObservationClass> createObservations() {
-        List<ObservationClass> observationObjects = new ArrayList();
-        for(String name : ANIMALS) observationObjects.add(new ObservationClass(name));
-        return observationObjects;
+    public static List<ObservationClass> createObservationClasses() {
+        List<ObservationClass> observationClassObjects = new ArrayList();
+        for(String name : ANIMALS) observationClassObjects.add(new ObservationClass(name));
+        return observationClassObjects;
     }
 }

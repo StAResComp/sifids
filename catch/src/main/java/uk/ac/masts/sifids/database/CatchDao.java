@@ -10,6 +10,7 @@ import android.util.SparseArray;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import uk.ac.masts.sifids.entities.CatchLocation;
@@ -20,6 +21,8 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
+import uk.ac.masts.sifids.entities.ObservationClass;
+import uk.ac.masts.sifids.entities.ObservationSpecies;
 import uk.ac.masts.sifids.entities.Port;
 
 /**
@@ -64,6 +67,12 @@ public interface CatchDao {
 
     @Insert
     public void insertLocations(Collection<CatchLocation> locations);
+
+    @Insert
+    public void insertObservationClasses(Collection<ObservationClass> observationClasses);
+
+    @Insert
+    public void insertObservationSpecies(Collection<ObservationSpecies> observationSpecies);
 
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
@@ -154,6 +163,9 @@ public interface CatchDao {
 
     @Query("SELECT * FROM location WHERE uploaded = 0 LIMIT 999")
     public List<CatchLocation> getUnuploadedLocations();
+
+    @Query("SELECT * FROM observation_class")
+    public List<ObservationClass> getObservationClassesById();
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);
