@@ -49,6 +49,10 @@ public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
                 intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.activity_record_observation:
+                intent = new Intent(this, RecordObservationActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.home:
                 this.onBackPressed();
                 return true;

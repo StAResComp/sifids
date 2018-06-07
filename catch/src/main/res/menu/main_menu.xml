@@ -4,6 +4,8 @@
         android:title="@string/title_activity_catch" />
     <item android:id="@+id/activity_map"
         android:title="@string/title_activity_map" />
+    <item android:id="@+id/activity_record_observation"
+        android:title="@string/title_activity_record_observation" />
     <item android:id="@+id/settings"
         android:title="@string/title_activity_settings" />
 </menu>
