@@ -167,6 +167,12 @@ public interface CatchDao {
     @Query("SELECT * FROM observation_class")
     public List<ObservationClass> getObservationClassesById();
 
+    @Query("SELECT COUNT(*) FROM observation_class")
+    public int countObservationClasses();
+
+    @Query("SELECT COUNT(*) FROM observation_species")
+    public int countObservationSpecies();
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 

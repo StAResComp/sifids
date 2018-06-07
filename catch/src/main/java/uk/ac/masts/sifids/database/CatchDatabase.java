@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.concurrent.Executors;
 
@@ -74,29 +75,45 @@ public abstract class CatchDatabase extends RoomDatabase{
                         Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                             @Override
                             public void run() {
-                                getInstance(context).catchDao()
-                                        .insertPresentations(
-                                                CatchPresentation.createPresentations());
-                                getInstance(context).catchDao()
-                                        .insertSpecies(CatchSpecies.createSpecies());
-                                getInstance(context).catchDao()
-                                        .insertStates(CatchState.createStates());
-                                getInstance(context).catchDao().insertGear(Gear.createGear());
-                                getInstance(context).catchDao()
-                                        .insertFisheryOffices(FisheryOffice.createFisheryOffices());
-                                getInstance(context).catchDao().insertPorts(Port.createPorts());
-                                getInstance(context).catchDao().insertObservationClasses(
+                                CatchDao dao = getInstance(context).catchDao();
+                                dao.insertPresentations(CatchPresentation.createPresentations());
+                                dao.insertSpecies(CatchSpecies.createSpecies());
+                                dao.insertStates(CatchState.createStates());
+                                dao.insertGear(Gear.createGear());
+                                dao.insertFisheryOffices(FisheryOffice.createFisheryOffices());
+                                dao.insertPorts(Port.createPorts());
+                                dao.insertObservationClasses(
                                         ObservationClass.createObservationClasses());
-                                getInstance(context).catchDao().insertObservationSpecies(
+                                dao.insertObservationSpecies(
                                         ObservationSpecies.createObservationSpecies(
-                                                getInstance(context).catchDao()
-                                                        .getObservationClassesById()
+                                                dao.getObservationClassesById()
                                         ));
                                 getInstance(context).catchDao()
                                         .insertLocations(CatchLocation.createTestLocations());
                             }
                         });
 
+                    }
+
+                    @Override
+                    public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                        super.onOpen(db);
+                        Executors.newSingleThreadExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                CatchDao dao = getInstance(context).catchDao();
+                                if (dao.countObservationClasses() == 0) {
+                                    dao.insertObservationClasses(
+                                            ObservationClass.createObservationClasses());
+                                }
+                                if (dao.countObservationSpecies() == 0) {
+                                    dao.insertObservationSpecies(
+                                            ObservationSpecies.createObservationSpecies(
+                                                    dao.getObservationClassesById()
+                                            ));
+                                }
+                            }
+                        });
                     }
                 })
                 .addMigrations(MIGRATION_9_10)
