@@ -191,5 +191,7 @@
     <string name="west">West</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="back">Go back</string>
+    <string name="next">Next</string>
 
 </resources>

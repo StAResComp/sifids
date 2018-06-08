@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation "org.apache.httpcomponents:httpcore:4.3.3"
     implementation "org.apache.httpcomponents:httpmime:4.3.6"
 }

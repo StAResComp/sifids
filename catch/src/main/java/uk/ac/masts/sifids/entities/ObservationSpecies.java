@@ -82,6 +82,10 @@ public class ObservationSpecies extends EntityWithId {
         this.observationClassId = observationClassId;
     }
 
+    public String toString() {
+        return this.getName();
+    }
+
     public static List<ObservationSpecies> createObservationSpecies(List<ObservationClass> classes) {
         List<ObservationSpecies> observationSpeciesObjects = new ArrayList();
         for (ObservationClass obsClass : classes) {

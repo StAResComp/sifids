@@ -53,14 +53,16 @@
             android:id="@+id/obs_species_known_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
+            android:layout_weight="0.33"
+            android:onClick="displaySpeciesList"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/obs_species_not_known_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
+            android:layout_weight="0.33"
+            android:onClick="hideSpeciesList"
             android:text="@string/no" />
 
         <LinearLayout
@@ -85,6 +87,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:tag="back"
+            android:onClick="previousSection"
+            android:text="@string/back" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -103,6 +113,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="setTimeNow"
             android:text="@string/observation_now" />
 
         <Button
@@ -111,6 +122,14 @@
             android:layout_height="wrap_content"
             android:onClick="showObservationTimePickerDialog"
             android:text="@string/observation_select_time" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:tag="back"
+            android:onClick="previousSection"
+            android:text="@string/back" />
 
     </LinearLayout>
 
@@ -128,20 +147,17 @@
             android:text="@string/observation_where_did_you_see" />
 
         <Button
+            android:id="@+id/obs_use_suggested_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_suggested_location"
+            android:onClick="useSuggestedLocation"
             android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/observation_use_suggested_location"
-            android:visibility="gone" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:onClick="useCurrentLocation"
             android:text="@string/observation_here" />
 
         <Button

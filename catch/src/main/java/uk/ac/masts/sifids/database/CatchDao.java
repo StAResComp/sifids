@@ -173,6 +173,15 @@ public interface CatchDao {
     @Query("SELECT COUNT(*) FROM observation_species")
     public int countObservationSpecies();
 
+    @Query("SELECT COUNT(*) FROM observation_species WHERE observation_class_id = :observationClassId")
+    public int countObservationSpecies(int observationClassId);
+
+    @Query("SELECT * FROM observation_species WHERE observation_class_id = :observationClassId")
+    public List<ObservationSpecies> getObservationSpecies(int observationClassId);
+
+    @Query("SELECT * FROM location WHERE ABS(timestamp - :timestamp) < 600000 ORDER BY ABS(timestamp - :timestamp) LIMIT 1")
+    public CatchLocation getLocationAt(Date timestamp);
+
     @Update
     public void updateFish1Forms(Fish1Form... forms);
 
