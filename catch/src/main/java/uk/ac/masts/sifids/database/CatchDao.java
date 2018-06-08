@@ -165,7 +165,7 @@ public interface CatchDao {
     public List<CatchLocation> getUnuploadedLocations();
 
     @Query("SELECT * FROM observation_class")
-    public List<ObservationClass> getObservationClassesById();
+    public List<ObservationClass> getObservationClasses();
 
     @Query("SELECT COUNT(*) FROM observation_class")
     public int countObservationClasses();

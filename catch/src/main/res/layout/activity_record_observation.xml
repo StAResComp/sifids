@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center">
 
     <LinearLayout
         android:id="@+id/obs_what_seen_section"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible">
@@ -19,11 +20,19 @@
             android:layout_height="wrap_content"
             android:text="@string/observation_what_did_you_see" />
 
-        <GridView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:numColumns="2" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.GridLayout
+                android:id="@+id/obs_animal_image_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:columnCount="2">
+
+            </android.support.v7.widget.GridLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
@@ -297,8 +306,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/observation_additional_notes"
-            android:hint="sdfsdfsdfsdjdshkjdsfh"/>
+            android:hint="sdfsdfsdfsdjdshkjdsfh"
+            android:text="@string/observation_additional_notes" />
 
         <EditText
             android:layout_width="wrap_content"

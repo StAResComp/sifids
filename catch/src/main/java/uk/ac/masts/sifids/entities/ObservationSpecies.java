@@ -31,11 +31,25 @@ public class ObservationSpecies extends EntityWithId {
                 "Bottlenose dolphin",
                 "White-beaked dolphin",
                 "Risso's dolphin",
-                "Common dolphin"
+                "Common dolphin",
+                "Short-beaked common dolphin",
+                "Atlantic white-sided dolphin",
+                "Striped dolphin"
         });
         speciesMap.put("Porpoise", new String[] {"Harbour porpoise"});
-        speciesMap.put("Whale", new String[] {"Minke whale", "Orca (killer whale)"});
+        speciesMap.put("Whale", new String[] {
+                "Minke whale",
+                "Orca (killer whale)",
+                "Humpback whale",
+                "Long-finned pilot whale",
+                "Sperm whale",
+                "Sei whale",
+                "Cuvier's beaked whale",
+                "Fin whale",
+                "Northern bottlenose whale"
+        });
         speciesMap.put("Seal", new String[] {"Harbour (common) seal", "Grey seal"});
+        speciesMap.put("Wrasse", new String[] {"Ballan wrasse", "Cuckoos wrasse"});
         return speciesMap;
     }
 

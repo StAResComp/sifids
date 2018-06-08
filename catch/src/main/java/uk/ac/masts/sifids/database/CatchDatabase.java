@@ -8,7 +8,6 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.concurrent.Executors;
 
@@ -86,13 +85,12 @@ public abstract class CatchDatabase extends RoomDatabase{
                                         ObservationClass.createObservationClasses());
                                 dao.insertObservationSpecies(
                                         ObservationSpecies.createObservationSpecies(
-                                                dao.getObservationClassesById()
+                                                dao.getObservationClasses()
                                         ));
                                 getInstance(context).catchDao()
                                         .insertLocations(CatchLocation.createTestLocations());
                             }
                         });
-
                     }
 
                     @Override
@@ -109,7 +107,7 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 if (dao.countObservationSpecies() == 0) {
                                     dao.insertObservationSpecies(
                                             ObservationSpecies.createObservationSpecies(
-                                                    dao.getObservationClassesById()
+                                                    dao.getObservationClasses()
                                             ));
                                 }
                             }
