@@ -21,6 +21,7 @@ import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
+import uk.ac.masts.sifids.entities.Observation;
 import uk.ac.masts.sifids.entities.ObservationClass;
 import uk.ac.masts.sifids.entities.ObservationSpecies;
 import uk.ac.masts.sifids.entities.Port;
@@ -73,6 +74,9 @@ public interface CatchDao {
 
     @Insert
     public void insertObservationSpecies(Collection<ObservationSpecies> observationSpecies);
+
+    @Insert
+    public void insertObservations(Observation... observations);
 
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();

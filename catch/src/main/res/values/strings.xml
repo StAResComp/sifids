@@ -168,8 +168,12 @@
     <string name="observation_here">At my current location</string>
     <string name="observation_select_place_from_map">Select location from map</string>
     <string name="observation_enter_lat_long">Enter latitude and longitude</string>
+    <string name="observation_submit_latitude_longitude">Submit latitude and longitude</string>
     <string name="observation_how_many">How many did you see?</string>
     <string name="observation_additional_notes">Additional notes</string>
+    <string name="observation_additional_notes_hint">Please enter any other information here e.g.
+        the nature of your interaction with the animal,
+        whether it appeared to be in good health.</string>
     <string name="observation_submit">Submit Observation</string>
     <string name="observation_thank_you">Thank you for your observation! This is your %s observation.</string>
     <string name="observation_make_another">Make another observation</string>

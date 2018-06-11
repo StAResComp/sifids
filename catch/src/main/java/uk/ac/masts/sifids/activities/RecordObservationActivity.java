@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.support.v7.widget.GridLayout;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +38,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +50,7 @@ import java.util.concurrent.Future;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
+import uk.ac.masts.sifids.entities.Observation;
 import uk.ac.masts.sifids.entities.ObservationClass;
 import uk.ac.masts.sifids.entities.ObservationSpecies;
 
@@ -62,6 +66,11 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
     Date timeSeen = null;
     CatchLocation locationSeen = null;
     CatchLocation suggestedLocation = null;
+    String latitudeDirectionValue = null;
+    String longitudeDirectionValue = null;
+    int numberSeen = 0;
+    String observationNotes = null;
+    Observation observation = null;
 
     /**
      * Runs when activity is created
@@ -89,15 +98,17 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                 return db.catchDao().getObservationClasses();
             }
         };
-        ExecutorService service =  Executors.newSingleThreadExecutor();
+        ExecutorService service = Executors.newSingleThreadExecutor();
         Future<List<ObservationClass>> future = service.submit(c);
         try {
             List<ObservationClass> animals = future.get();
             for (ObservationClass animal : animals) {
                 addAnimalToGrid(animal);
             }
+        } catch (Exception e) {
         }
-        catch (Exception e) {}
+
+        this.doDirectionSpinners();
     }
 
     private void setFormSections() {
@@ -215,6 +226,30 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
         return (int) (dp * scale + 0.5f);
     }
 
+    private void doDirectionSpinners() {
+        ArrayList<String> latitudeDirectionsList =
+                new ArrayList<>(Arrays.asList(getString(R.string.n), getString(R.string.s)));
+        ArrayAdapter<String> latitudeDirectionsAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_activated_1, latitudeDirectionsList
+        );
+        latitudeDirectionsAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        Spinner latitudeDirectionsSpinner = findViewById(R.id.latitude_direction);
+        latitudeDirectionsSpinner.setAdapter(latitudeDirectionsAdapter);
+        latitudeDirectionsSpinner.setOnItemSelectedListener(this);
+
+        ArrayList<String> longitudeDirectionsList =
+                new ArrayList<>(Arrays.asList(getString(R.string.e), getString(R.string.w)));
+        ArrayAdapter<String> longitudeDirectionsAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_list_item_activated_1, longitudeDirectionsList
+        );
+        longitudeDirectionsAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        Spinner longitudeDirectionsSpinner = findViewById(R.id.longitude_direction);
+        longitudeDirectionsSpinner.setAdapter(longitudeDirectionsAdapter);
+        longitudeDirectionsSpinner.setOnItemSelectedListener(this);
+    }
+
     public void onClick(View view) {
         Object tag = view.getTag();
         if (tag instanceof ObservationClass) {
@@ -254,9 +289,10 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                 List<ObservationSpecies> speciesList = new ArrayList<>();
                 try {
                     speciesList = future.get();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
                 speciesList.add(0, new ObservationSpecies());
-                ArrayAdapter adapter = new ArrayAdapter(
+                ArrayAdapter<ObservationSpecies> adapter = new ArrayAdapter<>(
                         this, android.R.layout.simple_list_item_activated_1,
                         speciesList
                 );
@@ -265,8 +301,7 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                 spinner.setAdapter(adapter);
                 spinner.setOnItemSelectedListener(this);
             }
-        }
-        else if (index == 3) {
+        } else if (index == 3) {
             if (timeSeen != null) {
                 Callable<CatchLocation> c = new Callable<CatchLocation>() {
                     @Override
@@ -278,7 +313,8 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                 Future<CatchLocation> future = service.submit(c);
                 try {
                     this.suggestedLocation = future.get();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
                 Button suggestedLocationButton =
                         (Button) findViewById(R.id.obs_use_suggested_location);
                 if (this.suggestedLocation != null) {
@@ -286,8 +322,7 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                             String.format(getString(R.string.observation_suggested_location),
                                     this.suggestedLocation.getCoordinates()));
                     suggestedLocationButton.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     suggestedLocationButton.setVisibility(View.INVISIBLE);
                 }
             }
@@ -295,12 +330,24 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        Object item = parent.getItemAtPosition(pos);
         switch (parent.getId()) {
             case R.id.obs_species:
                 if (pos > 0) {
-                    this.speciesSeen = ((ObservationSpecies) parent.getItemAtPosition(pos));
+                    this.speciesSeen = (ObservationSpecies) item;
                     nextSection();
+                    break;
                 }
+            case R.id.latitude_direction:
+                if (item instanceof String) {
+                    this.latitudeDirectionValue = (String) item;
+                }
+                break;
+            case R.id.longitude_direction:
+                if (item instanceof String) {
+                    this.longitudeDirectionValue = (String) item;
+                }
+                break;
         }
     }
 
@@ -361,25 +408,23 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                     this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSION_REQUEST_FINE_LOCATION);
-        }
-        else {
+        } else {
             FusedLocationProviderClient fusedLocationClient =
                     LocationServices.getFusedLocationProviderClient(this);
             fusedLocationClient.getLastLocation().addOnSuccessListener(this,
                     new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location != null) {
-                        locationSeen = new CatchLocation();
-                        locationSeen.setLatitude(location.getLatitude());
-                        locationSeen.setLongitude(location.getLongitude());
-                    }
-                    else {
-                        Toast.makeText(getBaseContext(), "Unable to get current location",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                locationSeen = new CatchLocation();
+                                locationSeen.setLatitude(location.getLatitude());
+                                locationSeen.setLongitude(location.getLongitude());
+                            } else {
+                                Toast.makeText(getBaseContext(), "Unable to get current location",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
             if (this.locationSeen != null) {
                 Log.e("REC_OBS", this.locationSeen.getCoordinates());
                 nextSection();
@@ -404,7 +449,8 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
             startActivityForResult(builder.build(this)
                     , 236);
         } catch (GooglePlayServicesRepairableException
-                | GooglePlayServicesNotAvailableException e) { }
+                | GooglePlayServicesNotAvailableException e) {
+        }
     }
 
     @Override
@@ -417,6 +463,76 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                 this.locationSeen.setLongitude(place.getLatLng().longitude);
                 nextSection();
             }
+        }
+    }
+
+    public void showLatLongInputs(View view) {
+        LinearLayout latLongInputSection =
+                (LinearLayout) findViewById(R.id.obs_manual_location_section);
+        if (latLongInputSection.getVisibility() == View.INVISIBLE
+                || latLongInputSection.getVisibility() == View.GONE) {
+            latLongInputSection.setVisibility(View.VISIBLE);
+        } else {
+            latLongInputSection.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void submitManualLatLong(View view) {
+        this.locationSeen = new CatchLocation();
+        locationSeen.setLatitude(
+                Integer.parseInt(((EditText) findViewById(R.id.latitude_degrees)).getText().toString()),
+                Integer.parseInt(((EditText) findViewById(R.id.latitude_minutes)).getText().toString()),
+                latitudeDirectionValue.charAt(0)
+        );
+        locationSeen.setLongitude(
+                Integer.parseInt(((EditText) findViewById(R.id.longitude_degrees)).getText().toString()),
+                Integer.parseInt(((EditText) findViewById(R.id.longitude_minutes)).getText().toString()),
+                longitudeDirectionValue.charAt(0)
+        );
+        nextSection();
+    }
+
+    public void submitCount(View view) {
+        this.numberSeen = Integer.parseInt(view.getTag().toString());
+        nextSection();
+    }
+
+    public void submitObservation(View view) {
+        this.observationNotes = ((EditText) findViewById(R.id.obs_notes)).getText().toString();
+        if (
+                this.animalSeen != null
+                        && this.timeSeen != null
+                        && this.locationSeen != null
+                        && this.numberSeen != 0
+                ) {
+            this.observation = new Observation();
+            observation.setObservationClassId(this.animalSeen.getId());
+            if (this.speciesSeen != null) {
+                observation.setObservationSpeciesId(this.speciesSeen.getId());
+            }
+            observation.setTimestamp(this.timeSeen);
+            observation.setLatitude(this.locationSeen.getLatitude());
+            observation.setLongitude(this.locationSeen.getLongitude());
+            observation.setCount(this.numberSeen);
+            observation.setNotes(this.observationNotes);
+        }
+        else {
+            Toast.makeText(getBaseContext(),
+                    "Insufficient information supplied. Please try again",
+                    Toast.LENGTH_LONG).show();
+        }
+        this.persistObservation();
+    }
+
+    private void persistObservation() {
+        if (this.observation != null) {
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    RecordObservationActivity.this.db.catchDao()
+                            .insertObservations(observation);
+                }
+            });
         }
     }
 

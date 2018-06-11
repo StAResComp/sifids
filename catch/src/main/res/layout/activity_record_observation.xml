@@ -170,6 +170,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="showLatLongInputs"
             android:text="@string/observation_enter_lat_long" />
 
         <LinearLayout
@@ -267,7 +268,21 @@
 
             </LinearLayout>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="submitManualLatLong"
+                android:layout_gravity="center"
+                android:text="@string/observation_submit_latitude_longitude" />
+
         </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="back"
+            android:onClick="previousSection"
+            android:text="@string/back" />
 
     </LinearLayout>
 
@@ -287,27 +302,44 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="submitCount"
+            android:tag="1"
             android:text="1" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="submitCount"
+            android:tag="2"
             android:text="2-5" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="submitCount"
+            android:tag="6"
             android:text="6-10" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="submitCount"
+            android:tag="10"
             android:text="10-20" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="submitCount"
+            android:tag="20"
             android:text="20+" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="back"
+            android:onClick="previousSection"
+            android:text="@string/back" />
 
     </LinearLayout>
 
@@ -322,16 +354,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="sdfsdfsdfsdjdshkjdsfh"
             android:text="@string/observation_additional_notes" />
 
         <EditText
+            android:id="@+id/obs_notes"
             android:layout_width="wrap_content"
+            android:hint="@string/observation_additional_notes_hint"
             android:layout_height="wrap_content" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="back"
+            android:onClick="previousSection"
+            android:text="@string/back" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="submitObservation"
             android:text="@string/observation_submit" />
 
     </LinearLayout>
