@@ -125,11 +125,16 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                 urlConnection.disconnect();
 
                 if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                    List<String> ids = new ArrayList<>();
+                    final List<String> ids = new ArrayList<>();
                     for (CatchLocation loc : locations) {
                         ids.add(Integer.toString(loc.getId()));
                     }
-                    db.catchDao().markLocationsUploaded(ids);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.catchDao().markLocationsUploaded(ids);
+                        }
+                    });
                 }
                 else {
                     noErrorsEncountered = false;
@@ -233,6 +238,12 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
                             db.catchDao().markObservationSubmitted(observation.getId());
+                            AsyncTask.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    db.catchDao().markObservationSubmitted(observation.getId());
+                                }
+                            });
                             callback.onSuccess(jsonObject);
                         }
                     },
