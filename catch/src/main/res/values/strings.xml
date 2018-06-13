@@ -175,7 +175,9 @@
         the nature of your interaction with the animal,
         whether it appeared to be in good health.</string>
     <string name="observation_submit">Submit Observation</string>
-    <string name="observation_thank_you">Thank you for your observation! This is your %s observation.</string>
+    <string name="observation_thank_you">Thank you! %s You have submitted %s observations, with %s queued for submission.</string>
+    <string name="observation_submission_successful">Your observation has been successfully submitted.</string>
+    <string name="observation_submission_unsuccessful">Your observation could not be submitted just now - it has been added to a queue for submitting later.</string>
     <string name="observation_make_another">Make another observation</string>
     <string name="observation_done">Finished</string>
 

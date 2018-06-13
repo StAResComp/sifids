@@ -5,10 +5,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -37,6 +38,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -53,12 +56,14 @@ import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.Observation;
 import uk.ac.masts.sifids.entities.ObservationClass;
 import uk.ac.masts.sifids.entities.ObservationSpecies;
+import uk.ac.masts.sifids.tasks.PostDataTask;
 
 import static uk.ac.masts.sifids.activities.Fish1FormsActivity.PERMISSION_REQUEST_FINE_LOCATION;
 
 public class RecordObservationActivity extends AppCompatActivityWithMenuBar implements View.OnClickListener, AdapterView.OnItemSelectedListener, TimePickerDialog.OnTimeSetListener {
 
     CatchDatabase db;
+    SharedPreferences prefs;
     ArrayList<LinearLayout> formSections;
     int currentSectionIndex = 0;
     ObservationClass animalSeen = null;
@@ -89,6 +94,8 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
 
         //Initialise database
         this.db = CatchDatabase.getInstance(getApplicationContext());
+
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         this.setFormSections();
 
@@ -515,25 +522,82 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
             observation.setLongitude(this.locationSeen.getLongitude());
             observation.setCount(this.numberSeen);
             observation.setNotes(this.observationNotes);
-        }
-        else {
+            this.persistObservation();
+            PostDataTask.postObservation(this, observation, new PostDataTask.VolleyCallback() {
+                @Override
+                public void onSuccess(JSONObject result) {
+                    db.catchDao().markObservationSubmitted(observation.getId());
+                    updateSubmissionMessage(true);
+                    Toast.makeText(RecordObservationActivity.this,
+                            "Observation successfully submitted.",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onError(String result) {
+                    updateSubmissionMessage(false);
+                    Toast.makeText(RecordObservationActivity.this,
+                            "Error submitting observation. Will try again later.",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            nextSection();
+        } else {
             Toast.makeText(getBaseContext(),
-                    "Insufficient information supplied. Please try again",
+                    "Insufficient information supplied. Please go back and try again",
                     Toast.LENGTH_LONG).show();
         }
-        this.persistObservation();
+    }
+
+    protected void updateSubmissionMessage(boolean success) {
+        TextView msgView = findViewById(R.id.obs_submission_msg);
+        int[] submissionDetails = {0,0};
+        Callable<int[]> c = new Callable<int[]>() {
+            @Override
+            public int[] call() {
+                int[] submissionDetails = new int[2];
+                submissionDetails[0] = db.catchDao().countSubmittedObservations();
+                submissionDetails[1] = db.catchDao().countUnsubmittedObservations();
+                return submissionDetails;
+            }
+        };
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Future<int[]> future = service.submit(c);
+        try {
+            submissionDetails = future.get();
+        } catch (Exception e) {
+        }
+        String msg = String.format(getString(R.string.observation_thank_you),
+                (success ? getString(R.string.observation_submission_successful) :
+                        getString(R.string.observation_submission_unsuccessful)),
+                Integer.toString(submissionDetails[0]), Integer.toString(submissionDetails[1]));
+        msgView.setText(msg);
     }
 
     private void persistObservation() {
         if (this.observation != null) {
-            AsyncTask.execute(new Runnable() {
+            Callable<Long> c = new Callable<Long>() {
                 @Override
-                public void run() {
-                    RecordObservationActivity.this.db.catchDao()
-                            .insertObservations(observation);
+                public Long call() {
+                    return db.catchDao().insertObservation(observation);
                 }
-            });
+            };
+            ExecutorService service = Executors.newSingleThreadExecutor();
+            Future<Long> future = service.submit(c);
+            try {
+                long observationId = future.get();
+                observation.setId((int) observationId);
+            } catch (Exception e) {
+            }
         }
     }
 
+    public void reload(View v) {
+        this.finish();
+        this.startActivity(this.getIntent());
+    }
+
+    public void goHome(View v) {
+        this.finish();
+    }
 }

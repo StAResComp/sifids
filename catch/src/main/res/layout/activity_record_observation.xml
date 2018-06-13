@@ -386,6 +386,7 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/obs_submission_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_thank_you" />
@@ -393,11 +394,13 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="reload"
             android:text="@string/observation_make_another" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="goHome"
             android:text="@string/observation_done" />
 
     </LinearLayout>

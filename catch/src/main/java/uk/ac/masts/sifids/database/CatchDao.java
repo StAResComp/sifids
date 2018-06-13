@@ -76,7 +76,7 @@ public interface CatchDao {
     public void insertObservationSpecies(Collection<ObservationSpecies> observationSpecies);
 
     @Insert
-    public void insertObservations(Observation... observations);
+    public long insertObservation(Observation observation);
 
     @Query("SELECT * FROM catch_species")
     public List<CatchSpecies> getSpecies();
@@ -174,6 +174,9 @@ public interface CatchDao {
     @Query("SELECT COUNT(*) FROM observation_class")
     public int countObservationClasses();
 
+    @Query("SELECT name FROM observation_class WHERE id = :id")
+    public String getObservationClassName(int id);
+
     @Query("SELECT COUNT(*) FROM observation_species")
     public int countObservationSpecies();
 
@@ -183,8 +186,23 @@ public interface CatchDao {
     @Query("SELECT * FROM observation_species WHERE observation_class_id = :observationClassId")
     public List<ObservationSpecies> getObservationSpecies(int observationClassId);
 
+    @Query("SELECT name FROM observation_species WHERE id = :id")
+    public String getObservationSpeciesName(int id);
+
     @Query("SELECT * FROM location WHERE ABS(timestamp - :timestamp) < 600000 ORDER BY ABS(timestamp - :timestamp) LIMIT 1")
     public CatchLocation getLocationAt(Date timestamp);
+
+    @Query("SELECT COUNT(*) FROM observation WHERE submitted = 1")
+    public int countSubmittedObservations();
+
+    @Query("SELECT COUNT(*) FROM observation WHERE submitted = 0")
+    public int countUnsubmittedObservations();
+
+    @Query("SELECT * FROM observation WHERE submitted = 0")
+    public List<Observation> getUnsubmittedObservations();
+
+    @Query("UPDATE observation SET submitted = 1 WHERE id = :id")
+    public void markObservationSubmitted(int id);
 
     @Update
     public void updateFish1Forms(Fish1Form... forms);

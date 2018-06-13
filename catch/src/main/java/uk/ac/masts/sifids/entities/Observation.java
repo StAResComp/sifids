@@ -70,7 +70,7 @@ public class Observation extends ChangeLoggingEntity {
     }
 
     public void setTimestamp(Date timestamp) {
-        if (!this.getTimestamp().equals(timestamp)) {
+        if (this.getTimestamp() == null || !this.getTimestamp().equals(timestamp)) {
             this.timestamp = timestamp;
             this.updateDates();
         }
