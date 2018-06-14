@@ -87,6 +87,18 @@
                 android:prompt="@string/observation_species_prompt"
                 android:spinnerMode="dropdown" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/observation_other_species_text"/>
+
+            <Button
+                android:id="@+id/obs_other_species_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="nextSection"
+                android:text="@string/observation_other_species_button" />
+
         </LinearLayout>
 
         <Button

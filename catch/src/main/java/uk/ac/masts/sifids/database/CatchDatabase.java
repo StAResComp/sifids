@@ -47,7 +47,7 @@ import uk.ac.masts.sifids.entities.Port;
                 ObservationSpecies.class,
                 Observation.class
     },
-        version = 12
+        version = 13
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -115,7 +115,8 @@ public abstract class CatchDatabase extends RoomDatabase{
                 .addMigrations(
                         MIGRATION_9_10,
                         MIGRATION_10_11,
-                        MIGRATION_11_12
+                        MIGRATION_11_12,
+                        MIGRATION_12_13
                 )
                 .build();
     }
@@ -167,6 +168,13 @@ public abstract class CatchDatabase extends RoomDatabase{
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("DELETE FROM observation_species");
             database.execSQL("DELETE FROM observation_class");
+        }
+    };
+
+    static final Migration MIGRATION_12_13 = new Migration(12,13) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("DELETE FROM observation_species");
         }
     };
 }

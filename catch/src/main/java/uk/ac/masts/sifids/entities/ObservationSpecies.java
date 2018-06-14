@@ -43,13 +43,15 @@ public class ObservationSpecies extends EntityWithId {
                 "Humpback whale",
                 "Long-finned pilot whale",
                 "Sperm whale",
-                "Sei whale",
-                "Cuvier's beaked whale",
-                "Fin whale",
-                "Northern bottlenose whale"
+                "Sei whale"
         });
         speciesMap.put("Seal", new String[] {"Harbour (common) seal", "Grey seal"});
-        speciesMap.put("Wrasse", new String[] {"Ballan wrasse", "Cuckoos wrasse"});
+        speciesMap.put("Wrasse", new String[] {
+                "Goldsinny wrasse",
+                "Rockcook wrasse",
+                "Corkwing wrasse",
+                "Ballan wrasse",
+                "Cuckoo wrasse"});
         return speciesMap;
     }
 
