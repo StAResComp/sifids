@@ -47,7 +47,7 @@ import uk.ac.masts.sifids.entities.Port;
                 ObservationSpecies.class,
                 Observation.class
     },
-        version = 11
+        version = 12
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -87,8 +87,6 @@ public abstract class CatchDatabase extends RoomDatabase{
                                         ObservationSpecies.createObservationSpecies(
                                                 dao.getObservationClasses()
                                         ));
-//                                getInstance(context).catchDao()
-//                                        .insertLocations(CatchLocation.createTestLocations());
                             }
                         });
                     }
@@ -114,8 +112,11 @@ public abstract class CatchDatabase extends RoomDatabase{
                         });
                     }
                 })
-                .addMigrations(MIGRATION_9_10)
-                .addMigrations(MIGRATION_10_11)
+                .addMigrations(
+                        MIGRATION_9_10,
+                        MIGRATION_10_11,
+                        MIGRATION_11_12
+                )
                 .build();
     }
 
@@ -158,6 +159,14 @@ public abstract class CatchDatabase extends RoomDatabase{
                             "FOREIGN KEY(observation_species_id) REFERENCES observation_species(id) " +
                             "ON UPDATE NO ACTION ON DELETE NO ACTION);"
             );
+        }
+    };
+
+    static final Migration MIGRATION_11_12 = new Migration(11,12) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("DELETE FROM observation_species");
+            database.execSQL("DELETE FROM observation_class");
         }
     };
 }

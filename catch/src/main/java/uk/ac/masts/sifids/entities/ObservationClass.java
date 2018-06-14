@@ -10,7 +10,7 @@ import java.util.List;
 public class ObservationClass extends EntityWithId {
 
     private static final String[] ANIMALS = {"Seal", "Whale", "Dolphin", "Porpoise", "John Dory",
-            "Basking Shark", "Wrasse", "Snapper", "Octopus"};
+            "Basking Shark", "Wrasse", "Triggerfish", "Octopus"};
 
     public String name;
 
