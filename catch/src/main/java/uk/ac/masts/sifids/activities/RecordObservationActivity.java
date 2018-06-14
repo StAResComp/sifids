@@ -396,7 +396,6 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         this.timeSeen = c.getTime();
-        Log.e("REC_OBS", "Time: " + this.timeSeen.toString());
         nextSection();
     }
 
@@ -433,7 +432,6 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                         }
                     });
             if (this.locationSeen != null) {
-                Log.e("REC_OBS", this.locationSeen.getCoordinates());
                 nextSection();
             }
         }

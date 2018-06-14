@@ -483,7 +483,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         String tag = view.getTag().toString();
-        Log.w("DatePicker", tag);
         Calendar c = Calendar.getInstance();
         c.set(year, month, day);
         if (tag == "fishing_activity_date") {

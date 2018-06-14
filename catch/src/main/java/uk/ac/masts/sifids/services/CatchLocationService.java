@@ -76,7 +76,6 @@ public class CatchLocationService extends Service {
         private void writeLocation() {
             if (mLastLocation != null) {
                 final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
-                Log.e("LOCATION", mLastLocation.getLatitude() + "/" + mLastLocation.getLongitude());
                 //Database queries need their own thread
                 Runnable r = new Runnable() {
                     @Override
