@@ -47,7 +47,6 @@ public class CatchLocationService extends Service {
         //Attempt to persist location immediately on creation
         public LocationListener(String provider) {
             mLastLocation = new Location(provider);
-            this.writeLocation();
         }
 
         //Update location and persist
@@ -77,7 +76,7 @@ public class CatchLocationService extends Service {
         private void writeLocation() {
             if (mLastLocation != null) {
                 final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
-
+                Log.e("LOCATION", mLastLocation.getLatitude() + "/" + mLastLocation.getLongitude());
                 //Database queries need their own thread
                 Runnable r = new Runnable() {
                     @Override
