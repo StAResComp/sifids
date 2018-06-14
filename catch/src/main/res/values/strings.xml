@@ -134,7 +134,7 @@
 
     <!-- Map -->
 
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_map">Map (last 24hrs)</string>
 
     <!-- Location Tracking -->
 

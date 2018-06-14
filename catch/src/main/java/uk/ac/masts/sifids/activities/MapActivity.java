@@ -107,10 +107,7 @@ public class MapActivity extends AppCompatActivityWithMenuBar implements OnMapRe
                 @Override
                 public void run() {
                     Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
-                    cal.set(Calendar.HOUR_OF_DAY, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.SECOND, 0);
+                    cal.add(Calendar.DATE, -1);
                     points = db.catchDao().getLocationsSince(cal.getTime());
                 }
             };
