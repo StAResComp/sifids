@@ -16,6 +16,7 @@
         android:visibility="visible">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_what_did_you_see" />
@@ -45,6 +46,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_do_you_know_species" />
@@ -106,6 +108,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_when_did_you_see" />
@@ -142,6 +145,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_where_did_you_see" />
@@ -295,6 +299,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_how_many" />
@@ -352,6 +357,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/observation_additional_notes" />
@@ -386,6 +392,7 @@
         android:visibility="gone">
 
         <TextView
+            style="@android:style/TextAppearance.Medium"
             android:id="@+id/obs_submission_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
