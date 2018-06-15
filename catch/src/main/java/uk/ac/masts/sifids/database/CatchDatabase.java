@@ -81,12 +81,6 @@ public abstract class CatchDatabase extends RoomDatabase{
                                 dao.insertGear(Gear.createGear());
                                 dao.insertFisheryOffices(FisheryOffice.createFisheryOffices());
                                 dao.insertPorts(Port.createPorts());
-                                dao.insertObservationClasses(
-                                        ObservationClass.createObservationClasses());
-                                dao.insertObservationSpecies(
-                                        ObservationSpecies.createObservationSpecies(
-                                                dao.getObservationClasses()
-                                        ));
                             }
                         });
                     }
