@@ -86,12 +86,23 @@ public abstract class CatchDatabase extends RoomDatabase{
                     }
 
                     @Override
-                    public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                    public void onOpen(@NonNull final SupportSQLiteDatabase db) {
                         super.onOpen(db);
                         Executors.newSingleThreadExecutor().execute(new Runnable() {
                             @Override
                             public void run() {
                                 CatchDao dao = getInstance(context).catchDao();
+                                int observationClassesCount = dao.countObservationClasses();
+                                int observationSpeciesCount = dao.countObservationSpecies();
+                                int numSpecies = 0;
+                                for (String[] species : ObservationSpecies.SPECIES.values()) {
+                                    numSpecies += species.length;
+                                }
+                                if (observationClassesCount > ObservationClass.ANIMALS.length
+                                        || observationSpeciesCount > numSpecies) {
+                                    dao.deleteAllObservationSpecies();
+                                    dao.deleteAllObservationClasses();
+                                }
                                 if (dao.countObservationClasses() == 0) {
                                     dao.insertObservationClasses(
                                             ObservationClass.createObservationClasses());

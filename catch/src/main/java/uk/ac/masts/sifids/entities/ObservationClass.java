@@ -9,7 +9,7 @@ import java.util.List;
 @Entity(tableName = "observation_class")
 public class ObservationClass extends EntityWithId {
 
-    private static final String[] ANIMALS = {"Seal", "Whale", "Dolphin", "Porpoise", "John Dory",
+    public static final String[] ANIMALS = {"Seal", "Whale", "Dolphin", "Porpoise", "John Dory",
             "Basking Shark", "Wrasse", "Triggerfish", "Octopus"};
 
     public String name;

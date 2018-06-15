@@ -23,7 +23,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 })
 public class ObservationSpecies extends EntityWithId {
 
-    private static final Map<String, String[]> SPECIES = createSpeciesMap();
+    public static final Map<String, String[]> SPECIES = createSpeciesMap();
 
     private static Map<String, String[]> createSpeciesMap() {
         Map<String, String[]> speciesMap = new HashMap<>();

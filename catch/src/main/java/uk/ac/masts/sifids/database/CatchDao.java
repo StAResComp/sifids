@@ -219,4 +219,11 @@ public interface CatchDao {
     @Query("DELETE FROM fish_1_form_row WHERE id = :id")
     public void deleteFish1FormRow(int id);
 
+    @Query("DELETE FROM observation_species")
+    public void deleteAllObservationSpecies();
+
+    @Query("DELETE FROM observation_class")
+    public void deleteAllObservationClasses();
+
+
 }
