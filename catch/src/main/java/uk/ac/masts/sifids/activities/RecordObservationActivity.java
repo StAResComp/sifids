@@ -136,14 +136,18 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
     public void nextSection(View v) {
         updateSectionsAfter(this.currentSectionIndex);
         formSections.get(currentSectionIndex).setVisibility(View.GONE);
-        currentSectionIndex++;
+        if (currentSectionIndex == 0 && skipSpeciesSection()) {
+            currentSectionIndex += 2;
+        }
+        else {
+            currentSectionIndex++;
+        }
         if (currentSectionIndex >= formSections.size()) {
             this.finish();
             this.startActivity(this.getIntent());
         }
-        formSections.get(currentSectionIndex).setVisibility(View.VISIBLE);
-        if (currentSectionIndex == 1 && skipSpeciesSection()) {
-            nextSection();
+        else {
+            formSections.get(currentSectionIndex).setVisibility(View.VISIBLE);
         }
     }
 
@@ -154,11 +158,13 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
     public void previousSection(View v) {
         if (currentSectionIndex > 0) {
             formSections.get(currentSectionIndex).setVisibility(View.GONE);
-            currentSectionIndex--;
+            if (currentSectionIndex == 2 && skipSpeciesSection()) {
+                currentSectionIndex -= 2;
+            }
+            else {
+                currentSectionIndex--;
+            }
             formSections.get(currentSectionIndex).setVisibility(View.VISIBLE);
-        }
-        if (currentSectionIndex == 1 && skipSpeciesSection()) {
-            previousSection();
         }
     }
 
@@ -173,10 +179,9 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
             ExecutorService service = Executors.newSingleThreadExecutor();
             Future<Integer> future = service.submit(c);
             try {
-                Integer numSpecies = future.get();
-                return numSpecies.equals(0);
+                int numSpecies = future.get();
+                return numSpecies == 0;
             } catch (Exception e) {
-            } finally {
                 return false;
             }
         }
