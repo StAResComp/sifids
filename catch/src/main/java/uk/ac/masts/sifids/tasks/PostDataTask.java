@@ -151,7 +151,12 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                 postObservation(this.context, observation, new VolleyCallback() {
                     @Override
                     public void onSuccess(JSONObject result) {
-                        db.catchDao().markObservationSubmitted(observation.getId());
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.catchDao().markObservationSubmitted(observation.getId());
+                            }
+                        });
                         Toast.makeText(context,
                                 "Observation successfully submitted.",
                                 Toast.LENGTH_LONG).show();
@@ -237,13 +242,6 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject jsonObject) {
-                            db.catchDao().markObservationSubmitted(observation.getId());
-                            AsyncTask.execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    db.catchDao().markObservationSubmitted(observation.getId());
-                                }
-                            });
                             callback.onSuccess(jsonObject);
                         }
                     },

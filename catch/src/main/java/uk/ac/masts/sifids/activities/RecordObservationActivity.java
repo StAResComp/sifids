@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -529,7 +530,12 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
             PostDataTask.postObservation(this, observation, new PostDataTask.VolleyCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    db.catchDao().markObservationSubmitted(observation.getId());
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.catchDao().markObservationSubmitted(observation.getId());
+                        }
+                    });
                     updateSubmissionMessage(true);
                     Toast.makeText(RecordObservationActivity.this,
                             "Observation successfully submitted.",
