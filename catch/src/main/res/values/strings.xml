@@ -114,11 +114,11 @@
     <string name="fish_1_form_row_longitude_direction">Longitude Dir</string>
     <string name="fish_1_form_row_ices_area">ICES Area</string>
     <string name="fish_1_form_row_gear">Gear</string>
-    <string name="fish_1_form_row_mesh_size">Mesh Size</string>
+    <string name="fish_1_form_row_mesh_size">Mesh Size (mm)</string>
     <string name="fish_1_form_row_species">Species</string>
     <string name="fish_1_form_row_state">State</string>
     <string name="fish_1_form_row_presentation">Presentation</string>
-    <string name="fish_1_form_row_weight">Weight</string>
+    <string name="fish_1_form_row_weight">Wt. (kg)</string>
     <string name="fish_1_form_row_dis">DIS</string>
     <string name="fish_1_form_row_bms">BMS</string>
     <string name="fish_1_form_row_number_pots_hauled">Number of Pots Hauled</string>
