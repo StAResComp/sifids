@@ -104,11 +104,15 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
 
         super.onCreate(savedInstanceState);
 
-        //Handle associated FISH1 Form rows
-        this.doRows();
-
         //Set up the floating action button
         this.doFab();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Handle associated FISH1 Form rows
+        this.doRows();
     }
 
     /**
