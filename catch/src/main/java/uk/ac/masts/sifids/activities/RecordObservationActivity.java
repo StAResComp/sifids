@@ -431,15 +431,13 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
                                 locationSeen = new CatchLocation();
                                 locationSeen.setLatitude(location.getLatitude());
                                 locationSeen.setLongitude(location.getLongitude());
+                                RecordObservationActivity.this.nextSection();
                             } else {
                                 Toast.makeText(getBaseContext(), "Unable to get current location",
                                         Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-            if (this.locationSeen != null) {
-                nextSection();
-            }
         }
     }
 
