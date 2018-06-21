@@ -67,6 +67,7 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
+        Log.e("OBS_QUEUE", "Submitting in background");
         boolean noErrorsEncountered = true;
         while (this.anyLocationsToPost() && noErrorsEncountered) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -129,12 +130,14 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                     for (CatchLocation loc : locations) {
                         ids.add(Integer.toString(loc.getId()));
                     }
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.catchDao().markLocationsUploaded(ids);
-                        }
-                    });
+                    Log.e("OBS_QUEUE", "Marking locations as uploaded");
+                    db.catchDao().markLocationsUploaded(ids);
+//                    AsyncTask.execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
                 }
                 else {
                     noErrorsEncountered = false;
@@ -145,36 +148,40 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
             } catch (Exception e) {
             }
         }
+        Log.e("OBS_QUEUE", "All OK? " + noErrorsEncountered);
+        Log.e("OBS_QUEUE", "Submitting in background - done with locations, on to observations");
         if (anyObservationsToPost() && noErrorsEncountered) {
+            Log.e("OBS_QUEUE", "Found observations to submit");
             List<Observation> observations = db.catchDao().getUnsubmittedObservations();
             for (final Observation observation : observations) {
+                Log.e("OBS_QUEUE", "Attempting submission of " + observation.getId());
                 postObservation(this.context, observation, new VolleyCallback() {
                     @Override
                     public void onSuccess(JSONObject result) {
+                        Log.e("OBS_QUEUE", "Success!");
+                        Log.e("OBS_QUEUE", "Marking " + observation.getId() + " as submitted");
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
                                 db.catchDao().markObservationSubmitted(observation.getId());
+                                Log.e("OBS_QUEUE", "Marked " + observation.getId() + " as submitted");
                             }
                         });
-                        Toast.makeText(context,
-                                "Observation successfully submitted.",
-                                Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onError(String result) {
-                        Toast.makeText(context,
-                                "Error submitting observation. Will try again later.",
-                                Toast.LENGTH_LONG).show();
-                    }
+                    public void onError(String result) { }
                 });
             }
+        }
+        else {
+            Log.e("OBS_QUEUE", "No observations to submit");
         }
         return null;
     }
 
     private boolean anyLocationsToPost() {
+        Log.e("OBS_QUEUE", "Found " + db.catchDao().countUnuploadedLocations() + " unuploaded locations");
         return db.catchDao().countUnuploadedLocations() > 0;
     }
 
