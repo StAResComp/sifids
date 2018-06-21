@@ -104,7 +104,8 @@
 
     <!-- FISH1 Form Row Editing -->
 
-    <string name="fish_1_form_row_fishing_activity_date">Fishing Activity Date: </string>
+    <string name="fish_1_form_row_fishing_activity_date">Fishing Activity Date:\u00A0</string>
+    <string name="fish_1_form_row_fishing_activity_date_not_set">Fishing Activity Date not set </string>
     <string name="fish_1_form_row_select_fishing_activity_date">Select Fishing Activity Date</string>
     <string name="fish_1_form_row_latitude_degrees">Latitude Deg</string>
     <string name="fish_1_form_row_latitude_minutes">Latitude Min</string>
@@ -122,8 +123,9 @@
     <string name="fish_1_form_row_dis">DIS</string>
     <string name="fish_1_form_row_bms">BMS</string>
     <string name="fish_1_form_row_number_pots_hauled">Number of Pots Hauled</string>
-    <string name="fish_1_form_row_landing_or_discard_date">Landing or Discard Date: </string>
-    <string name="fish_1_form_row_select_landing_or_discard_date">Select Landing or Discard Date</string>
+    <string name="fish_1_form_row_landing_or_discard_date">Landing or Discard Date:\u00A0</string>
+    <string name="fish_1_form_row_landing_or_discard_date_not_set">Select Landing or Discard Date not set</string>
+    <string name="fish_1_form_row_select_landing_or_discard_date">Landing or Discard Date</string>
     <string name="fish_1_form_row_transporter_reg_etc">Transporter Reg. etc.</string>
     <string name="fish_1_form_row_save">Save Form Row</string>
     <string name="fish_1_form_row_delete">Delete Form Row</string>
