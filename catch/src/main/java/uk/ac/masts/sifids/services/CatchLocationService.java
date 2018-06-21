@@ -34,8 +34,8 @@ public class CatchLocationService extends Service {
 
 	private static final String TAG = "CatchLocationService";
 	private LocationManager mLocationManager = null;
-	private static final int LOCATION_INTERVAL = 10000;
-	private static final float LOCATION_DISTANCE = 10f;
+	private static final int LOCATION_INTERVAL = 30000;
+	private static final float LOCATION_DISTANCE = 5f;
     private final int TRACKING_NOTIFICATION_ID = 204;
     private final String SIFIDS_LOCATION_TRACKING_CHANNEL_ID = "sifids_location_tracking_channel";
     NotificationManager notificationManager;
