@@ -16,6 +16,8 @@ import java.util.Map;
 
 import android.text.format.DateFormat;
 
+import uk.ac.masts.sifids.CatchApplication;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
@@ -329,9 +331,14 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     }
 
     public String toString() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.getFishingActivityDate());
-        return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
+        if (this.getFishingActivityDate() != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(this.getFishingActivityDate());
+            return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
+        }
+        else {
+            return "Date not set";
+        }
     }
 
     public String getCoordinates() {

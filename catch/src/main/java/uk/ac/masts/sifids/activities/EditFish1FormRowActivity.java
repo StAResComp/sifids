@@ -265,7 +265,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
                 boolean create = false;
 
-                if (fish1FormRow == null  && formId != 0) {
+                if (fish1FormRow == null && formId != 0) {
                     create = true;
                     fish1FormRow = new Fish1FormRow();
                     fish1FormRow.setFormId(formId);
@@ -300,25 +300,43 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                         || fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate)
                         ) {
                     if (create) {
-                        AsyncTask.execute(new Runnable() {
+                        Runnable r = new Runnable(){
                             @Override
                             public void run() {
                                 EditFish1FormRowActivity.this.db.catchDao()
                                         .insertFish1FormRows(fish1FormRow);
                             }
-                        });
+                        };
+                        Thread newThread= new Thread(r);
+                        newThread.start();
+                        try {
+                            //Don't want to go back to form before this is saved
+                            newThread.join();
+                        }
+                        catch (InterruptedException ie) {
+
+                        }
                     }
                     else {
-                        AsyncTask.execute(new Runnable() {
+                        Runnable r = new Runnable(){
                             @Override
                             public void run() {
                                 EditFish1FormRowActivity.this.db.catchDao()
                                         .updateFish1FormRows(fish1FormRow);
                             }
-                        });
+                        };
+                        Thread newThread= new Thread(r);
+                        newThread.start();
+                        try {
+                            //Don't want to go back to form before this is saved
+                            newThread.join();
+                        }
+                        catch (InterruptedException ie) {
+
+                        }
                     }
+                    EditFish1FormRowActivity.this.returnToEditFish1FormActivity();
                 }
-                EditFish1FormRowActivity.this.returnToEditFish1FormActivity();
             }
         });
 
