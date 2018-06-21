@@ -56,26 +56,6 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
         db = CatchDatabase.getInstance(getApplicationContext());
 
-        Runnable r = new Runnable(){
-            @Override
-            public void run() {
-                forms = db.catchDao().getForms();
-                adapter= new Fish1FormAdapter(forms, Fish1FormsActivity.this);
-                adapter.notifyDataSetChanged();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView= (RecyclerView)findViewById(R.id.form_recycler_view);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-            }
-        };
-
-        Thread newThread= new Thread(r);
-        newThread.start();
-
         fab=(FloatingActionButton)findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +115,30 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                 builder.create().show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Runnable r = new Runnable(){
+            @Override
+            public void run() {
+                forms = db.catchDao().getForms();
+                adapter= new Fish1FormAdapter(forms, Fish1FormsActivity.this);
+                adapter.notifyDataSetChanged();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView= (RecyclerView)findViewById(R.id.form_recycler_view);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+            }
+        };
+
+        Thread newThread= new Thread(r);
+        newThread.start();
     }
 
     public void startTrackingLocation(View v) {
