@@ -129,12 +129,13 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                     for (CatchLocation loc : locations) {
                         ids.add(Integer.toString(loc.getId()));
                     }
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.catchDao().markLocationsUploaded(ids);
-                        }
-                    });
+                    db.catchDao().markLocationsUploaded(ids);
+//                    AsyncTask.execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                        }
+//                    });
                 }
                 else {
                     noErrorsEncountered = false;
@@ -157,19 +158,14 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                                 db.catchDao().markObservationSubmitted(observation.getId());
                             }
                         });
-                        Toast.makeText(context,
-                                "Observation successfully submitted.",
-                                Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onError(String result) {
-                        Toast.makeText(context,
-                                "Error submitting observation. Will try again later.",
-                                Toast.LENGTH_LONG).show();
-                    }
+                    public void onError(String result) { }
                 });
             }
+        }
+        else {
         }
         return null;
     }
