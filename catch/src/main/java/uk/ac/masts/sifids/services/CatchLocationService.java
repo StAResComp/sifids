@@ -83,6 +83,7 @@ public class CatchLocationService extends Service {
                         CatchLocation location = new CatchLocation();
                         location.setLatitude(mLastLocation.getLatitude());
                         location.setLongitude(mLastLocation.getLongitude());
+                        location.setAccuracy(mLastLocation.getAccuracy());
                         location.setTimestamp(new Date());
                         location.setFishing(((CatchApplication) getApplication()).isFishing());
                         db.catchDao().insertLocation(location);
