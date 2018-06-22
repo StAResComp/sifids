@@ -35,6 +35,7 @@
     <!-- FISH1 Forms -->
 
     <string name="title_activity_catch">Home</string>
+    <string name="activity_tracking_header">Track Activity</string>
     <string name="start_tracking_location">Start Tracking Location</string>
     <string name="stop_tracking_location">Stop Tracking Location</string>
     <string name="start_fishing">Start Fishing</string>
@@ -44,6 +45,7 @@
     <string name="stopped_tracking_location">Stopped tracking location</string>
     <string name="started_fishing">Recorded location information will now indicate that you are fishing</string>
     <string name="stopped_fishing">Recorded location information will no longer indicate that you are fishing</string>
+    <string name="fish_1_forms_header">FISH1 Forms</string>
 
     <!-- FISH1 Form Creation -->
 
