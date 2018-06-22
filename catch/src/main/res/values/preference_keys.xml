@@ -45,4 +45,8 @@
         <xliff:g id="preference_key">pref_version_code</xliff:g>
     </string>
 
+    <string name="pref_buyer_details_key">
+        <xliff:g id="preference_key">pref_buyer_details</xliff:g>
+    </string>
+
 </resources>

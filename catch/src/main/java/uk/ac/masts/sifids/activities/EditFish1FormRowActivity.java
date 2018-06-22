@@ -253,8 +253,14 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         }
         if (fish1FormRow != null
                 && fish1FormRow.getTransporterRegEtc() != null
-                && !fish1FormRow.getTransporterRegEtc().equals(""))
-            icesArea.setText(fish1FormRow.getTransporterRegEtc());
+                && !fish1FormRow.getTransporterRegEtc().equals("")) {
+            transporterRegEtc.setText(fish1FormRow.getTransporterRegEtc());
+        }
+        else if (fish1FormRow == null) {
+            transporterRegEtc.setText(
+                    this.prefs.getString(getString(R.string.pref_buyer_details_key),""));
+        }
+
     }
 
     private void setListeners() {
