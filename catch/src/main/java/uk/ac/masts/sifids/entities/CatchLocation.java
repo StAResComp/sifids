@@ -19,6 +19,8 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public double longitude;
 
+    public Double accuracy;
+
     public Date timestamp;
 
     public boolean fishing;
@@ -164,6 +166,17 @@ public class CatchLocation extends ChangeLoggingEntity {
         if (dir.equals("N") || dir.equals("E")) return coord;
         else if (dir.equals("S") || dir.equals("W")) return (coord * -1);
         return 1000;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public void setAccuracy(double accuracy) {
+        if (this.accuracy == null || !this.accuracy.equals(accuracy)) {
+            this.accuracy = accuracy;
+            this.updateDates();
+        }
     }
 
     public Date getTimestamp() {
