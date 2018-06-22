@@ -168,7 +168,7 @@ public class CatchLocation extends ChangeLoggingEntity {
         return 1000;
     }
 
-    public double getAccuracy() {
+    public Double getAccuracy() {
         return accuracy;
     }
 
