@@ -524,6 +524,11 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
     public void showLandingOrDiscardDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
+        Bundle bundle = new Bundle();
+        if (this.fishingActivityDate != null) {
+            bundle.putLong("min", fishingActivityDate.getTime());
+        }
+        newFragment.setArguments(bundle);
         newFragment.show(getFragmentManager(), "landing_or_discard_date");
     }
 
@@ -587,6 +592,16 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             DatePickerDialog dialog =
                     new DatePickerDialog(getActivity(),
                             (EditFish1FormRowActivity) getActivity(), year, month, day);
+            Bundle bundle = getArguments();
+            if (bundle != null && bundle.containsKey("min")) {
+                dialog.getDatePicker().setMinDate(bundle.getLong("min"));
+            }
+            if (bundle != null && bundle.containsKey("max")) {
+                dialog.getDatePicker().setMinDate(bundle.getLong("max"));
+            }
+            else {
+                dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+            }
             dialog.getDatePicker().setTag(this.getTag());
             return dialog;
         }
