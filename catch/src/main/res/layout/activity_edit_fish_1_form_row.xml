@@ -22,9 +22,10 @@
 
             <TextView
                 android:id="@+id/fishing_activity_date"
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fish_1_form_row_fishing_activity_date" />
+                android:text="@string/fish_1_form_row_fishing_activity_date_not_set" />
 
             <Button
                 android:id="@+id/fishing_activity_date_picker"
@@ -285,10 +286,11 @@
                 android:background="#999999" />
 
             <TextView
+                style="@android:style/TextAppearance.Medium"
                 android:id="@+id/landing_or_discard_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fish_1_form_row_landing_or_discard_date" />
+                android:text="@string/fish_1_form_row_landing_or_discard_date_not_set" />
 
             <Button
                 android:id="@+id/landing_or_discard_date_picker"

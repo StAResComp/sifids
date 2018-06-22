@@ -21,6 +21,8 @@ public class CatchApplication extends Application {
 
     private boolean fishing = false;
 
+    private boolean trackingLocation = false;
+
     /**
      * Indicates whether or not the user is currently fishing.
      *
@@ -37,6 +39,14 @@ public class CatchApplication extends Application {
      */
     public void setFishing(boolean fishing) {
         this.fishing = fishing;
+    }
+
+    public boolean isTrackingLocation() {
+        return trackingLocation;
+    }
+
+    public void setTrackingLocation(boolean trackingLocation) {
+        this.trackingLocation = trackingLocation;
     }
 
     /**

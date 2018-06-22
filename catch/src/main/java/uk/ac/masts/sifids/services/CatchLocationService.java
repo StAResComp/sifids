@@ -104,6 +104,7 @@ public class CatchLocationService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
+        ((CatchApplication) getApplication()).setTrackingLocation(true);
 		return START_STICKY;
 	}
 
@@ -187,6 +188,7 @@ public class CatchLocationService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+        ((CatchApplication) getApplication()).setTrackingLocation(false);
 		if (mLocationManager != null) {
             try {
                 if (

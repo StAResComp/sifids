@@ -395,7 +395,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     private void updateDateDisplay(Date date, TextView display, String prefix) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        display.setText(new SimpleDateFormat(getString(R.string.dmonthy)).format(cal.getTime()));
+        display.setText(prefix + new SimpleDateFormat(getString(R.string.dmonthy)).format(cal.getTime()));
     }
 
     private void loadOptions() {

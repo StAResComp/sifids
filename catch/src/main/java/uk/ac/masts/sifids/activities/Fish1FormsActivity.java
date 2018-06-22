@@ -139,6 +139,14 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
 
         Thread newThread= new Thread(r);
         newThread.start();
+
+        boolean isFishing = ((CatchApplication) this.getApplication()).isFishing();
+        this.findViewById(R.id.start_fishing).setEnabled(!isFishing);
+        this.findViewById(R.id.stop_fishing).setEnabled(isFishing);
+
+        boolean isTrackingLocation = ((CatchApplication) this.getApplication()).isTrackingLocation();
+        this.findViewById(R.id.start_tracking_location).setEnabled(!isTrackingLocation);
+        this.findViewById(R.id.stop_tracking_location).setEnabled(isTrackingLocation);
     }
 
     public void startTrackingLocation(View v) {
@@ -154,11 +162,15 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
         }
         else {
             startLocationService();
+            this.findViewById(R.id.start_tracking_location).setEnabled(false);
+            this.findViewById(R.id.stop_tracking_location).setEnabled(true);
         }
     }
 
     public void stopTrackingLocation(View v) {
         stopService(new Intent(this, CatchLocationService.class));
+        this.findViewById(R.id.start_tracking_location).setEnabled(true);
+        this.findViewById(R.id.stop_tracking_location).setEnabled(false);
         Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
                 Toast.LENGTH_LONG).show();
     }
@@ -166,12 +178,16 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     public void startFishing(View v) {
         ((CatchApplication) this.getApplication()).setFishing(true);
         this.startTrackingLocation(v);
+        this.findViewById(R.id.start_fishing).setEnabled(false);
+        this.findViewById(R.id.stop_fishing).setEnabled(true);
         Toast.makeText(getBaseContext(), getString(R.string.started_fishing),
                 Toast.LENGTH_LONG).show();
     }
 
     public void stopFishing(View v) {
         ((CatchApplication) this.getApplication()).setFishing(false);
+        this.findViewById(R.id.start_fishing).setEnabled(true);
+        this.findViewById(R.id.stop_fishing).setEnabled(false);
         Toast.makeText(getBaseContext(), getString(R.string.stopped_fishing),
                 Toast.LENGTH_LONG).show();
     }
