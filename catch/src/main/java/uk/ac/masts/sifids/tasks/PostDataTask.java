@@ -78,6 +78,7 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.isFishing() ? 1 : 0, false, context);
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLatitude(), false, context);
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLongitude(), false, context);
+                rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getAccuracy(), false, context);
                 csv = Csv.appendRowToCsv(csv, rowToWrite);
             }
             try {
@@ -130,12 +131,6 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                         ids.add(Integer.toString(loc.getId()));
                     }
                     db.catchDao().markLocationsUploaded(ids);
-//                    AsyncTask.execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                        }
-//                    });
                 }
                 else {
                     noErrorsEncountered = false;
