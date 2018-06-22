@@ -56,6 +56,7 @@
 
     <!-- FISH1 Form Editing -->
 
+    <string name="fish_1_form_header">FISH1 Form Header Fields</string>
     <string name="fish_1_form_fishery_office_string">%s (%s)</string>
     <string name="fish_1_form_fishery_office">Fishery Office</string>
     <string name="fish_1_form_fishery_office_email">Fishery Office Email</string>
@@ -70,6 +71,7 @@
     <string name="fish_1_form_add_row">Add Row Below</string>
     <string name="fish_1_form_save">Save Form</string>
     <string name="fish_1_form_delete">Delete Form</string>
+    <string name="fish_1_form_rows_header">FISH1 Form Rows</string>
     <string name="fish_1_form_error_retrieving_from_database">Error retrieving FISH1 form from database</string>
     <string name="fish_1_form_error_creating_new_form">Error creating new FISH1 form</string>
     <string name="fish_1_form_loading_ports_list">Error loading ports from database</string>
