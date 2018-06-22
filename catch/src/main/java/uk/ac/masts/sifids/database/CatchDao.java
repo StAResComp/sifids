@@ -93,7 +93,7 @@ public interface CatchDao {
     @Query("SELECT * FROM fish_1_form_row WHERE id = :id")
     public Fish1FormRow getFormRow(int id);
 
-    @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date ASC LIMIT 1")
+    @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId AND fishing_activity_date != 0 ORDER BY fishing_activity_date ASC LIMIT 1")
     public Date getDateOfEarliestRow(int formId);
 
     @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date DESC LIMIT 1")
