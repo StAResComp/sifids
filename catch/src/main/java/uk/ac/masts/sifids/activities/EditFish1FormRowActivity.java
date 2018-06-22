@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
@@ -91,6 +92,8 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     int speciesIdValue;
     int stateIdValue;
     int presentationIdValue;
+    Date minDate;
+    Date maxDate;
 
     /**
      * Runs when activity is created
@@ -103,6 +106,25 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         setContentView(R.layout.activity_edit_fish_1_form_row);
 
         super.onCreate(savedInstanceState);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Date currentLowest = db.catchDao().getDateOfEarliestRow(formId);
+                if (currentLowest != null) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(currentLowest);
+                    cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
+                    minDate = cal.getTime();
+                    Log.e("DATE_LIMITS", "Min: " + minDate.toString());
+                    cal.add(Calendar.DATE, 6);
+                    maxDate = cal.getTime();
+                    Log.e("DATE_LIMITS", "Max: " + maxDate.toString());
+                }
+            }
+        };
+        Thread newThread= new Thread(r);
+        newThread.start();
     }
 
     protected void processIntent() {
@@ -519,17 +541,31 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
     public void showFishingActivityDatePickerDialog(View v) {
         DialogFragment datePickerFragment = new DatePickerFragment();
+        Bundle bundle = new Bundle();
+        if (this.minDate != null) {
+            bundle.putLong("min", minDate.getTime());
+        }
+        if (this.maxDate != null) {
+            bundle.putLong("max", maxDate.getTime());
+        }
+        datePickerFragment.setArguments(bundle);
         datePickerFragment.show(getFragmentManager(), "fishing_activity_date");
     }
 
     public void showLandingOrDiscardDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment datePickerFragment = new DatePickerFragment();
         Bundle bundle = new Bundle();
         if (this.fishingActivityDate != null) {
             bundle.putLong("min", fishingActivityDate.getTime());
         }
-        newFragment.setArguments(bundle);
-        newFragment.show(getFragmentManager(), "landing_or_discard_date");
+        else if (this.minDate != null) {
+            bundle.putLong("min", minDate.getTime());
+        }
+        if (this.maxDate != null) {
+            bundle.putLong("max", maxDate.getTime());
+        }
+        datePickerFragment.setArguments(bundle);
+        datePickerFragment.show(getFragmentManager(), "landing_or_discard_date");
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -597,7 +633,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 dialog.getDatePicker().setMinDate(bundle.getLong("min"));
             }
             if (bundle != null && bundle.containsKey("max")) {
-                dialog.getDatePicker().setMinDate(bundle.getLong("max"));
+                dialog.getDatePicker().setMaxDate(bundle.getLong("max"));
             }
             else {
                 dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
@@ -614,7 +650,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
     private void returnToEditFish1FormActivity() {
         Intent i = new Intent(this, EditFish1FormActivity.class);
-        i.putExtra(Fish1Form.ID, this.fish1FormRow.getFormId());
+        i.putExtra(Fish1Form.ID, this.formId);
         i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         this.startActivity(i);
         this.finish();
