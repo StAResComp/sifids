@@ -240,6 +240,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_name_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_address_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_email_key)));
         }
     }
 

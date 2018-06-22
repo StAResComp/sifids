@@ -25,6 +25,10 @@
         <xliff:g id="preference_key">pref_owner_master_address</xliff:g>
     </string>
 
+    <string name="pref_owner_master_email_key">
+        <xliff:g id="preference_key">pref_owner_master_email</xliff:g>
+    </string>
+
     <string name="pref_port_key">
         <xliff:g id="preference_key">pref_port</xliff:g>
     </string>

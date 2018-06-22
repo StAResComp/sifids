@@ -427,7 +427,11 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
         emailIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         emailIntent.setType("vnd.android.cursor.dir/email");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{fish1Form.getEmail()});
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{
+                fish1Form.getEmail(),
+                prefs.getString(getString(R.string.pref_owner_master_email_key),""),
+                getString(R.string.email)
+        });
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.fish_1_form_email_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.fish_1_form_email_text));
         emailIntent.putExtra(Intent.EXTRA_STREAM, GenericFileProvider.getUriForFile(

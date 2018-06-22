@@ -20,6 +20,7 @@
     <string name="pref_header_owner_master_details">Owner/Master Details</string>
     <string name="pref_owner_master_name_title">Owner/Master Name</string>
     <string name="pref_owner_master_address_title">Owner/Master Address</string>
+    <string name="pref_owner_master_email_title">Owner/Master Email Address</string>
 
     <string name="pref_header_port_details">Usual Ports</string>
     <string name="pref_port_title">Ports</string>
