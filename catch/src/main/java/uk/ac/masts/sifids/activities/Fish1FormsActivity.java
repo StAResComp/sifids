@@ -204,6 +204,8 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                         && grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startLocationService();
+            this.findViewById(R.id.start_tracking_location).setEnabled(false);
+            this.findViewById(R.id.stop_tracking_location).setEnabled(true);
         }
     }
 }
