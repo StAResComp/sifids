@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -151,12 +153,35 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         this.loadOptions();
 
         fishingActivityDateDisplay = (TextView) findViewById(R.id.fishing_activity_date);
+
+        TextWatcher coordWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditFish1FormRowActivity.this.updateIcesAreaValue();
+            }
+        };
+
         latitudeDegrees = (EditText) findViewById(R.id.latitude_degrees);
+        latitudeDegrees.addTextChangedListener(coordWatcher);
         latitudeMinutes = (EditText) findViewById(R.id.latitude_minutes);
+        latitudeMinutes.addTextChangedListener(coordWatcher);
         this.createSpinner(LATITUDE_DIRECTION_KEY, R.id.latitude_direction);
         longitudeDegrees = (EditText) findViewById(R.id.longitude_degrees);
+        longitudeDegrees.addTextChangedListener(coordWatcher);
         longitudeMinutes = (EditText) findViewById(R.id.longitude_minutes);
+        longitudeMinutes.addTextChangedListener(coordWatcher);
         this.createSpinner(LONGITUDE_DIRECTION_KEY, R.id.longitude_direction);
+
         icesArea = (EditText) findViewById(R.id.ices_area);
         this.createSpinner(GEAR_KEY, R.id.gear);
         meshSize = (EditText) findViewById(R.id.mesh_size);
@@ -261,6 +286,31 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     this.prefs.getString(getString(R.string.pref_buyer_details_key),""));
         }
 
+    }
+
+    private void updateIcesAreaValue() {
+        if (latitudeDegrees.getText() != null && !latitudeDegrees.getText().toString().equals("")
+                && latitudeMinutes.getText() != null && !latitudeMinutes.getText().toString().equals("")
+                && latitudeDirectionValue != null
+                && longitudeDegrees.getText() != null && !longitudeDegrees.getText().toString().equals("")
+                && longitudeMinutes.getText() != null && !longitudeMinutes.getText().toString().equals("")
+                && longitudeDirectionValue != null) {
+            Log.e("ICES", latitudeDirectionValue);
+            icesArea.setText(
+                    CatchLocation.getIcesRectangle(
+                            CatchLocation.getDecimalCoordinate(
+                                    Integer.parseInt(latitudeDegrees.getText().toString()),
+                                    Integer.parseInt(latitudeMinutes.getText().toString()),
+                                    latitudeDirectionValue
+                            ),
+                            CatchLocation.getDecimalCoordinate(
+                                    Integer.parseInt(longitudeDegrees.getText().toString()),
+                                    Integer.parseInt(longitudeMinutes.getText().toString()),
+                                    longitudeDirectionValue
+                            )
+                    )
+            );
+        }
     }
 
     private void setListeners() {
@@ -494,9 +544,11 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 break;
             case R.id.latitude_direction:
                 this.latitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
+                this.updateIcesAreaValue();
                 break;
             case R.id.longitude_direction:
                 this.longitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
+                this.updateIcesAreaValue();
                 break;
         }
     }
