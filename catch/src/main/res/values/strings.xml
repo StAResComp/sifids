@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY email "sifids@st-andrews.ac.uk">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY email "sifids@st-andrews.ac.uk">]>
 <resources>
     <string name="app_name">sifids</string>
     <string name="email">&email;</string>
@@ -35,7 +32,78 @@
 
     <string name="pref_header_buyer_details">Buyer Details</string>
     <string name="pref_buyer_details_title">Transporter Reg. etc.</string>
-    
+
+    <!-- Consent -->
+
+    <string name="need_to_consent">You must review the project information and complete the consent form before using the app.</string>
+    <string name="participant_info_header">SIFIDS FISH1 App trial Participant Information</string>
+    <string name="participant_info_project_title_header">Project Title</string>
+    <string name="participant_info_project_title">Capturing and Identifying Experiential Inshore, Small-Scale Fisheries Data to Inform Local Management Strategies Through the Development of a Mobile Phone Application for Onboard Use.</string>
+    <string name="participant_info_app_name_header">App Name</string>
+    <string name="participant_info_app_name">SIFIDS FISH1 App (for android phones only)</string>
+    <string name="participant_info_about_study_header">What is the study about?</string>
+    <string name="participant_info_about_study_1">We invite you to participate in a research project aimed at improving the sustainability within commercial inshore fisheries (i.e. vessels of 12m or less fishing out to the 12nm limit). This project aims to trial ways to capture information that could contribute to the industry’s long-term sustainability and profitability. The project aims to generate this information through industry gathered data via a mobile phone application (Android App) that can be used within the scope of marine spatial planning and fisheries management. The project also seeks to identify how the App could provide a platform to capture useful observations and experiential information from fishers in a standardised format so that these data can either in isolation or collated over time, contribute to fisheries management and marine planning. This will involve engagement (through a trial using the mobile phone App) with a sample of inshore fishers to study the quality of the data provided through the App and will enable a better understanding of the fishing activities.</string>
+    <string name="participant_info_about_study_2">This study is being conducted as part of the Scottish Inshore Fisheries Integrated Database System (SIFIDS) project, led by Dr Mark James who is based the University of St Andrews, Scotland.</string>
+    <string name="participant_info_what_does_app_do_header">What does the App do?</string>
+    <string name="participant_info_what_does_app_do_1">With your agreement, we would like you to start using our App’s FISH1 form to record information about your daily catches. All information will be sent securely, via email, from your phone to your local Fishery Office and to researchers at the University of St Andrews. The FISH1 form will be available to for you review at any time in the App and can be sent to yours/the masters email address. The App has been approved by Marine Scotland for this trial.</string>
+    <string name="participant_info_what_does_app_do_2">If you are willing to assist us further, we would like to collect some GPS tracking data using the App whilst you are fishing. The GPS track will only be seen by researchers and yourself. This will allow the researchers to understand the areas you fish and frequency you fish in these locations.</string>
+    <string name="participant_info_what_does_app_do_3">There is also an observation reporter. This will allow you to record unusual sightings or interactions with wildlife such as whales, dolphins, wrasse and octopus whilst fishing. This information will only be seen by researchers and yourself. These observations will provide useful, often unrecorded information on the distribution of these species.</string>
+    <string name="participant_info_what_does_app_do_4">After the trial, we will seek your feedback on the overall functionality of the App and how we might improve it. <b>Please be assured that all the information and data that we collect in this research project will be treated as <u>STRICTLY CONFIDENTIAL</u></b>. The results will be analysed and presented in such a way that no personal details or information which might compromise your fishing activities will be made public.</string>
+    <string name="participant_info_do_i_have_to_take_part_header">Do I have to take part?</string>
+    <string name="participant_info_do_i_have_to_take_part">This information has been provided to help you decide if you would like to take part. It is up to you and you alone whether or not you wish to participate. If you do decide to take part, you will be free to withdraw from the study at any time without providing a reason.</string>
+    <string name="participant_info_what_do_i_do_header">What would I be required to do?</string>
+    <string name="participant_info_what_do_i_do">This will vary depending on which part(s) of the App you choose to use. If you agree to collect information on your daily catch, you will be provided with instructions on how to fill in the FISH1 form and how to use the mobile phone App, including the GPS tracker. Recording an observation could take from a few seconds to a couple of minutes depending upon the amount of information you wish to provide.  This can all be done at a time and place that is convenient to you.</string>
+    <string name="participant_info_anonymous_confidential_header">Will my participation be Anonymous and Confidential?</string>
+    <string name="participant_info_anonymous_confidential_1">The only data Marine Scotland will have access to will be the FISH1 form you submit, via email, from the app to your local Fishery Office.</string>
+    <string name="participant_info_anonymous_confidential_2">Project researchers will have access to all the raw data which will be kept confidential. The data collected will only be made available in reports or publications in aggregated or anonymised form. Your permission will be sought in the Participant Consent form for the data you provide, which will be coded*, to be used for future research purposes.</string>
+    <string name="participant_info_anonymous_confidential_3">*‘Coded Data’ refers to when data collected by the researcher is identifiable as belonging to a particular participant but is kept with personal identifiers removed.</string>
+    <string name="participant_info_data_storage_destruction_header">Storage and Destruction of Data Collected</string>
+    <string name="participant_info_data_storage_destruction_1">The data collected will be only be accessed in its raw form by the researchers involved in this study, unless explicit consent for wider access is given by means of the consent form. Your data will be stored for a period of at least 5 years before being destroyed*, i.e. in (1) coded format on the University computer system (2) in the case of hardcopy in a locked storage cupboard.</string>
+    <string name="participant_info_data_storage_destruction_2">*Unless secondary data permission has been indicated on the consent form. In the case of electronic data destruction will involve the permanent deletion (overwriting) of files using Eraser© software, while any hard copy records will be cross-cut shredded.</string>
+    <string name="participant_info_what_happens_to_results_header">What will happen to the results of the research study?</string>
+    <string name="participant_info_what_happens_to_results">The results will be made publicly available after the trial of the mobile phone App in <u>aggregated form or be sufficiently anonymised</u> as to prevent identification of the participant. Also, it is the intent of the researchers that wherever possible outputs from the trials will be submitted for publication as peer reviewed journal articles.</string>
+    <string name="participant_info_risks_header">Are there any potential risks to taking part?</string>
+    <string name="participant_info_risks">We do not anticipate there being any personal, emotional or financial risks to taking part in these studies. Very limited personal information will be recorded (name and contact details) to be used by the project team for identification purposes. If these data are utilised at any point, it will only be in aggregate form (e.g. participant, age, demographics). <i>In cases where video/images may be taken specific permission (by means of the consent form) will be sort from the participants involved.</i></string>
+    <string name="participant_info_questions_header">Questions</string>
+    <string name="participant_info_questions">You will have the opportunity to ask any questions in relation to this project before filling in the Consent Form and during the project.</string>
+    <string name="participant_info_consent_approval_header">Consent and Approval</string>
+    <string name="participant_info_consent_approval">This research proposal has been scrutinised and been granted Ethical Approval through the University of St Andrews ethical approval process.</string>
+    <string name="participant_info_concerns_header">What should I do if I have concerns about this study?</string>
+    <string name="participant_info_concerns">A full outline of the procedures governed by the University Teaching and Research Ethical Committee is available at http://www.st-andrews.ac.uk/utrec/guidelinespolicies/complaints/</string>
+    <string name="participant_info_contact_header">Contact Details</string>
+    <string name="participant_info_contact">If you have any queries regarding the study please contact the SIFIDS Project Facilitators Kyla Orr, Kathryn Logan or Ali McKnight using the Freephone number <b>0800 043 3474</b> or via email at marineconsulting@kylaorr.com, logank2@ukif.com or alimcknight@agroecosystems.co.uk</string>
+    <string name="participant_consent_form_header">Participant Consent Form: Coded Data</string>
+    <string name="participant_consent_form_researchers_header">Researchers</string>
+    <string name="participant_consent_form_researchers">\u2022 <i>Dr Mark James</i>\n\u2022 <i>Dr Tania Mendo</i>\n\u2022 <i>Dr Simon Northridge</i>\n\u2022 <i>Miss Hannah Ladd-Jones</i>\n\u2022 <i>Mr Patrick McCann</i>\n\u2022 <i>Mr Swithun Crowe</i>\n\nThe University of St Andrews attaches high priority to the ethical conduct of research. We therefore ask you to consider the following and the above points in the Participation Information sheet before submitting this form. Your submission of this form confirms that you are happy to participate in the study.</string>
+    <string name="participant_consent_form_coded_data_header">What is Coded Data?</string>
+    <string name="participant_consent_form_coded_data">The term ‘Coded Data’ refers to when data collected by the researcher is identifiable as belonging to a particular participant but is kept with personal identifiers removed. The researcher(s) retain a ‘key’ to the coded data which allows individual participants to be re-connected with their data at a later date. The un-coded data is kept confidential to the researchers. If consent is given to archive data (see consent section of form below) the participant may be contacted in the future by the original researchers or other researchers.</string>
+    <string name="participant_consent_form_consent_header">Consent</string>
+    <string name="participant_consent_form_consent">The purpose of this form is to ensure that you are willing to take part in this study and to let you understand what it entails. Signing this form does not commit you to anything you do not wish to do and you are free to withdraw at any stage. Material gathered during this research will be coded and kept confidentially by the researchers with only the research team having access. It will be securely stored; in (1) electronic form (coded format) on the University computer system; (2) in the case of hardcopy in a locked storage cupboard.\n\nPlease answer each statement concerning the collection and use of the research data.</string>
+    <string name="participant_consent_form_read_and_understand">I have read and understood the participant information</string>
+    <string name="participant_consent_form_questions_opportunity">I have been given the opportunity to ask questions about the study</string>
+    <string name="participant_consent_form_questions_answered">I have had my questions answered satisfactorily</string>
+    <string name="participant_consent_form_can_withdraw">I understand that I can withdraw from the study at any time without having to give an explanation</string>
+    <string name="participant_consent_form_confidential">I understand that my data will be confidential and that it will contain identifiable personal data but that will be stored with personal identifiers removed by the researchers and that only the project researchers will be able to decode this information as and when necessary</string>
+    <string name="participant_consent_form_secondary_data_header">Secondary Data Permission/Decline</string>
+    <string name="participant_consent_form_data_archiving">I agree to my data (in line with conditions outlined above) being kept by the researchers and being archived for potential use in further research projects / by other bona fide researchers. I understand that this may allow other researchers to de-code the data and identify me.</string>
+    <string name="participant_consent_form_risks">I have been made fully aware of the potential risks associated with this research and am satisfied with the information provided.</string>
+    <string name="participant_consent_form_take_part">I agree to take part in the study</string>
+    <string name="participant_consent_form_photography_header">Photographic Images and Video</string>
+    <string name="participant_consent_form_photography_1">Part of our research <u>may</u> involve taking photographic images and video. These images / recordings will be kept secure and stored with no identifying factors i.e. consent forms and questionnaires.</string>
+    <string name="participant_consent_form_photography_2">Photographs and recorded data can be valuable resources for future studies therefore we ask for your additional consent to maintain data and images for this purpose. You can ask to review any photographic images or videos that were taken with or of you at any time.</string>
+    <string name="participant_consent_form_photography_capture">I agree to have my photo taken / to being videoed</string>
+    <string name="participant_consent_form_photography_publication">I agree for my photo and video recorded material to be published as part of this research</string>
+    <string name="participant_consent_form_photography_future_studies">I agree for my photos and video recorded material to be used in future studies</string>
+    <string name="participant_consent_form_voluntary">Participation in this research is completely voluntary and your consent is required before you can participate in this research. If you decide at a later date that data should be destroyed we will honour your request in writing.</string>
+    <string name="participant_consent_form_consent_statement_header">SIFIDS Project Participant Consent</string>
+    <string name="participant_consent_form_consent_statement">I wish to participate in the research conducted under the EMFF SIFIDS Project and as such agree to researchers from the University of St Andrews accessing all data submitted through the SIFIDS FISH1 App for the purposes of collecting data on fishing activity and observations of species listed in the mobile phone application.</string>
+    <string name="participant_consent_form_name">Name</string>
+    <string name="participant_consent_form_email">Email</string>
+    <string name="participant_consent_form_phone">Telephone Number</string>
+    <string name="participant_consent_form_fish_1_header">FISH1/ logbook Data Access Consent</string>
+    <string name="participant_consent_form_fish_1">I, the fishing license holder named above, agree for the researchers at the University of St Andrews to have access to the data submitted via the FISH1 form through the mobile phone application developed by the University of St Andrews for the purposes of research under the EMFF SIFIDS Project for the above stated vessel.</string>
+    <string name="participant_consent_form_fish_1_period">The information provided will span the period 1st December 2016 to 31st May 2019 (the duration of the SIFIDS Project).</string>
+
     <!-- FISH1 Forms -->
 
     <string name="title_activity_catch">Home</string>

@@ -1,12 +1,14 @@
 package uk.ac.masts.sifids.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 
 /**
@@ -14,6 +16,12 @@ import uk.ac.masts.sifids.R;
  * SettingsActivity is different; these methods must be implemented separately there.
  */
 public abstract class AppCompatActivityWithMenuBar extends AppCompatActivity {
+
+    @Override
+    protected void onResume() {
+        ((CatchApplication) this.getApplication()).redirectIfNecessary();
+        super.onResume();
+    }
 
     /**
      * Inflates supplied menu. Should always return true.
