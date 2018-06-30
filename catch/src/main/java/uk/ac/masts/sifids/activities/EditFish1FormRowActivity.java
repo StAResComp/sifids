@@ -480,16 +480,25 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         display.setText(prefix + new SimpleDateFormat(getString(R.string.dmonthy)).format(cal.getTime()));
     }
 
-    private void updateCoordinatesFromDate(final Date date) {
+    private void updateCoordinatesFromDate(Date date) {
         Log.e("SET_LOC", "Updating location");
         if (latitudeDegrees.getText().toString().isEmpty()
                 || latitudeMinutes.getText().toString().isEmpty()
                 || longitudeDegrees.getText().toString().isEmpty()
                 || longitudeMinutes.getText().toString().isEmpty()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            final Date startDate = cal.getTime();
+            cal.add(Calendar.DATE, 1);
+            final Date endDate = cal.getTime();
             Callable<CatchLocation> c = new Callable<CatchLocation>() {
                 @Override
                 public CatchLocation call() {
-                    return db.catchDao().getFirstFishingLocationBetweenDates(date, date);
+                    return db.catchDao().getFirstFishingLocationBetweenDates(startDate, endDate);
                 }
             };
             ExecutorService service = Executors.newSingleThreadExecutor();
@@ -498,16 +507,17 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 CatchLocation location = future.get();
                 if (location != null) {
                     Log.e("SET_LOC", "Non-null location found");
-                    latitudeDegrees.setText(location.getLatitudeDegrees());
-                    latitudeMinutes.setText(location.getLatitudeMinutes());
+                    Log.e("SET_LOC", "Latitude: " + location.getLatitudeDegrees() + location.getLatitudeMinutes() + location.getLatitudeDirection());
+                    latitudeDegrees.setText(Integer.toString(location.getLatitudeDegrees()));
+                    latitudeMinutes.setText(Integer.toString(location.getLatitudeMinutes()));
                     for (int i = 0; i < adapters.get(LATITUDE_DIRECTION_KEY).getCount(); i++) {
                         if (((String) adapters.get(LATITUDE_DIRECTION_KEY).getItem(i)).charAt(0)
                                 == location.getLatitudeDirection()) {
                             spinners.get(LATITUDE_DIRECTION_KEY).setSelection(i);
                         }
                     }
-                    longitudeDegrees.setText(location.getLongitudeDegrees());
-                    longitudeMinutes.setText(location.getLongitudeMinutes());
+                    longitudeDegrees.setText(Integer.toString(location.getLongitudeDegrees()));
+                    longitudeMinutes.setText(Integer.toString(location.getLongitudeMinutes()));
                     for (int i = 0; i < adapters.get(LONGITUDE_DIRECTION_KEY).getCount(); i++) {
                         if (((String) adapters.get(LONGITUDE_DIRECTION_KEY).getItem(i)).charAt(0)
                                 == location.getLongitudeDirection()) {

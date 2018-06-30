@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -39,8 +40,9 @@ public class CatchLocationService extends Service {
     private final int TRACKING_NOTIFICATION_ID = 204;
     private final String SIFIDS_LOCATION_TRACKING_CHANNEL_ID = "sifids_location_tracking_channel";
     NotificationManager notificationManager;
+    private final IBinder locationBinder = new CatchLocationBinder();
 
-	private class LocationListener implements android.location.LocationListener {
+    private class LocationListener implements android.location.LocationListener {
 
 	    Location mLastLocation;
 
@@ -73,7 +75,8 @@ public class CatchLocationService extends Service {
         }
 
         // Writes the current (technically, last known) location to the database
-        private void writeLocation() {
+        protected void writeLocation() {
+            Log.e("LOCATION", "Writing location");
             if (mLastLocation != null) {
                 final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
                 //Database queries need their own thread
@@ -99,7 +102,7 @@ public class CatchLocationService extends Service {
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		return null;
+		return locationBinder;
 	}
 
 	@Override
@@ -212,5 +215,21 @@ public class CatchLocationService extends Service {
                             .getSystemService(Context.LOCATION_SERVICE);
 		}
 	}
+
+    /**
+     * Class used for the client Binder.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with IPC.
+     */
+    public class CatchLocationBinder extends Binder {
+        public CatchLocationService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return CatchLocationService.this;
+        }
+    }
+
+    public void saveFirstFishingLocation() {
+        this.mLocationListener.writeLocation();
+    }
+
 }
 
