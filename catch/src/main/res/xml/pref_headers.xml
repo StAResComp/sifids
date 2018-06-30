@@ -37,4 +37,9 @@
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_buyer_details" />
 
+    <header
+        android:fragment="uk.ac.masts.sifids.activities.SettingsActivity$ConsentDetailsPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/participant_info_header" />
+
 </preference-headers>

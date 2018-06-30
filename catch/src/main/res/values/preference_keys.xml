@@ -53,4 +53,64 @@
         <xliff:g id="preference_key">pref_buyer_details</xliff:g>
     </string>
 
+    <string name="consent_read_understand_key">
+        <xliff:g id="preference_key">consent_read_understand</xliff:g>
+    </string>
+
+    <string name="consent_questions_opportunity_key">
+        <xliff:g id="preference_key">consent_questions_opportunity</xliff:g>
+    </string>
+
+    <string name="consent_questions_answered_key">
+        <xliff:g id="preference_key">consent_questions_answered</xliff:g>
+    </string>
+
+    <string name="consent_can_withdraw_key">
+        <xliff:g id="preference_key">consent_can_withdraw</xliff:g>
+    </string>
+
+    <string name="consent_confidential_key">
+        <xliff:g id="preference_key">consent_confidential</xliff:g>
+    </string>
+
+    <string name="consent_data_archiving_key">
+        <xliff:g id="preference_key">consent_data_archiving</xliff:g>
+    </string>
+
+    <string name="consent_risks_key">
+        <xliff:g id="preference_key">consent_risks</xliff:g>
+    </string>
+
+    <string name="consent_take_part_key">
+        <xliff:g id="preference_key">consent_take_part</xliff:g>
+    </string>
+
+    <string name="consent_photography_capture_key">
+        <xliff:g id="preference_key">consent_photography_capture</xliff:g>
+    </string>
+
+    <string name="consent_photography_publication_key">
+        <xliff:g id="preference_key">consent_photography_publication</xliff:g>
+    </string>
+
+    <string name="consent_photography_future_studies_key">
+        <xliff:g id="preference_key">consent_photography_future_studies</xliff:g>
+    </string>
+
+    <string name="consent_name_key">
+        <xliff:g id="preference_key">consent_name</xliff:g>
+    </string>
+
+    <string name="consent_email_key">
+        <xliff:g id="preference_key">consent_email</xliff:g>
+    </string>
+
+    <string name="consent_phone_key">
+        <xliff:g id="preference_key">consent_phone</xliff:g>
+    </string>
+
+    <string name="consent_fish_1_key">
+        <xliff:g id="preference_key">consent_fish_1</xliff:g>
+    </string>
+
 </resources>

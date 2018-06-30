@@ -43,9 +43,6 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        CatchApplication app = (CatchApplication) getApplication();
-        app.checkFirstRun();
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fish_1_forms);
