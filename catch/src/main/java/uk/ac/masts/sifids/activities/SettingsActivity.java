@@ -395,6 +395,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 intent = new Intent(this, RecordObservationActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.activity_about:
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;

@@ -21,6 +21,8 @@ import uk.ac.masts.sifids.receivers.AlarmReceiver;
  */
 public class CatchApplication extends Application {
 
+    public final static String VERSION = "0.5.4";
+
     private boolean fishing = false;
 
     private boolean trackingLocation = false;
