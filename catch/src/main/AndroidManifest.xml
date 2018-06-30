@@ -68,6 +68,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.Fish1FormsActivity" />
         </activity>
+        <activity
+            android:name=".activities.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".activities.Fish1FormsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.Fish1FormsActivity" />
+        </activity>
 
         <service
             android:name=".services.CatchLocationService"
