@@ -11,10 +11,9 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +21,7 @@ import android.view.MenuItem;
 import java.util.HashSet;
 import java.util.List;
 
+import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 
 /**
@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
-            } else {
+            } else if (!(preference instanceof SwitchPreference)) {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
@@ -95,6 +95,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (preference instanceof MultiSelectListPreference) {
             value = prefs.getStringSet(preference.getKey(), new HashSet<String>());
         }
+        else if (preference instanceof SwitchPreference) {
+            value = prefs.getBoolean(preference.getKey(), false);
+        }
         else {
             value = prefs.getString(preference.getKey(), "");
         }
@@ -104,6 +107,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //((CatchApplication) this.getApplication()).redirectIfNecessary();
         setupActionBar();
     }
 
@@ -147,7 +151,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || PortDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || GearDetailsPreferenceFragment.class.getName().equals(fragmentName)
                 || SpeciesDetailsPreferenceFragment.class.getName().equals(fragmentName)
-                || BuyerDetailsPreferenceFragment.class.getName().equals(fragmentName);
+                || BuyerDetailsPreferenceFragment.class.getName().equals(fragmentName)
+                || ConsentDetailsPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -326,6 +331,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class ConsentDetailsPreferenceFragment extends BasePreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_consent_details);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_read_understand_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_questions_opportunity_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_questions_answered_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_can_withdraw_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_confidential_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_data_archiving_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_risks_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_take_part_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_capture_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_publication_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_future_studies_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_name_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_email_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_phone_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_fish_1_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_pln_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_name_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_name_key)));
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -352,6 +393,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             case R.id.activity_record_observation:
                 intent = new Intent(this, RecordObservationActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.activity_about:
+                intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
