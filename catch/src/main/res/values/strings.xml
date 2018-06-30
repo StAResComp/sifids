@@ -110,10 +110,10 @@
     <string name="activity_tracking_header">Track Activity</string>
     <string name="start_tracking_location">Start Tracking Location</string>
     <string name="stop_tracking_location">Stop Tracking Location</string>
-    <string name="location_switch_label">Location</string>
+    <string name="location_switch_label"><b>Location</b> - turn on when at sea</string>
     <string name="start_fishing">Start Fishing</string>
     <string name="stop_fishing">Stop Fishing</string>
-    <string name="fishing_switch_label">Fishing</string>
+    <string name="fishing_switch_label"><b>Fishing</b> - turn on when fishing</string>
     <string name="submit_track">Submit last 1000 location points</string>
     <string name="fish_1_form_summary">%s\n%s -\n%s</string>
     <string name="stopped_tracking_location">Stopped tracking location</string>
