@@ -3,9 +3,12 @@ package uk.ac.masts.sifids;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import uk.ac.masts.sifids.activities.SettingsActivity;
 import uk.ac.masts.sifids.receivers.AlarmReceiver;
+import uk.ac.masts.sifids.services.CatchLocationService;
 
 /**
  * This class is extends android.app.Application to provide a flag which can be used to indicate
@@ -43,6 +47,21 @@ public class CatchApplication extends Application {
      */
     public void setFishing(boolean fishing) {
         this.fishing = fishing;
+        if (this.isTrackingLocation()) {
+            ServiceConnection connection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    CatchLocationService locationService = ((CatchLocationService.CatchLocationBinder) service).getService();
+                    locationService.saveFirstFishingLocation();
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+
+                }
+            };
+            bindService(new Intent(this, CatchLocationService.class), connection, Context.BIND_AUTO_CREATE);
+        }
     }
 
     public boolean isTrackingLocation() {
