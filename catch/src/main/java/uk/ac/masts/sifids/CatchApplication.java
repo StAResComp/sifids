@@ -29,7 +29,7 @@ public class CatchApplication extends Application {
 
     public final static String VERSION = "0.6";
 
-    public final static TimeZone UTC = TimeZone.getTimeZone("UTC");
+    public final static TimeZone TIME_ZONE = TimeZone.getTimeZone("TIME_ZONE");
 
     private boolean fishing = false;
 

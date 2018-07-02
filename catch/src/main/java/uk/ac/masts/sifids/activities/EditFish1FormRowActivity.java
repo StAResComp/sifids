@@ -120,10 +120,8 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     cal.setTime(currentLowest);
                     cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
                     minDate = cal.getTime();
-                    Log.e("DATE_LIMITS", "Min: " + minDate.toString());
                     cal.add(Calendar.DATE, 6);
                     maxDate = cal.getTime();
-                    Log.e("DATE_LIMITS", "Max: " + maxDate.toString());
                 }
             }
         };
@@ -321,7 +319,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 && longitudeDegrees.getText() != null && !longitudeDegrees.getText().toString().equals("")
                 && longitudeMinutes.getText() != null && !longitudeMinutes.getText().toString().equals("")
                 && longitudeDirectionValue != null) {
-            Log.e("ICES", latitudeDirectionValue);
             icesArea.setText(
                     CatchLocation.getIcesRectangle(
                             CatchLocation.getDecimalCoordinate(
@@ -481,7 +478,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     }
 
     private void updateCoordinatesFromDate(Date date) {
-        Log.e("SET_LOC", "Updating location");
         if (latitudeDegrees.getText().toString().isEmpty()
                 || latitudeMinutes.getText().toString().isEmpty()
                 || longitudeDegrees.getText().toString().isEmpty()
@@ -506,8 +502,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             try {
                 CatchLocation location = future.get();
                 if (location != null) {
-                    Log.e("SET_LOC", "Non-null location found");
-                    Log.e("SET_LOC", "Latitude: " + location.getLatitudeDegrees() + location.getLatitudeMinutes() + location.getLatitudeDirection());
                     latitudeDegrees.setText(Integer.toString(location.getLatitudeDegrees()));
                     latitudeMinutes.setText(Integer.toString(location.getLatitudeMinutes()));
                     for (int i = 0; i < adapters.get(LATITUDE_DIRECTION_KEY).getCount(); i++) {

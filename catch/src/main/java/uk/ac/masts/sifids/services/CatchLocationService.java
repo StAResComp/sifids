@@ -16,10 +16,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
@@ -77,7 +75,6 @@ public class CatchLocationService extends Service {
 
         // Writes the current (technically, last known) location to the database
         protected void writeLocation() {
-            Log.e("LOCATION", "Writing location");
             if (mLastLocation != null) {
                 final CatchDatabase db = CatchDatabase.getInstance(getApplicationContext());
                 //Database queries need their own thread
@@ -88,7 +85,7 @@ public class CatchLocationService extends Service {
                         location.setLatitude(mLastLocation.getLatitude());
                         location.setLongitude(mLastLocation.getLongitude());
                         location.setAccuracy(mLastLocation.getAccuracy());
-                        Calendar cal = Calendar.getInstance(CatchApplication.UTC);
+                        Calendar cal = Calendar.getInstance(CatchApplication.TIME_ZONE);
                         location.setTimestamp(cal.getTime());
                         location.setFishing(((CatchApplication) getApplication()).isFishing());
                         db.catchDao().insertLocation(location);

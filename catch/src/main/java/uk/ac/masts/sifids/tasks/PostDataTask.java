@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -36,12 +34,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
@@ -74,7 +72,9 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
             List<CatchLocation> locations = db.catchDao().getUnuploadedLocations();
             String csv = "";
             for (CatchLocation loc : locations) {
-                String rowToWrite = loc.getTimestamp().toString();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                df.setTimeZone(CatchApplication.TIME_ZONE);
+                String rowToWrite = df.format(loc.getTimestamp());
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.isFishing() ? 1 : 0, false, context);
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLatitude(), false, context);
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.getLongitude(), false, context);
@@ -211,7 +211,7 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
                 } catch (Exception e) {
                 }
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                df.setTimeZone(CatchApplication.TIME_ZONE);
                 jsonObservation.addProperty(
                         "timestamp",
                         df.format(observation.getTimestamp()));
