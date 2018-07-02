@@ -25,7 +25,7 @@ import uk.ac.masts.sifids.services.CatchLocationService;
  */
 public class CatchApplication extends Application {
 
-    public final static String VERSION = "0.5.4";
+    public final static String VERSION = "0.6";
 
     private boolean fishing = false;
 
