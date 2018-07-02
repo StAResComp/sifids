@@ -28,15 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/TextAppearance.Medium"
                 android:layout_gravity="center"
-                android:text="@string/activity_tracking_header"/>
+                android:text="@string/activity_tracking_header" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,21 +44,26 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/start_tracking_location"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".50"
-                    android:onClick="startTrackingLocation"
-                    android:text="@string/start_tracking_location" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/stop_tracking_location"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".50"
-                    android:onClick="stopTrackingLocation"
-                    android:text="@string/stop_tracking_location" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/location_switch_label" />
+
+                    <Switch
+                        android:id="@+id/toggle_location_tracking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -68,21 +73,26 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/start_fishing"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".50"
-                    android:onClick="startFishing"
-                    android:text="@string/start_fishing" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/stop_fishing"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".50"
-                    android:onClick="stopFishing"
-                    android:text="@string/stop_fishing" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/fishing_switch_label" />
+
+                    <Switch
+                        android:id="@+id/toggle_fishing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -94,11 +104,11 @@
                 android:text="@string/location_tracking_disclaimer" />
 
             <TextView
+                style="@android:style/TextAppearance.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@android:style/TextAppearance.Medium"
                 android:layout_gravity="center"
-                android:text="@string/fish_1_forms_header"/>
+                android:text="@string/fish_1_forms_header" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/form_recycler_view"

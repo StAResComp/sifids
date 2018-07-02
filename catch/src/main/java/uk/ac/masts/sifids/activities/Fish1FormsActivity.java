@@ -15,7 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -37,6 +39,8 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     List<Fish1Form> forms;
     CatchDatabase db;
     Calendar selectedWeekStart;
+    Switch locationSwitch;
+    Switch fishingSwitch;
 
     final static int PERMISSION_REQUEST_FINE_LOCATION = 568;
 
@@ -52,6 +56,53 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
         PreferenceManager.setDefaultValues(this, R.xml.pref_fishery_office_details, false);
 
         db = CatchDatabase.getInstance(getApplicationContext());
+
+        locationSwitch = findViewById(R.id.toggle_location_tracking);
+        fishingSwitch = findViewById(R.id.toggle_fishing);
+
+        locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (
+                            ContextCompat.checkSelfPermission(
+                                    Fish1FormsActivity.this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                            ) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                Fish1FormsActivity.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                PERMISSION_REQUEST_FINE_LOCATION);
+                    }
+                    else {
+                        startService(new Intent(Fish1FormsActivity.this, CatchLocationService.class));
+                    }
+                }
+                else {
+                    stopService(new Intent(Fish1FormsActivity.this, CatchLocationService.class));
+                    Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        fishingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CatchApplication app = (CatchApplication) getApplication();
+                if (isChecked) {
+                    app.setFishing(true);
+                    ((Switch) findViewById(R.id.toggle_location_tracking)).setChecked(true);
+                    Toast.makeText(getBaseContext(), getString(R.string.started_fishing),
+                            Toast.LENGTH_LONG).show();
+                }
+                else {
+                    app.setFishing(false);
+                    Toast.makeText(getBaseContext(), getString(R.string.stopped_fishing),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         fab=(FloatingActionButton)findViewById(R.id.fab);
 
@@ -137,60 +188,9 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
         Thread newThread= new Thread(r);
         newThread.start();
 
-        boolean isFishing = ((CatchApplication) this.getApplication()).isFishing();
-        this.findViewById(R.id.start_fishing).setEnabled(!isFishing);
-        this.findViewById(R.id.stop_fishing).setEnabled(isFishing);
+        locationSwitch.setChecked(((CatchApplication) this.getApplication()).isTrackingLocation());
 
-        boolean isTrackingLocation = ((CatchApplication) this.getApplication()).isTrackingLocation();
-        this.findViewById(R.id.start_tracking_location).setEnabled(!isTrackingLocation);
-        this.findViewById(R.id.stop_tracking_location).setEnabled(isTrackingLocation);
-    }
-
-    public void startTrackingLocation(View v) {
-        if (
-                ContextCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSION_REQUEST_FINE_LOCATION);
-        }
-        else {
-            startLocationService();
-            this.findViewById(R.id.start_tracking_location).setEnabled(false);
-            this.findViewById(R.id.stop_tracking_location).setEnabled(true);
-        }
-    }
-
-    public void stopTrackingLocation(View v) {
-        stopService(new Intent(this, CatchLocationService.class));
-        this.findViewById(R.id.start_tracking_location).setEnabled(true);
-        this.findViewById(R.id.stop_tracking_location).setEnabled(false);
-        Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
-                Toast.LENGTH_LONG).show();
-    }
-
-    public void startFishing(View v) {
-        ((CatchApplication) this.getApplication()).setFishing(true);
-        this.startTrackingLocation(v);
-        this.findViewById(R.id.start_fishing).setEnabled(false);
-        this.findViewById(R.id.stop_fishing).setEnabled(true);
-        Toast.makeText(getBaseContext(), getString(R.string.started_fishing),
-                Toast.LENGTH_LONG).show();
-    }
-
-    public void stopFishing(View v) {
-        ((CatchApplication) this.getApplication()).setFishing(false);
-        this.findViewById(R.id.start_fishing).setEnabled(true);
-        this.findViewById(R.id.stop_fishing).setEnabled(false);
-        Toast.makeText(getBaseContext(), getString(R.string.stopped_fishing),
-                Toast.LENGTH_LONG).show();
-    }
-
-    private void startLocationService() {
-        startService(new Intent(this, CatchLocationService.class));
+        fishingSwitch.setChecked(((CatchApplication) this.getApplication()).isFishing());
     }
 
     @Override
@@ -200,9 +200,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                 requestCode == PERMISSION_REQUEST_FINE_LOCATION
                         && grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            startLocationService();
-            this.findViewById(R.id.start_tracking_location).setEnabled(false);
-            this.findViewById(R.id.stop_tracking_location).setEnabled(true);
+            ((Switch) findViewById(R.id.toggle_location_tracking)).setChecked(true);
         }
     }
 }
