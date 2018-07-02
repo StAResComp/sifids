@@ -14,6 +14,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import java.util.TimeZone;
+
 import uk.ac.masts.sifids.activities.SettingsActivity;
 import uk.ac.masts.sifids.receivers.AlarmReceiver;
 import uk.ac.masts.sifids.services.CatchLocationService;
@@ -26,6 +28,8 @@ import uk.ac.masts.sifids.services.CatchLocationService;
 public class CatchApplication extends Application {
 
     public final static String VERSION = "0.6";
+
+    public final static TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     private boolean fishing = false;
 
