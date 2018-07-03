@@ -6,12 +6,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -39,7 +36,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import uk.ac.masts.sifids.R;
-import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
@@ -83,9 +79,9 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     Button deleteButton;
 
     //Stuff for spinners
-    Map<String,Spinner> spinners;
-    Map<String,Adapter> adapters;
-    Map<String,List> spinnerLists;
+    Map<String, Spinner> spinners;
+    Map<String, Adapter> adapters;
+    Map<String, List> spinnerLists;
     final String GEAR_KEY = "gear";
     final String SPECIES_KEY = "species";
     final String STATE_KEY = "state";
@@ -120,14 +116,12 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     cal.setTime(currentLowest);
                     cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
                     minDate = cal.getTime();
-                    Log.e("DATE_LIMITS", "Min: " + minDate.toString());
                     cal.add(Calendar.DATE, 6);
                     maxDate = cal.getTime();
-                    Log.e("DATE_LIMITS", "Max: " + maxDate.toString());
                 }
             }
         };
-        Thread newThread= new Thread(r);
+        Thread newThread = new Thread(r);
         newThread.start();
     }
 
@@ -141,19 +135,18 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             if (!extras.isEmpty() && extras.containsKey(Fish1FormRow.ID)) {
                 final int id = extras.getInt(Fish1FormRow.ID);
 
-                Runnable r = new Runnable(){
+                Runnable r = new Runnable() {
                     @Override
                     public void run() {
                         fish1FormRow = EditFish1FormRowActivity.this.db.catchDao().getFormRow(id);
                     }
                 };
 
-                Thread newThread= new Thread(r);
+                Thread newThread = new Thread(r);
                 newThread.start();
                 try {
                     newThread.join();
-                }
-                catch (InterruptedException ie) {
+                } catch (InterruptedException ie) {
 
                 }
             }
@@ -289,8 +282,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     spinners.get(GEAR_KEY).setSelection(i);
             }
             meshSize.setText(Integer.toString(fish1FormRow.getMeshSize()));
-        }
-        else {
+        } else {
             meshSize.setText(this.prefs.getString(getString(R.string.pref_mesh_size_key), ""));
         }
         if (fish1FormRow != null
@@ -306,10 +298,9 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 && fish1FormRow.getTransporterRegEtc() != null
                 && !fish1FormRow.getTransporterRegEtc().equals("")) {
             transporterRegEtc.setText(fish1FormRow.getTransporterRegEtc());
-        }
-        else if (fish1FormRow == null) {
+        } else if (fish1FormRow == null) {
             transporterRegEtc.setText(
-                    this.prefs.getString(getString(R.string.pref_buyer_details_key),""));
+                    this.prefs.getString(getString(R.string.pref_buyer_details_key), ""));
         }
 
     }
@@ -321,7 +312,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                 && longitudeDegrees.getText() != null && !longitudeDegrees.getText().toString().equals("")
                 && longitudeMinutes.getText() != null && !longitudeMinutes.getText().toString().equals("")
                 && longitudeDirectionValue != null) {
-            Log.e("ICES", latitudeDirectionValue);
             icesArea.setText(
                     CatchLocation.getIcesRectangle(
                             CatchLocation.getDecimalCoordinate(
@@ -352,68 +342,112 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     fish1FormRow = new Fish1FormRow();
                     fish1FormRow.setFormId(formId);
                 }
-                if (
-                        fish1FormRow.setFishingActivityDate(fishingActivityDate)
-                        || fish1FormRow.setLatitude(
-                                CatchLocation.getDecimalCoordinate(
-                                        Integer.parseInt(latitudeDegrees.getText().toString()),
-                                        Integer.parseInt(latitudeDegrees.getText().toString()),
-                                        latitudeDirectionValue
-                                )
-                        )
-                                || fish1FormRow.setLongitude(
-                                CatchLocation.getDecimalCoordinate(
-                                        Integer.parseInt(longitudeDegrees.getText().toString()),
-                                        Integer.parseInt(longitudeDegrees.getText().toString()),
-                                        longitudeDirectionValue
-                                )
-                        )
-                        || fish1FormRow.setIcesArea(icesArea.getText().toString())
-                        || fish1FormRow.setGearId(gearIdValue)
-                        || fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()))
-                        || fish1FormRow.setSpeciesId(speciesIdValue)
-                        || fish1FormRow.setStateId(stateIdValue)
-                        || fish1FormRow.setPresentationId(presentationIdValue)
-                        || fish1FormRow.setWeight(Double.parseDouble(weight.getText().toString()))
-                        || fish1FormRow.setDis(dis.isChecked())
-                        || fish1FormRow.setBms(bms.isChecked())
-                        || fish1FormRow.setNumberOfPotsHauled(
-                                Integer.parseInt(numberOfPotsHauled.getText().toString()))
-                        || fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate)
-                        ) {
+
+                boolean dataEntered = false;
+
+                if (fish1FormRow.setFishingActivityDate(fishingActivityDate)) {
+                    dataEntered = true;
+                }
+                try {
+                    if (fish1FormRow.setLatitude(CatchLocation.getDecimalCoordinate(
+                            Integer.parseInt(latitudeDegrees.getText().toString()),
+                            Integer.parseInt(latitudeMinutes.getText().toString()),
+                            latitudeDirectionValue
+                    ))) {
+                        dataEntered = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                }
+                try {
+                    if (fish1FormRow.setLongitude(CatchLocation.getDecimalCoordinate(
+                            Integer.parseInt(longitudeDegrees.getText().toString()),
+                            Integer.parseInt(longitudeMinutes.getText().toString()),
+                            longitudeDirectionValue
+                    ))) {
+                        dataEntered = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                }
+                if (fish1FormRow.setIcesArea(icesArea.getText().toString())) {
+                    dataEntered = true;
+                }
+                try {
+                    if (fish1FormRow.setGearId(gearIdValue)) {
+                        dataEntered = true;
+                    }
+                } catch (NullPointerException npe) { }
+                try {
+                    if (fish1FormRow.setMeshSize(Integer.parseInt(meshSize.getText().toString()))) {
+                        dataEntered = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                }
+                if (fish1FormRow.setSpeciesId(speciesIdValue)) {
+                    dataEntered = true;
+                }
+                if (fish1FormRow.setStateId(stateIdValue)) {
+                    dataEntered = true;
+                }
+                if (fish1FormRow.setPresentationId(presentationIdValue)) {
+                    dataEntered = true;
+                }
+                try {
+                    if (fish1FormRow.setWeight(Double.parseDouble(weight.getText().toString()))) {
+                        dataEntered = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                }
+                if (fish1FormRow.setDis(dis.isChecked())) {
+                    dataEntered = true;
+                }
+                if (fish1FormRow.setBms(bms.isChecked())) {
+                    dataEntered = true;
+                }
+                try {
+                    if (fish1FormRow.setNumberOfPotsHauled(
+                            Integer.parseInt(numberOfPotsHauled.getText().toString()))) {
+                        dataEntered = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                }
+                if (fish1FormRow.setLandingOrDiscardDate(landingOrDiscardDate)) {
+                    dataEntered = true;
+                }
+                if (fish1FormRow.setTransporterRegEtc(transporterRegEtc.getText().toString())) {
+                    dataEntered = true;
+                }
+
+                if (dataEntered) {
                     if (create) {
-                        Runnable r = new Runnable(){
+                        Runnable r = new Runnable() {
                             @Override
                             public void run() {
                                 EditFish1FormRowActivity.this.db.catchDao()
                                         .insertFish1FormRows(fish1FormRow);
                             }
                         };
-                        Thread newThread= new Thread(r);
+                        Thread newThread = new Thread(r);
                         newThread.start();
                         try {
                             //Don't want to go back to form before this is saved
                             newThread.join();
-                        }
-                        catch (InterruptedException ie) {
+                        } catch (InterruptedException ie) {
 
                         }
-                    }
-                    else {
-                        Runnable r = new Runnable(){
+                    } else {
+                        Runnable r = new Runnable() {
                             @Override
                             public void run() {
                                 EditFish1FormRowActivity.this.db.catchDao()
                                         .updateFish1FormRows(fish1FormRow);
                             }
                         };
-                        Thread newThread= new Thread(r);
+                        Thread newThread = new Thread(r);
                         newThread.start();
                         try {
                             //Don't want to go back to form before this is saved
                             newThread.join();
-                        }
-                        catch (InterruptedException ie) {
+                        } catch (InterruptedException ie) {
 
                         }
                     }
@@ -434,8 +468,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
         if (fish1FormRow != null) {
             this.confirmDialog();
-        }
-        else {
+        } else {
             this.returnToEditFish1FormActivity();
         }
     }
@@ -444,7 +477,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
                 .setMessage(getString(R.string.fish_1_form_row_deletion_confirmation_message))
-                .setPositiveButton(R.string.yes,  new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Runnable r = new Runnable() {
@@ -454,12 +487,11 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                                         .deleteFish1FormRow(fish1FormRow.getId());
                             }
                         };
-                        Thread newThread= new Thread(r);
+                        Thread newThread = new Thread(r);
                         newThread.start();
                         try {
                             newThread.join();
-                        }
-                        catch (InterruptedException ie) {
+                        } catch (InterruptedException ie) {
 
                         }
                         EditFish1FormRowActivity.this.returnToEditFish1FormActivity();
@@ -481,7 +513,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     }
 
     private void updateCoordinatesFromDate(Date date) {
-        Log.e("SET_LOC", "Updating location");
         if (latitudeDegrees.getText().toString().isEmpty()
                 || latitudeMinutes.getText().toString().isEmpty()
                 || longitudeDegrees.getText().toString().isEmpty()
@@ -506,8 +537,6 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             try {
                 CatchLocation location = future.get();
                 if (location != null) {
-                    Log.e("SET_LOC", "Non-null location found");
-                    Log.e("SET_LOC", "Latitude: " + location.getLatitudeDegrees() + location.getLatitudeMinutes() + location.getLatitudeDirection());
                     latitudeDegrees.setText(Integer.toString(location.getLatitudeDegrees()));
                     latitudeMinutes.setText(Integer.toString(location.getLatitudeMinutes()));
                     for (int i = 0; i < adapters.get(LATITUDE_DIRECTION_KEY).getCount(); i++) {
@@ -531,7 +560,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     }
 
     private void loadOptions() {
-        Runnable r = new Runnable(){
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 EditFish1FormRowActivity.this.spinnerLists.put(
@@ -557,12 +586,11 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             }
         };
 
-        Thread newThread= new Thread(r);
+        Thread newThread = new Thread(r);
         newThread.start();
         try {
             newThread.join();
-        }
-        catch (InterruptedException ie) {
+        } catch (InterruptedException ie) {
 
         }
     }
@@ -586,11 +614,11 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                         this, android.R.layout.simple_list_item_activated_1,
                         this.spinnerLists.get(mapKey));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.adapters.put(mapKey,adapter);
+        this.adapters.put(mapKey, adapter);
         Spinner spinner = findViewById(widgetId);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-        this.spinners.put(mapKey,spinner);
+        this.spinners.put(mapKey, spinner);
     }
 
     public void showFishingActivityDatePickerDialog(View v) {
@@ -611,8 +639,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         Bundle bundle = new Bundle();
         if (this.fishingActivityDate != null) {
             bundle.putLong("min", fishingActivityDate.getTime());
-        }
-        else if (this.minDate != null) {
+        } else if (this.minDate != null) {
             bundle.putLong("min", minDate.getTime());
         }
         if (this.maxDate != null) {
@@ -623,26 +650,26 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        switch(parent.getId()) {
+        switch (parent.getId()) {
             case R.id.gear:
-                this.gearIdValue = ((Gear)parent.getItemAtPosition(pos)).getId();
+                this.gearIdValue = ((Gear) parent.getItemAtPosition(pos)).getId();
                 break;
             case R.id.species:
-                this.speciesIdValue = ((CatchSpecies)parent.getItemAtPosition(pos)).getId();
+                this.speciesIdValue = ((CatchSpecies) parent.getItemAtPosition(pos)).getId();
                 break;
             case R.id.state:
-                this.stateIdValue = ((CatchState)parent.getItemAtPosition(pos)).getId();
+                this.stateIdValue = ((CatchState) parent.getItemAtPosition(pos)).getId();
                 break;
             case R.id.presentation:
                 this.presentationIdValue =
-                        ((CatchPresentation)parent.getItemAtPosition(pos)).getId();
+                        ((CatchPresentation) parent.getItemAtPosition(pos)).getId();
                 break;
             case R.id.latitude_direction:
-                this.latitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
+                this.latitudeDirectionValue = ((String) parent.getItemAtPosition(pos));
                 this.updateIcesAreaValue();
                 break;
             case R.id.longitude_direction:
-                this.longitudeDirectionValue = ((String)parent.getItemAtPosition(pos));
+                this.longitudeDirectionValue = ((String) parent.getItemAtPosition(pos));
                 this.updateIcesAreaValue();
                 break;
         }
@@ -661,8 +688,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             this.updateDateDisplay(fishingActivityDate, fishingActivityDateDisplay,
                     getString(R.string.fish_1_form_row_fishing_activity_date));
             this.updateCoordinatesFromDate(c.getTime());
-        }
-        else if (tag == "landing_or_discard_date") {
+        } else if (tag == "landing_or_discard_date") {
             this.landingOrDiscardDate = c.getTime();
             this.updateDateDisplay(landingOrDiscardDate, landingOrDiscardDateDisplay,
                     getString(R.string.fish_1_form_row_landing_or_discard_date));
@@ -689,8 +715,7 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
             }
             if (bundle != null && bundle.containsKey("max")) {
                 dialog.getDatePicker().setMaxDate(bundle.getLong("max"));
-            }
-            else {
+            } else {
                 dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
             }
             dialog.getDatePicker().setTag(this.getTag());

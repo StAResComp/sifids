@@ -207,6 +207,7 @@
     <string name="fish_1_form_row_transporter_reg_etc">Transporter Reg. etc.</string>
     <string name="fish_1_form_row_save">Save Form Row</string>
     <string name="fish_1_form_row_delete">Delete Form Row</string>
+    <string name="duplicated_fish_1_form_row">FISH1 Form Row duplicated</string>
 
     <!-- FISH1 Form Row Deletion -->
 
@@ -288,6 +289,7 @@
     <string name="w">W</string>
     <string name="west">West</string>
     <string name="edit">Edit</string>
+    <string name="duplicate">Duplicate</string>
     <string name="delete">Delete</string>
     <string name="back">Go back</string>
     <string name="next">Next</string>
