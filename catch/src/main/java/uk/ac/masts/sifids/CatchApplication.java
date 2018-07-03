@@ -107,6 +107,7 @@ public class CatchApplication extends Application {
                 && !prefs.getString(getString(R.string.pref_vessel_pln_key), "").isEmpty()
                 && !prefs.getString(getString(R.string.pref_vessel_name_key), "").isEmpty()
                 && !prefs.getString(getString(R.string.pref_owner_master_name_key), "").isEmpty()
+                && prefs.getBoolean(getString(R.string.consent_confirmed_key), false)
                 );
     }
 
