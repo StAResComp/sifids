@@ -462,7 +462,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             try {
                 consentJson.put(prefKey, pref.toString());
-            } catch (JSONException jse) {}
+            } catch (JSONException jse) {
+                goodToGo = false;
+                break;
+            }
         }
         if (goodToGo) {
             final String url = getBaseContext().getString(R.string.post_request_url);
