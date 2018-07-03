@@ -335,4 +335,57 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     public String getCoordinates() {
         return CatchLocation.getCoordinates(this.getLatitude(), this.getLongitude());
     }
+
+    public Fish1FormRow clone() {
+        Fish1FormRow newRow = new Fish1FormRow();
+        try {
+            newRow.setFormId(this.getFormId());
+        } catch (Exception e) {}
+        try {
+            newRow.setFishingActivityDate(this.getFishingActivityDate());
+        } catch (Exception e) {}
+        try {
+            newRow.setLatitude(this.getLatitude());
+        } catch (Exception e) {}
+        try {
+            newRow.setLongitude(this.getLongitude());
+        } catch (Exception e) {}
+        try {
+            newRow.setIcesArea(this.getIcesArea());
+        } catch (Exception e) {}
+        try {
+            newRow.setGearId(this.getGearId());
+        } catch (Exception e) {}
+        try {
+            newRow.setMeshSize(this.getMeshSize());
+        } catch (Exception e) {}
+        try {
+            newRow.setSpeciesId(this.getSpeciesId());
+        } catch (Exception e) {}
+        try {
+            newRow.setStateId(this.getStateId());
+        } catch (Exception e) {}
+        try {
+            newRow.setPresentationId(this.getPresentationId());
+        } catch (Exception e) {}
+        try {
+            newRow.setWeight(this.getWeight());
+        } catch (Exception e) {}
+        try {
+            newRow.setDis(this.isDis());
+        } catch (Exception e) {}
+        try {
+            newRow.setBms(this.isBms());
+        } catch (Exception e) {}
+        try {
+            newRow.setNumberOfPotsHauled(this.getNumberOfPotsHauled());
+        } catch (Exception e) {}
+        try {
+            newRow.setLandingOrDiscardDate(this.getLandingOrDiscardDate());
+        } catch (Exception e) {}
+        try {
+            newRow.setTransporterRegEtc(this.getTransporterRegEtc());
+        } catch (Exception e) {}
+        return newRow;
+    }
 }
