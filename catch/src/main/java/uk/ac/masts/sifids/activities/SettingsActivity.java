@@ -11,18 +11,33 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
-import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
+import uk.ac.masts.sifids.singletons.RequestQueueSingleton;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -94,11 +109,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Object value;
         if (preference instanceof MultiSelectListPreference) {
             value = prefs.getStringSet(preference.getKey(), new HashSet<String>());
-        }
-        else if (preference instanceof SwitchPreference) {
+        } else if (preference instanceof SwitchPreference) {
             value = prefs.getBoolean(preference.getKey(), false);
-        }
-        else {
+        } else {
             value = prefs.getString(preference.getKey(), "");
         }
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
@@ -107,8 +120,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //((CatchApplication) this.getApplication()).redirectIfNecessary();
         setupActionBar();
+
     }
 
     /**
@@ -337,6 +350,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class ConsentDetailsPreferenceFragment extends BasePreferenceFragment {
+
+        private Button submitButton;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -364,6 +380,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_pln_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_name_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_name_key)));
+
         }
     }
 
@@ -406,4 +423,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void submitConsentDetails(View view) {
+        Log.e("CONSENT", "Submitting...");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+                getBaseContext().getApplicationContext());
+        final Map<String, ?> prefsMap = prefs.getAll();
+        String[] consentPrefKeys = {
+                getString(R.string.consent_read_understand_key),
+                getString(R.string.consent_questions_opportunity_key),
+                getString(R.string.consent_questions_answered_key),
+                getString(R.string.consent_can_withdraw_key),
+                getString(R.string.consent_confidential_key),
+                getString(R.string.consent_data_archiving_key),
+                getString(R.string.consent_risks_key),
+                getString(R.string.consent_take_part_key),
+                getString(R.string.consent_photography_capture_key),
+                getString(R.string.consent_photography_publication_key),
+                getString(R.string.consent_photography_future_studies_key),
+                getString(R.string.consent_name_key),
+                getString(R.string.consent_email_key),
+                getString(R.string.consent_phone_key),
+                getString(R.string.consent_fish_1_key),
+                getString(R.string.consent_name_key),
+                getString(R.string.pref_vessel_pln_key),
+                getString(R.string.pref_vessel_name_key),
+                getString(R.string.pref_owner_master_name_key),
+        };
+        JSONObject consentJson = new JSONObject();
+        boolean goodToGo = true;
+        for (String prefKey : consentPrefKeys) {
+            Object pref = prefsMap.get(prefKey);
+            if (pref == null
+                    || (pref instanceof Boolean && !((boolean) pref))
+                    || (pref instanceof String && ((String) pref).isEmpty())) {
+                goodToGo = false;
+                break;
+            }
+            try {
+                consentJson.put(prefKey, pref.toString());
+            } catch (JSONException jse) {}
+        }
+        if (goodToGo) {
+            final String url = getBaseContext().getString(R.string.post_request_url);
+            final SharedPreferences.Editor editor = prefs.edit();
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST, url, consentJson,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
+                            editor.putBoolean(getString(R.string.consent_confirmed_key), true);
+                            editor.apply();
+                            Toast.makeText(getBaseContext(), getString(R.string.participant_consent_thank_you),
+                                    Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                            startActivity(intent);
+                            SettingsActivity.this.finish();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            editor.putBoolean(getString(R.string.consent_confirmed_key), false);
+                            editor.apply();
+                            Toast.makeText(getBaseContext(), getString(R.string.participant_consent_error),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+            RequestQueueSingleton.getInstance(getBaseContext()).addToRequestQueue(request);
+
+        }
+    }
+
 }

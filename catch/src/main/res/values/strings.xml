@@ -103,6 +103,9 @@
     <string name="participant_consent_form_fish_1_header">FISH1/ logbook Data Access Consent</string>
     <string name="participant_consent_form_fish_1">I, the fishing license holder named above, agree for the researchers at the University of St Andrews to have access to the data submitted via the FISH1 form through the mobile phone application developed by the University of St Andrews for the purposes of research under the EMFF SIFIDS Project for the above stated vessel.</string>
     <string name="participant_consent_form_fish_1_period">The information provided will span the period 1st December 2016 to 31st May 2019 (the duration of the SIFIDS Project).</string>
+    <string name="participant_consent_submit_button_text">Confirm consent</string>
+    <string name="participant_consent_thank_you">Thank-you for agreeing to take part in this study</string>
+    <string name="participant_consent_error">There was an error processing your agreement to take part. Please try again later.</string>
 
     <!-- FISH1 Forms -->
 

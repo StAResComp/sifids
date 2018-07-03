@@ -13,4 +13,13 @@
         android:layout_height="wrap_content"
         android:text="@string/participant_consent_form_fish_1_period" />
 
+    <Button
+        android:id="@+id/btn_consent_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:onClick="submitConsentDetails"
+        android:text="@string/participant_consent_submit_button_text"/>
+
 </LinearLayout>

@@ -113,4 +113,8 @@
         <xliff:g id="preference_key">consent_fish_1</xliff:g>
     </string>
 
+    <string name="consent_confirmed_key">
+        <xliff:g id="preference_key">consent_confirmed</xliff:g>
+    </string>
+
 </resources>
