@@ -4,19 +4,10 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import android.text.format.DateFormat;
-
-import uk.ac.masts.sifids.CatchApplication;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -218,7 +209,7 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     }
 
     public boolean setSpeciesId(int speciesId) {
-        if (speciesId != this.getSpeciesId()) {
+        if (this.getSpeciesId() == null || speciesId != this.getSpeciesId()) {
             this.speciesId = speciesId;
             this.updateDates();
             return true;
@@ -231,7 +222,7 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     }
 
     public boolean setStateId(int stateId) {
-        if (stateId != this.getStateId()) {
+        if (this.getStateId() == null || stateId != this.getStateId()) {
             this.stateId = stateId;
             this.updateDates();
             return true;
@@ -244,7 +235,7 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     }
 
     public boolean setPresentationId(int presentationId) {
-        if (presentationId != this.getPresentationId()) {
+        if (this.getPresentationId() == null || presentationId != this.getPresentationId()) {
             this.presentationId = presentationId;
             this.updateDates();
             return true;
@@ -334,7 +325,7 @@ public class Fish1FormRow extends ChangeLoggingEntity{
         if (this.getFishingActivityDate() != null) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(this.getFishingActivityDate());
-            return new SimpleDateFormat("dd MMM yyyy").format(cal.getTime()) + " " + this.getIcesArea();
+            return new SimpleDateFormat("dd MMM").format(cal.getTime()) + " " + this.getIcesArea();
         }
         else {
             return "Date not set";

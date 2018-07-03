@@ -13,9 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
+import uk.ac.masts.sifids.entities.CatchSpecies;
 import uk.ac.masts.sifids.entities.Fish1Form;
 import uk.ac.masts.sifids.entities.Fish1FormRow;
 
@@ -42,12 +47,25 @@ public class Fish1FormRowAdapter extends RecyclerView.Adapter<Fish1FormRowAdapte
 
     @Override
     public void onBindViewHolder(Fish1FormRowAdapter.ViewHolder holder, int position) {
+        final Fish1FormRow row = formRows.get(position);
+        CatchSpecies species = null;
         db = CatchDatabase.getInstance(holder.itemView.getContext());
-        holder.label.setText(formRows.get(position).toString());
-        holder.editButton.setTag(R.id.parent_form, formRows.get(position).getFormId());
-        holder.editButton.setTag(R.id.form_row_in_question, formRows.get(position).getId());
-        holder.deleteButton.setTag(R.id.parent_form, formRows.get(position).getFormId());
-        holder.deleteButton.setTag(R.id.form_row_in_question, formRows.get(position).getId());
+        Callable<CatchSpecies> c = new Callable<CatchSpecies>() {
+            @Override
+            public CatchSpecies call() {
+                return db.catchDao().getSpeciesById(row.getSpeciesId());
+            }
+        };
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Future<CatchSpecies> future = service.submit(c);
+        try {
+            species = future.get();
+        } catch (Exception e) {}
+        holder.label.setText(row.toString() + (species != null ? " (" + species.getSpeciesCode() + ")" : ""));
+        holder.editButton.setTag(R.id.parent_form, row.getFormId());
+        holder.editButton.setTag(R.id.form_row_in_question, row.getId());
+        holder.deleteButton.setTag(R.id.parent_form, row.getFormId());
+        holder.deleteButton.setTag(R.id.form_row_in_question, row.getId());
     }
 
     @Override
