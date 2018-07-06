@@ -1,6 +1,7 @@
 package uk.ac.masts.sifids.activities;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -63,25 +65,20 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
         locationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (
-                            ContextCompat.checkSelfPermission(
-                                    Fish1FormsActivity.this,
-                                    Manifest.permission.ACCESS_FINE_LOCATION
-                            ) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(
+                if (
+                        isChecked && ContextCompat.checkSelfPermission(
                                 Fish1FormsActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                PERMISSION_REQUEST_FINE_LOCATION);
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            Fish1FormsActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSION_REQUEST_FINE_LOCATION);
+                } else {
+                    ((CatchApplication) Fish1FormsActivity.this.getApplication()).setTrackingLocation(isChecked);
+                    if (!isChecked) {
+                        ((Switch) findViewById(R.id.toggle_fishing)).setChecked(false);
                     }
-                    else {
-                        startService(new Intent(Fish1FormsActivity.this, CatchLocationService.class));
-                    }
-                }
-                else {
-                    stopService(new Intent(Fish1FormsActivity.this, CatchLocationService.class));
-                    Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
-                            Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -90,21 +87,19 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CatchApplication app = (CatchApplication) getApplication();
+                app.setFishing(isChecked);
                 if (isChecked) {
-                    app.setFishing(true);
                     ((Switch) findViewById(R.id.toggle_location_tracking)).setChecked(true);
                     Toast.makeText(getBaseContext(), getString(R.string.started_fishing),
                             Toast.LENGTH_LONG).show();
-                }
-                else {
-                    app.setFishing(false);
+                } else {
                     Toast.makeText(getBaseContext(), getString(R.string.stopped_fishing),
                             Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        fab=(FloatingActionButton)findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,12 +107,12 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Fish1FormsActivity.this);
                 final Calendar mostRecentSunday = Calendar.getInstance();
                 mostRecentSunday.add(Calendar.DATE, -1 * (mostRecentSunday.get(Calendar.DAY_OF_WEEK) - 1));
-                mostRecentSunday.set(Calendar.HOUR_OF_DAY,0);
-                mostRecentSunday.set(Calendar.MINUTE,0);
-                mostRecentSunday.set(Calendar.SECOND,0);
+                mostRecentSunday.set(Calendar.HOUR_OF_DAY, 0);
+                mostRecentSunday.set(Calendar.MINUTE, 0);
+                mostRecentSunday.set(Calendar.SECOND, 0);
                 final Calendar sundayPreviousToMostRecent = (Calendar) mostRecentSunday.clone();
                 sundayPreviousToMostRecent.add(Calendar.DATE, -7);
-                DateFormat df=new SimpleDateFormat("dd MMM");
+                DateFormat df = new SimpleDateFormat("dd MMM");
                 selectedWeekStart = null;
                 final CharSequence[] items = {
                         String.format(getString(R.string.this_week), df.format(mostRecentSunday.getTime())),
@@ -128,15 +123,14 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which <= 1) {
-                            Intent i = new Intent(Fish1FormsActivity.this,EditFish1FormActivity.class);
+                            Intent i = new Intent(Fish1FormsActivity.this, EditFish1FormActivity.class);
                             if (which == 0) selectedWeekStart = mostRecentSunday;
                             else if (which == 1) selectedWeekStart = sundayPreviousToMostRecent;
                             i.putExtra("start_date", selectedWeekStart.getTime());
                             selectedWeekStart.add(Calendar.DATE, 7);
                             i.putExtra("end_date", selectedWeekStart.getTime());
                             startActivity(i);
-                        }
-                        else {
+                        } else {
                             DatePickerDialog picker = new DatePickerDialog(
                                     Fish1FormsActivity.this,
                                     new DatePickerDialog.OnDateSetListener() {
@@ -145,7 +139,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
                                             Calendar chosenDate = Calendar.getInstance();
                                             chosenDate.set(year, month, dayOfMonth, 0, 0);
                                             chosenDate.add(Calendar.DATE, -1 * (chosenDate.get(Calendar.DAY_OF_WEEK) - 1));
-                                            Intent i = new Intent(Fish1FormsActivity.this,EditFish1FormActivity.class);
+                                            Intent i = new Intent(Fish1FormsActivity.this, EditFish1FormActivity.class);
                                             i.putExtra("start_date", chosenDate.getTime());
                                             chosenDate.add(Calendar.DATE, 7);
                                             i.putExtra("end_date", chosenDate.getTime());
@@ -168,16 +162,16 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
     @Override
     protected void onResume() {
         super.onResume();
-        Runnable r = new Runnable(){
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 forms = db.catchDao().getForms();
-                adapter= new Fish1FormAdapter(forms, Fish1FormsActivity.this);
+                adapter = new Fish1FormAdapter(forms, Fish1FormsActivity.this);
                 adapter.notifyDataSetChanged();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        recyclerView= (RecyclerView)findViewById(R.id.form_recycler_view);
+                        recyclerView = (RecyclerView) findViewById(R.id.form_recycler_view);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
                         recyclerView.setAdapter(adapter);
                     }
@@ -185,7 +179,7 @@ public class Fish1FormsActivity extends AppCompatActivityWithMenuBar {
             }
         };
 
-        Thread newThread= new Thread(r);
+        Thread newThread = new Thread(r);
         newThread.start();
 
         locationSwitch.setChecked(((CatchApplication) this.getApplication()).isTrackingLocation());

@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import uk.ac.masts.sifids.activities.SettingsActivity;
@@ -47,12 +48,17 @@ public class CatchApplication extends Application {
      */
     public void setFishing(boolean fishing) {
         this.fishing = fishing;
+        Log.e("LOCATION", "Fishing: " + fishing);
         if (this.isTrackingLocation()) {
+            Log.e("LOCATION", "Tracking location");
             ServiceConnection connection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
+                    Log.e("LOCATION","Getting service");
                     CatchLocationService locationService = ((CatchLocationService.CatchLocationBinder) service).getService();
-                    locationService.saveFirstFishingLocation();
+                    locationService.forceWriteLocation();
+                    Log.e("LOCATION","Forced writing...");
+                    unbindService(this);
                 }
 
                 @Override
@@ -61,6 +67,7 @@ public class CatchApplication extends Application {
                 }
             };
             bindService(new Intent(this, CatchLocationService.class), connection, Context.BIND_AUTO_CREATE);
+//            unbindService(connection);
         }
     }
 
@@ -69,6 +76,14 @@ public class CatchApplication extends Application {
     }
 
     public void setTrackingLocation(boolean trackingLocation) {
+        if (trackingLocation) {
+            startService(new Intent(this, CatchLocationService.class));
+        }
+        else {
+            stopService(new Intent(this, CatchLocationService.class));
+            Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
+                    Toast.LENGTH_LONG).show();
+        }
         this.trackingLocation = trackingLocation;
     }
 
