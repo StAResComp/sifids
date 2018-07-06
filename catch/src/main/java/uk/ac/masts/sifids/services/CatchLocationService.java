@@ -189,7 +189,6 @@ public class CatchLocationService extends Service {
 
 	@Override
 	public void onDestroy() {
-	    Log.e("LOCATION", "onDestroy...");
 		super.onDestroy();
 		if (mLocationManager != null) {
             try {
