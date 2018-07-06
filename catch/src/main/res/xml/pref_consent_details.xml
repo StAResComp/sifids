@@ -6,72 +6,17 @@
         android:enabled="true"
         android:key="consent_text_1" />
 
-    <SwitchPreference
-        android:key="@string/consent_read_understand_key"
-        android:title="@string/participant_consent_form_read_and_understand"
-        android:summary="@string/participant_consent_form_read_and_understand" />
-
-    <SwitchPreference
-        android:key="@string/consent_questions_opportunity_key"
-        android:title="@string/participant_consent_form_questions_opportunity"
-        android:summary="@string/participant_consent_form_questions_opportunity" />
-
-    <SwitchPreference
-        android:key="@string/consent_questions_answered_key"
-        android:title="@string/participant_consent_form_questions_answered"
-        android:summary="@string/participant_consent_form_questions_answered" />
-
-    <SwitchPreference
-        android:key="@string/consent_can_withdraw_key"
-        android:title="@string/participant_consent_form_can_withdraw"
-        android:summary="@string/participant_consent_form_can_withdraw" />
-
-    <SwitchPreference
-        android:key="@string/consent_confidential_key"
-        android:title="@string/participant_consent_form_confidential"
-        android:summary="@string/participant_consent_form_confidential" />
-
     <Preference
         android:layout="@layout/prefs_consent_secondary_data"
         android:selectable="false"
         android:enabled="true"
         android:key="consent_text_2" />
 
-    <SwitchPreference
-        android:key="@string/consent_data_archiving_key"
-        android:title="@string/participant_consent_form_data_archiving"
-        android:summary="@string/participant_consent_form_data_archiving" />
-
-    <SwitchPreference
-        android:key="@string/consent_risks_key"
-        android:title="@string/participant_consent_form_risks"
-        android:summary="@string/participant_consent_form_risks" />
-
-    <SwitchPreference
-        android:key="@string/consent_take_part_key"
-        android:title="@string/participant_consent_form_take_part"
-        android:summary="@string/participant_consent_form_take_part" />
-
     <Preference
         android:layout="@layout/prefs_consent_photography"
         android:selectable="false"
         android:enabled="true"
         android:key="consent_text_3" />
-
-    <SwitchPreference
-        android:key="@string/consent_photography_capture_key"
-        android:title="@string/participant_consent_form_photography_capture"
-        android:summary="@string/participant_consent_form_photography_capture" />
-
-    <SwitchPreference
-        android:key="@string/consent_photography_publication_key"
-        android:title="@string/participant_consent_form_photography_publication"
-        android:summary="@string/participant_consent_form_photography_publication" />
-
-    <SwitchPreference
-        android:key="@string/consent_photography_future_studies_key"
-        android:title="@string/participant_consent_form_photography_future_studies"
-        android:summary="@string/participant_consent_form_photography_future_studies" />
 
     <Preference
         android:layout="@layout/prefs_consent_voluntary"
@@ -118,9 +63,9 @@
         android:title="@string/pref_owner_master_name_title" />
 
     <SwitchPreference
-        android:key="@string/consent_fish_1_key"
-        android:title="@string/participant_consent_form_fish_1"
-        android:summary="@string/participant_consent_form_fish_1" />
+        android:key="@string/consent_accept_all_key"
+        android:title="@string/participant_consent_form_accept_all_title"
+        android:summary="@string/participant_consent_form_accept_all_summary" />
 
     <Preference
         android:layout="@layout/prefs_consent_fish_1_period"

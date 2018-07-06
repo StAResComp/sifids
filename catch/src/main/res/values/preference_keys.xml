@@ -117,4 +117,8 @@
         <xliff:g id="preference_key">consent_confirmed</xliff:g>
     </string>
 
+    <string name="consent_accept_all_key">
+        <xliff:g id="preference_key">consent_accept_all</xliff:g>
+    </string>
+
 </resources>

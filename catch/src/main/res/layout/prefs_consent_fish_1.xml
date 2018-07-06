@@ -14,4 +14,10 @@
         android:layout_height="wrap_content"
         android:text="@string/participant_consent_form_fish_1_header" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="@string/participant_consent_form_fish_1" />
+
 </LinearLayout>
