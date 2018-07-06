@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.TimeZone;
@@ -51,12 +52,17 @@ public class CatchApplication extends Application {
      */
     public void setFishing(boolean fishing) {
         this.fishing = fishing;
+        Log.e("LOCATION", "Fishing: " + fishing);
         if (this.isTrackingLocation()) {
+            Log.e("LOCATION", "Tracking location");
             ServiceConnection connection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
+                    Log.e("LOCATION","Getting service");
                     CatchLocationService locationService = ((CatchLocationService.CatchLocationBinder) service).getService();
-                    locationService.saveFirstFishingLocation();
+                    locationService.forceWriteLocation();
+                    Log.e("LOCATION","Forced writing...");
+                    unbindService(this);
                 }
 
                 @Override
@@ -65,6 +71,7 @@ public class CatchApplication extends Application {
                 }
             };
             bindService(new Intent(this, CatchLocationService.class), connection, Context.BIND_AUTO_CREATE);
+//            unbindService(connection);
         }
     }
 
@@ -73,6 +80,14 @@ public class CatchApplication extends Application {
     }
 
     public void setTrackingLocation(boolean trackingLocation) {
+        if (trackingLocation) {
+            startService(new Intent(this, CatchLocationService.class));
+        }
+        else {
+            stopService(new Intent(this, CatchLocationService.class));
+            Toast.makeText(getBaseContext(), getString(R.string.stopped_tracking_location),
+                    Toast.LENGTH_LONG).show();
+        }
         this.trackingLocation = trackingLocation;
     }
 
@@ -111,6 +126,7 @@ public class CatchApplication extends Application {
                 && !prefs.getString(getString(R.string.pref_vessel_pln_key), "").isEmpty()
                 && !prefs.getString(getString(R.string.pref_vessel_name_key), "").isEmpty()
                 && !prefs.getString(getString(R.string.pref_owner_master_name_key), "").isEmpty()
+                && prefs.getBoolean(getString(R.string.consent_confirmed_key), false)
                 );
     }
 

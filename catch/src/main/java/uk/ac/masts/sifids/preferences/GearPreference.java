@@ -1,10 +1,8 @@
 package uk.ac.masts.sifids.preferences;
 
 import android.content.Context;
-import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;

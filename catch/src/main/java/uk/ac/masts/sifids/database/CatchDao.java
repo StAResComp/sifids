@@ -55,6 +55,9 @@ public interface CatchDao {
     public long[] insertFish1Forms(Fish1Form... forms);
 
     @Insert
+    public long insertFish1FormRow(Fish1FormRow formRow);
+
+    @Insert
     public void insertFish1FormRows(Fish1FormRow... formRows);
 
     @Insert
