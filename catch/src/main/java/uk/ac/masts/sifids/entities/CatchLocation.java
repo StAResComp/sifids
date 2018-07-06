@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import uk.ac.masts.sifids.CatchApplication;
+
 @Entity(tableName = "location")
 public class CatchLocation extends ChangeLoggingEntity {
 
@@ -258,7 +260,7 @@ public class CatchLocation extends ChangeLoggingEntity {
 
     public static List<CatchLocation> createTestLocations() {
         List<CatchLocation> locations = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(CatchApplication.TIME_ZONE);
         cal.set(Calendar.HOUR_OF_DAY,0);
         cal.set(Calendar.MINUTE,0);
         cal.set(Calendar.SECOND,0);

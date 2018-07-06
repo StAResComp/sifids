@@ -16,9 +16,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import uk.ac.masts.sifids.CatchApplication;
 import uk.ac.masts.sifids.R;
@@ -86,7 +85,8 @@ public class CatchLocationService extends Service {
                         location.setLatitude(mLastLocation.getLatitude());
                         location.setLongitude(mLastLocation.getLongitude());
                         location.setAccuracy(mLastLocation.getAccuracy());
-                        location.setTimestamp(new Date());
+                        Calendar cal = Calendar.getInstance(CatchApplication.TIME_ZONE);
+                        location.setTimestamp(cal.getTime());
                         location.setFishing(((CatchApplication) getApplication()).isFishing());
                         db.catchDao().insertLocation(location);
                     }
@@ -189,7 +189,6 @@ public class CatchLocationService extends Service {
 
 	@Override
 	public void onDestroy() {
-	    Log.e("LOCATION", "onDestroy...");
 		super.onDestroy();
 		if (mLocationManager != null) {
             try {
