@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
@@ -351,36 +352,80 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class ConsentDetailsPreferenceFragment extends BasePreferenceFragment {
 
-        private Button submitButton;
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_consent_details);
+            prefs = PreferenceManager.getDefaultSharedPreferences(
+                    getActivity().getApplicationContext());
+            editor = prefs.edit();
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_read_understand_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_questions_opportunity_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_questions_answered_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_can_withdraw_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_confidential_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_data_archiving_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_risks_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_take_part_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_capture_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_publication_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_photography_future_studies_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_name_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_email_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_phone_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_fish_1_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_pln_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_vessel_name_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_owner_master_name_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.consent_accept_all_key)));
 
+            Preference allTheAbove = (Preference) findPreference(getString(R.string.consent_accept_all_key));
+            allTheAbove.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Boolean accepted = (Boolean) newValue;
+                    SharedPreferences.Editor editor = prefs.edit();
+                    String[] consentPrefKeys = {
+                            getString(R.string.consent_read_understand_key),
+                            getString(R.string.consent_questions_opportunity_key),
+                            getString(R.string.consent_questions_answered_key),
+                            getString(R.string.consent_can_withdraw_key),
+                            getString(R.string.consent_confidential_key),
+                            getString(R.string.consent_data_archiving_key),
+                            getString(R.string.consent_risks_key),
+                            getString(R.string.consent_take_part_key),
+                            getString(R.string.consent_photography_capture_key),
+                            getString(R.string.consent_photography_publication_key),
+                            getString(R.string.consent_photography_future_studies_key),
+                            getString(R.string.consent_fish_1_key)
+                    };
+                    for (String prefKey : consentPrefKeys) {
+                        editor.putBoolean(prefKey, accepted);
+                        editor.apply();
+                    }
+                    return true;
+                }
+            });
+
+            Preference consentName = (Preference) findPreference(getString(R.string.consent_name_key));
+            consentName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String name = (String) newValue;
+                    if (!name.isEmpty()) {
+                        String ownerMasterName =
+                                prefs.getString(
+                                        getString(R.string.pref_owner_master_name_key), "");
+                        if (ownerMasterName.isEmpty()) {
+                            EditTextPreference ownerMasterNamePref =
+                                    (EditTextPreference) findPreference(
+                                            getString(R.string.pref_owner_master_name_key));
+                            ownerMasterNamePref.setText(name);
+                            ownerMasterNamePref.setSummary(name);
+
+                        }
+                    }
+                    EditTextPreference namePref = (EditTextPreference) preference;
+                    namePref.setSummary(name);
+                    return true;
+                }
+            });
         }
     }
 
@@ -458,6 +503,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     || (pref instanceof Boolean && !((boolean) pref))
                     || (pref instanceof String && ((String) pref).isEmpty())) {
                 goodToGo = false;
+                Toast.makeText(getBaseContext(), getString(R.string.participant_consent_incomplete),
+                        Toast.LENGTH_LONG).show();
                 break;
             }
             try {
