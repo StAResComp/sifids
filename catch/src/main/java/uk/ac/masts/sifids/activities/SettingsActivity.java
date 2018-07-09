@@ -470,7 +470,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public void submitConsentDetails(View view) {
-        Log.e("CONSENT", "Submitting...");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
                 getBaseContext().getApplicationContext());
         final Map<String, ?> prefsMap = prefs.getAll();

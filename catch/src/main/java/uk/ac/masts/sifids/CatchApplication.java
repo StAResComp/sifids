@@ -52,16 +52,12 @@ public class CatchApplication extends Application {
      */
     public void setFishing(boolean fishing) {
         this.fishing = fishing;
-        Log.e("LOCATION", "Fishing: " + fishing);
         if (this.isTrackingLocation()) {
-            Log.e("LOCATION", "Tracking location");
             ServiceConnection connection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
-                    Log.e("LOCATION","Getting service");
                     CatchLocationService locationService = ((CatchLocationService.CatchLocationBinder) service).getService();
                     locationService.forceWriteLocation();
-                    Log.e("LOCATION","Forced writing...");
                     unbindService(this);
                 }
 
