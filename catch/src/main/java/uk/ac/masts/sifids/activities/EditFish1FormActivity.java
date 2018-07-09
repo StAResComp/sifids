@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -134,8 +135,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                     }
                 };
                 error_msg = getString(R.string.fish_1_form_error_retrieving_from_database);
-            }
-            else {
+            } else {
                 //No ID supplied - create new form
                 fish1Form = new Fish1Form();
                 //Database queries can't be run on the UI thread
@@ -205,23 +205,29 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                                 Calendar upper = Calendar.getInstance();
                                 upper.setTime(date);
                                 upper.add(Calendar.DATE, 1);
+                                Log.e("ROW_GEN", "Getting locations between " + date.toString() + " and " +upper.toString());
                                 //Get location where fishing started...
                                 CatchLocation point =
                                         EditFish1FormActivity.this.db.catchDao()
                                                 .getFirstFishingLocationBetweenDates(date,
                                                         upper.getTime());
                                 if (point != null) {
+                                    Log.e("ROW_GEN", "Adding Row");
                                     rows.add(new Fish1FormRow(fish1Form, point));
+                                    Log.e("ROW_GEN", "Rows to add: " + rows.size());
                                     //Need to check if fishing activity moved into another ICES Area
                                     while (point != null &&
                                             point.getTimestamp().before(upper.getTime())) {
                                         Map<Integer, Double> bounds =
                                                 point.getIcesRectangleBounds();
-                                        if (bounds == null)
+                                        if (bounds == null) {
+                                            Log.e("ROW_GEN", "Getting first valid ICES location");
                                             point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstValidIcesFishingLocationBetweenDates(
                                                             point.getTimestamp(), upper.getTime());
-                                        else
+                                        }
+                                        else {
+                                            Log.e("ROW_GEN", "Getting first location outside bounds");
                                             point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstFishingLocationOutsideBoundsBetweenDates(
                                                             point.getTimestamp(),
@@ -230,12 +236,16 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                                                             bounds.get(CatchLocation.UPPER_LAT),
                                                             bounds.get(CatchLocation.LOWER_LONG),
                                                             bounds.get(CatchLocation.UPPER_LONG));
+                                        }
                                         if (point != null) {
+                                            Log.e("ROW_GEN", "Adding Extra Row");
                                             rows.add(new Fish1FormRow(fish1Form, point));
+                                            Log.e("ROW_GEN", "Rows to add: " + rows.size());
                                         }
                                     }
                                 }
                             }
+                            Log.e("ROW_GEN", "Rows to add: " + rows.size());
                             EditFish1FormActivity.this.db.catchDao().insertFish1FormRows(rows);
                         }
                     }
@@ -429,7 +439,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{
                 fish1Form.getEmail(),
-                prefs.getString(getString(R.string.pref_owner_master_email_key),""),
+                prefs.getString(getString(R.string.pref_owner_master_email_key), ""),
                 getString(R.string.email)
         });
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.fish_1_form_email_subject));
@@ -669,8 +679,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                             row = Csv.appendToCsvRow(
                                     row, gear.getName(), true,
                                     EditFish1FormActivity.this);
-                        }
-                        else {
+                        } else {
                             row = Csv.appendToCsvRow(
                                     row, null, false,
                                     EditFish1FormActivity.this);
@@ -682,8 +691,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                             row = Csv.appendToCsvRow(
                                     row, species.toString(), true,
                                     EditFish1FormActivity.this);
-                        }
-                        else {
+                        } else {
                             row = Csv.appendToCsvRow(
                                     row, null, false,
                                     EditFish1FormActivity.this);
@@ -692,8 +700,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                             row = Csv.appendToCsvRow(
                                     row, state.getName(), true,
                                     EditFish1FormActivity.this);
-                        }
-                        else {
+                        } else {
                             row = Csv.appendToCsvRow(
                                     row, null, false,
                                     EditFish1FormActivity.this);
@@ -702,8 +709,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                             row = Csv.appendToCsvRow(
                                     row, presentation.getName(), true,
                                     EditFish1FormActivity.this);
-                        }
-                        else {
+                        } else {
                             row = Csv.appendToCsvRow(
                                     row, null, false,
                                     EditFish1FormActivity.this);
@@ -711,12 +717,11 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                         return row;
                     }
                 };
-                ExecutorService service =  Executors.newSingleThreadExecutor();
+                ExecutorService service = Executors.newSingleThreadExecutor();
                 Future<String> future = service.submit(c);
                 try {
                     rowToWrite = future.get();
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Toast.makeText(getBaseContext(),
                             getString(R.string.csv_not_saved), Toast.LENGTH_LONG).show();
                 }
@@ -755,6 +760,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
 
     /**
      * Process permissions request result - if granted, then create and email file
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -776,6 +782,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
 
     /**
      * Returns the user to Fish1FormsActivity, displaying a message (if supplied).
+     *
      * @param msg
      */
     private void returnToFish1FormsActivity(String msg) {
