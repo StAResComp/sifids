@@ -92,11 +92,13 @@ public class CatchApplication extends Application {
             Toast.makeText(getBaseContext(), getString(R.string.need_to_consent),
                     Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, SettingsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.ConsentDetailsPreferenceFragment.class.getName());
             startActivity(intent);
         }
-        if (!hasSetMinimumPreferences()) {
+        else if (!hasSetMinimumPreferences()) {
             Intent intent = new Intent(this, SettingsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }
