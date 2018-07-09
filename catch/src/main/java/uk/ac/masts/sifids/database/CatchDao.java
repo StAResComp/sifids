@@ -147,6 +147,9 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp >= :start ORDER BY timestamp DESC")
     public List<CatchLocation> getLocationsSince(Date start);
 
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND timestamp < :end ORDER BY timestamp DESC")
+    public List<CatchLocation> getLocationsBetween(Date start, Date end);
+
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
 

@@ -226,6 +226,7 @@
     <!-- Map -->
 
     <string name="title_activity_map">Map (last 24hrs)</string>
+    <string name="title_activity_map_custom">Map (%s)</string>
 
     <!-- Location Tracking -->
 
