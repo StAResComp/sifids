@@ -183,7 +183,7 @@
     <string name="csv_owner_master"># Owner/Master: %s</string>
     <string name="csv_address"># Address: %s</string>
     <string name="csv_total_pots_fishing"># Total Pots Fishing: %s</string>
-    <string name="csv_comments_buyers_information"># Owner/Master: %s</string>
+    <string name="csv_comments_buyers_information"># Comment and Buyers Information: %s</string>
     <string name="csv_header_row">
         Fishing Activity Date,Lat/Long,Stat Rect / ICES Area,Gear,Mesh Size,Species,State,Presentation,Weight,DIS,BMS,Number of Pots Hauled,Landing or Discard Date,"Transporter Reg, Not Transported or Landed to Keeps"
     </string>
