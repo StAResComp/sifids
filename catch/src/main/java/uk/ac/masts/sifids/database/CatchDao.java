@@ -90,7 +90,7 @@ public interface CatchDao {
     @Query("SELECT * FROM fish_1_form WHERE id = :id")
     public Fish1Form getForm(int id);
 
-    @Query("SELECT * FROM fish_1_form_row WHERE form_id = :formId")
+    @Query("SELECT * FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date ASC")
     public List<Fish1FormRow> getRowsForForm(int formId);
 
     @Query("SELECT * FROM fish_1_form_row WHERE id = :id")
