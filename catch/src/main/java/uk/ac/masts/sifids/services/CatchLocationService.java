@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -53,8 +54,10 @@ public class CatchLocationService extends Service {
         //Update location and persist
         @Override
         public void onLocationChanged(Location location) {
-            mLastLocation.set(location);
-            this.writeLocation();
+            if(location.getLongitude() != 0.0 || location.getLatitude() != 0.0) {
+                mLastLocation.set(location);
+                this.writeLocation();
+            }
         }
 
         //Attempt to persist location when provider is disabled
