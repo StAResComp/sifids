@@ -20,10 +20,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -248,6 +250,59 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
             );
             RequestQueueSingleton.getInstance(context).addToRequestQueue(request);
         } catch (Exception e) {}
+    }
+
+    public static void postFish1Form(final Context context, File formCsv) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String pln = prefs.getString(context.getString(R.string.pref_vessel_pln_key), "PLN");
+        try {
+            URL url = new URL(context.getString(R.string.post_request_url));
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+
+            urlConnection.setRequestMethod("POST");
+
+            MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+            meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+            meBuilder.addTextBody("vessel_name", pln);
+            meBuilder.addPart("fish_1_form", new FileBody(formCsv, ContentType.TEXT_PLAIN));
+
+            HttpEntity mpe = meBuilder.build();
+
+            urlConnection.setRequestProperty("Connection", "Keep-Alive");
+            urlConnection.addRequestProperty("Content-length", mpe.getContentLength() + "");
+            urlConnection.addRequestProperty(
+                    mpe.getContentType().getName(), mpe.getContentType().getValue());
+
+            OutputStream out = urlConnection.getOutputStream();
+
+            mpe.writeTo(out);
+            urlConnection.connect();
+            out.flush();
+            out.close();
+
+            InputStream input;
+
+            if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                input = urlConnection.getInputStream();
+            } else {
+                input = urlConnection.getErrorStream();
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+            urlConnection.disconnect();
+
+        }
+        catch (Exception e) {
+
+        }
     }
 
     public interface VolleyCallback {
