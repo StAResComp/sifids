@@ -272,7 +272,7 @@ public class CatchLocation extends ChangeLoggingEntity {
             icesRect += (int) Math.floor(Math.abs(-44.0 - lon));
         }
         else if (lon < 0.0) {
-            icesRect += (int) Math.floor(9 - (lon % 10));
+            icesRect += (int) (9 + Math.ceil(lon % 10));
         }
         else {
             icesRect += (int) Math.floor(lon % 10);

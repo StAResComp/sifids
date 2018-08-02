@@ -35,6 +35,7 @@ public class LocationUnitTest {
         assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.8));
         assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.9));
         assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.999));
+        assertNotEquals("41E11", CatchLocation.getIcesRectangle(56.333, -2.8));
     }
 
     @Test
