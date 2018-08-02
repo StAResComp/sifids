@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Adapter;
@@ -192,13 +194,17 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
         latitudeDegrees = (EditText) findViewById(R.id.latitude_degrees);
         latitudeDegrees.addTextChangedListener(coordWatcher);
+        latitudeDegrees.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "180") });
         latitudeMinutes = (EditText) findViewById(R.id.latitude_minutes);
         latitudeMinutes.addTextChangedListener(coordWatcher);
+        latitudeMinutes.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "59") });
         this.createSpinner(LATITUDE_DIRECTION_KEY, R.id.latitude_direction);
         longitudeDegrees = (EditText) findViewById(R.id.longitude_degrees);
         longitudeDegrees.addTextChangedListener(coordWatcher);
+        longitudeDegrees.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "90") });
         longitudeMinutes = (EditText) findViewById(R.id.longitude_minutes);
         longitudeMinutes.addTextChangedListener(coordWatcher);
+        longitudeMinutes.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "59") });
         this.createSpinner(LONGITUDE_DIRECTION_KEY, R.id.longitude_direction);
 
         icesArea = (EditText) findViewById(R.id.ices_area);
@@ -734,5 +740,39 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
         i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         this.startActivity(i);
         this.finish();
+    }
+
+    // from https://stackoverflow.com/questions/14212518/is-there-a-way-to-define-a-min-and-max-value-for-edittext-in-android
+    private class InputFilterMinMax implements InputFilter {
+
+        private int min, max;
+
+        public InputFilterMinMax(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public InputFilterMinMax(String min, String max) {
+            this.min = Integer.parseInt(min);
+            this.max = Integer.parseInt(max);
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            try {
+                // Remove the string out of destination that is to be replaced
+                String newVal = dest.toString().substring(0, dstart) + dest.toString().substring(dend, dest.toString().length());
+                // Add the new string in
+                newVal = newVal.substring(0, dstart) + source.toString() + newVal.substring(dstart, newVal.length());
+                int input = Integer.parseInt(newVal);
+                if (isInRange(min, max, input))
+                    return null;
+            } catch (NumberFormatException nfe) { }
+            return "";
+        }
+
+        private boolean isInRange(int a, int b, int c) {
+            return b > a ? c >= a && c <= b : c >= b && c <= a;
+        }
     }
 }

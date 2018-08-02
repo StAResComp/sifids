@@ -44,11 +44,11 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public String getLatitudeString() {
-        return String.format("%02d",this.getLatitudeDegrees()) + " " + String.format("%02d",this.getLatitudeMinutes()) + " " + this.getLatitudeDirection();
+        return String.format("%02d", this.getLatitudeDegrees()) + " " + String.format("%02d", this.getLatitudeMinutes()) + " " + this.getLatitudeDirection();
     }
 
     public static String getLatitudeString(double lat) {
-        return String.format("%02d",getLatitudeDegrees(lat)) + " " + String.format("%02d",getLatitudeMinutes(lat)) + " " + getLatitudeDirection(lat);
+        return String.format("%02d", getLatitudeDegrees(lat)) + " " + String.format("%02d", getLatitudeMinutes(lat)) + " " + getLatitudeDirection(lat);
     }
 
     public char getLatitudeDirection() {
@@ -90,7 +90,10 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public void setLatitude(int deg, int min, char dir) {
-        double lat = deg + ((double) min/60);
+        if (min >= 60) {
+            min = 59;
+        }
+        double lat = deg + ((double) min / 60);
         if (dir == 'N') this.setLatitude(lat);
         else if (dir == 'S') this.setLatitude(lat * -1);
     }
@@ -100,11 +103,11 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public String getLongitudeString() {
-        return String.format("%02d",this.getLongitudeDegrees()) + " " + String.format("%02d",this.getLongitudeMinutes()) + " " + this.getLongitudeDirection();
+        return String.format("%02d", this.getLongitudeDegrees()) + " " + String.format("%02d", this.getLongitudeMinutes()) + " " + this.getLongitudeDirection();
     }
 
     public static String getLongitudeString(double lon) {
-        return String.format("%02d",getLongitudeDegrees(lon)) + " " + String.format("%02d",getLongitudeMinutes(lon)) + " " + getLongitudeDirection(lon);
+        return String.format("%02d", getLongitudeDegrees(lon)) + " " + String.format("%02d", getLongitudeMinutes(lon)) + " " + getLongitudeDirection(lon);
     }
 
     public char getLongitudeDirection() {
@@ -146,7 +149,10 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public void setLongitude(int deg, int min, char dir) {
-        double lat = deg + ((double) min/60);
+        if (min >= 60) {
+            min = 59;
+        }
+        double lat = deg + ((double) min / 60);
         if (dir == 'E') this.setLongitude(lat);
         else if (dir == 'W') this.setLongitude(lat * -1);
     }
@@ -164,7 +170,10 @@ public class CatchLocation extends ChangeLoggingEntity {
     }
 
     public static double getDecimalCoordinate(int deg, int min, String dir) {
-        double coord = deg + ((double) min/60);
+        if (min >= 60) {
+            min = 59;
+        }
+        double coord = deg + ((double) min / 60);
         if (dir.equals("N") || dir.equals("E")) return coord;
         else if (dir.equals("S") || dir.equals("W")) return (coord * -1);
         return 1000;
@@ -218,61 +227,87 @@ public class CatchLocation extends ChangeLoggingEntity {
         return CatchLocation.getIcesRectangle(this.getLatitude(), this.getLongitude());
     }
 
-    public Map<Integer,Double> getIcesRectangleBounds() {
+    public Map<Integer, Double> getIcesRectangleBounds() {
         return CatchLocation.getIcesRectangleBounds(this.getLatitude(), this.getLongitude());
     }
 
+
+    /* As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
+
+       ICES rectangle should be a 4-character string of the form "digit, digit, letter, digit"
+
+       ICES statistical rectangles provide a grid covering the area between 36°N and 85°30'N and
+       44°W and 68°30'E.
+
+       Latitudinal rows, with intervals of 30', are numbered (two-digits) from 01 at the southern
+       boundary (latitude 36°00'N) and increasing northwards to 99. The northern boundary of the
+       statistical rectangle system is, thus, latitude 85°30'N.
+
+       Longitudinal columns, with intervals of 1°, are coded according to an alphanumeric system,
+       beginning with A0 at the western boundary (longitude 44°00'W), continuing A1, A2, A3 to
+       longitude 40°W (due to historical reasons, codes A4, A5, A6, A7, A8, and A9 are omitted from
+       the alphanumeric codes for longitude referencing). East of 40°W, the coding continues B0, B1,
+       B2, ..., B9, C0, C1, C2, ..., C9, etc., using a different letter for each 10° block, to the
+       eastern boundary of the area covered. Note that the letter I is omitted.
+
+       When designating an ICES rectangle, the northern coordinate is stated first. Thus, the
+       rectangle of which the south-west corner is 54°00'N 03°00'E is designated 37F3.
+    */
     public static String getIcesRectangle(double lat, double lon) {
-        //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
-        if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
-            String icesRect = "";
-            int latval = (int) Math.floor((lat - 36.0) * 2) + 1;
-            icesRect += String.format("%02d",latval);
-            String letterString = "ABCDEFGHJKLM";
-            char[] letters = letterString.toCharArray();
-            icesRect += letters[((int) Math.floor(lon/10)) + 5];
-            if (lon < -40.0) {
-                icesRect += (int) Math.floor(Math.abs(-44.0 - lon));
-            }
-            else if (lon < 0.0) {
-                icesRect += (int) Math.floor(9 - (lon % 10));
-            }
-            else {
-                icesRect += (int) Math.floor( lon % 10);
-            }
-            return icesRect;
+        if (lat < 36.0 || lat >= 85.5 || lon < -44.0 || lon >= 68.5) {
+            return null;
         }
-        else return null;
+        String icesRect = "";
+
+        //Latitudinal Row
+        int latval = (int) Math.floor((lat - 36.0) * 2) + 1;
+        icesRect += String.format("%02d", latval);
+
+        //Longitudinal Column
+        final String letterString = "ABCDEFGHJKLM";
+        final char[] letters = letterString.toCharArray();
+        //Lowest possible longitude is -44.0; floor(-44.0/10) is -5;
+        icesRect += letters[((int) Math.floor(lon / 10)) + 5];
+        if (lon < -40.0) {
+            icesRect += (int) Math.floor(Math.abs(-44.0 - lon));
+        }
+        else if (lon < 0.0) {
+            icesRect += (int) Math.floor(9 - (lon % 10));
+        }
+        else {
+            icesRect += (int) Math.floor(lon % 10);
+        }
+        return icesRect;
     }
 
-    public static Map<Integer,Double> getIcesRectangleBounds(double lat, double lon) {
+    public static Map<Integer, Double> getIcesRectangleBounds(double lat, double lon) {
         //As per http://www.ices.dk/marine-data/maps/Pages/ICES-statistical-rectangles.aspx
         if (lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
-            Map<Integer,Double> bounds = new HashMap<>();
-            bounds.put(LOWER_LAT,(Math.floor(lat * 2)/2));
-            bounds.put(UPPER_LAT,(Math.ceil(lat * 2)/2));
-            bounds.put(LOWER_LONG,Math.floor(lon));
-            bounds.put(UPPER_LONG,Math.ceil(lon));
+            Map<Integer, Double> bounds = new HashMap<>();
+            bounds.put(LOWER_LAT, (Math.floor(lat * 2) / 2));
+            bounds.put(UPPER_LAT, (Math.ceil(lat * 2) / 2));
+            bounds.put(LOWER_LONG, Math.floor(lon));
+            bounds.put(UPPER_LONG, Math.ceil(lon));
             return bounds;
-        }
-        else return null;
+        } else return null;
     }
 
     public static List<CatchLocation> createTestLocations() {
         List<CatchLocation> locations = new ArrayList<>();
         Calendar cal = Calendar.getInstance(CatchApplication.TIME_ZONE);
-        cal.set(Calendar.HOUR_OF_DAY,0);
-        cal.set(Calendar.MINUTE,0);
-        cal.set(Calendar.SECOND,0);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
         Calendar today = (Calendar) cal.clone();
-        cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));;
+        cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
+        ;
         cal.add(Calendar.DATE, -30);
         while (cal.before(today)) {
             Calendar s = (Calendar) cal.clone();
-            s.set(Calendar.HOUR_OF_DAY,9);
+            s.set(Calendar.HOUR_OF_DAY, 9);
             Random rand = new Random();
             double lat = 36.0 + ((85.5 - 36.0) * rand.nextDouble());
-            double lon = -44.0 +((68.5 - -44.0) * rand.nextDouble());
+            double lon = -44.0 + ((68.5 - -44.0) * rand.nextDouble());
             while (s.get(Calendar.HOUR_OF_DAY) < 16 && lat >= 36.0 && lat < 85.5 && lon >= -44.0 && lon < 68.5) {
                 CatchLocation location = new CatchLocation();
                 location.setLatitude(lat);
@@ -282,7 +317,7 @@ public class CatchLocation extends ChangeLoggingEntity {
                 locations.add(location);
                 lat = (lat - 0.001) + (((lat + 0.001) - (lat - 0.001)) * rand.nextDouble());
                 lon = (lon - 0.001) + (((lon + 0.001) - (lon - 0.001)) * rand.nextDouble());
-                s.add(Calendar.SECOND,10);
+                s.add(Calendar.SECOND, 10);
             }
             cal.add(Calendar.DATE, 1);
         }

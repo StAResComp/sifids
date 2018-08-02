@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +26,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -205,29 +203,24 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                                 Calendar upper = Calendar.getInstance();
                                 upper.setTime(date);
                                 upper.add(Calendar.DATE, 1);
-                                Log.e("ROW_GEN", "Getting locations between " + date.toString() + " and " +upper.toString());
                                 //Get location where fishing started...
                                 CatchLocation point =
                                         EditFish1FormActivity.this.db.catchDao()
                                                 .getFirstFishingLocationBetweenDates(date,
                                                         upper.getTime());
                                 if (point != null) {
-                                    Log.e("ROW_GEN", "Adding Row");
                                     rows.add(new Fish1FormRow(fish1Form, point));
-                                    Log.e("ROW_GEN", "Rows to add: " + rows.size());
                                     //Need to check if fishing activity moved into another ICES Area
                                     while (point != null &&
                                             point.getTimestamp().before(upper.getTime())) {
                                         Map<Integer, Double> bounds =
                                                 point.getIcesRectangleBounds();
                                         if (bounds == null) {
-                                            Log.e("ROW_GEN", "Getting first valid ICES location");
                                             point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstValidIcesFishingLocationBetweenDates(
                                                             point.getTimestamp(), upper.getTime());
                                         }
                                         else {
-                                            Log.e("ROW_GEN", "Getting first location outside bounds");
                                             point = EditFish1FormActivity.this.db.catchDao()
                                                     .getFirstFishingLocationOutsideBoundsBetweenDates(
                                                             point.getTimestamp(),
@@ -238,14 +231,11 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                                                             bounds.get(CatchLocation.UPPER_LONG));
                                         }
                                         if (point != null) {
-                                            Log.e("ROW_GEN", "Adding Extra Row");
                                             rows.add(new Fish1FormRow(fish1Form, point));
-                                            Log.e("ROW_GEN", "Rows to add: " + rows.size());
                                         }
                                     }
                                 }
                             }
-                            Log.e("ROW_GEN", "Rows to add: " + rows.size());
                             EditFish1FormActivity.this.db.catchDao().insertFish1FormRows(rows);
                         }
                     }

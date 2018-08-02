@@ -2,6 +2,8 @@ package uk.ac.masts.sifids;
 
 import org.junit.Test;
 
+import java.util.Map;
+
 import uk.ac.masts.sifids.entities.CatchLocation;
 
 import static org.junit.Assert.*;
@@ -22,6 +24,26 @@ public class LocationUnitTest {
         assertEquals("37F3", CatchLocation.getIcesRectangle(54.1, 3.1));
         assertEquals("45G0", CatchLocation.getIcesRectangle(58.2, 10.51));
         assertEquals("45A0", CatchLocation.getIcesRectangle(58.2, -43.51));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.001));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.1));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.2));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.3));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.4));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.5));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.6));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.7));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.8));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.9));
+        assertEquals("49E9", CatchLocation.getIcesRectangle(60.2, -0.999));
+    }
+
+    @Test
+    public void icesSquareBounds_CalculatedCorrectly() throws Exception {
+        Map bounds = CatchLocation.getIcesRectangleBounds(60.2, -0.5);
+        assertEquals(60.0, bounds.get(CatchLocation.LOWER_LAT));
+        assertEquals(60.5, bounds.get(CatchLocation.UPPER_LAT));
+        assertEquals(-1.0, bounds.get(CatchLocation.LOWER_LONG));
+        assertEquals(-0.0, bounds.get(CatchLocation.UPPER_LONG));
     }
 
     @Test
