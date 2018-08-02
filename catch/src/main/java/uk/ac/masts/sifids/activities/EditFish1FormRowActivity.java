@@ -259,6 +259,12 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
                     spinners.get(LONGITUDE_DIRECTION_KEY).setSelection(i);
                 }
             }
+            for (int i = 0; i < adapters.get(GEAR_KEY).getCount(); i++) {
+                if (fish1FormRow.getGearId() != null
+                        && ((Gear) adapters.get(GEAR_KEY).getItem(i)).getId()
+                        == fish1FormRow.getGearId())
+                    spinners.get(GEAR_KEY).setSelection(i);
+            }
             for (int i = 0; i < adapters.get(SPECIES_KEY).getCount(); i++) {
                 if (fish1FormRow.getSpeciesId() != null
                         && ((CatchSpecies) adapters.get(SPECIES_KEY).getItem(i)).getId()
