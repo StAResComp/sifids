@@ -47,6 +47,7 @@ import uk.ac.masts.sifids.entities.Fish1FormRow;
 import uk.ac.masts.sifids.entities.FisheryOffice;
 import uk.ac.masts.sifids.entities.Gear;
 import uk.ac.masts.sifids.providers.GenericFileProvider;
+import uk.ac.masts.sifids.tasks.PostDataTask;
 import uk.ac.masts.sifids.utilities.Csv;
 
 /**
@@ -434,8 +435,10 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
         });
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.fish_1_form_email_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.fish_1_form_email_text));
+        File csvFile = createFileToSend();
         emailIntent.putExtra(Intent.EXTRA_STREAM, GenericFileProvider.getUriForFile(
-                this, "uk.ac.masts.sifids", createFileToSend()));
+                this, "uk.ac.masts.sifids", csvFile));
+        PostDataTask.postFish1Form(getApplicationContext(), csvFile);
         startActivityForResult(emailIntent, 101);
     }
 

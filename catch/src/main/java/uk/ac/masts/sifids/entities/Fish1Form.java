@@ -187,6 +187,6 @@ public class Fish1Form extends ChangeLoggingEntity {
     }
 
     public String getCsvFileName() {
-        return this.toString() + ".csv";
+        return this.toString().replaceAll(" ","_") + ".csv";
     }
 }
