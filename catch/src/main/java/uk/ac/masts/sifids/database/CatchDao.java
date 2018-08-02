@@ -159,13 +159,13 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND (latitude < :lower_lat OR latitude >= :upper_lat OR longitude < :lower_long OR longitude >= :upper_long) ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
 
-    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND fishing = 1 AND (latitude < :lower_lat OR latitude >= :upper_lat OR longitude < :lower_long OR longitude >= :upper_long) ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND fishing = 1 AND (latitude < :lower_lat OR latitude > :upper_lat OR longitude < :lower_long OR longitude > :upper_long) ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstFishingLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
 
     @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstValidIcesLocationBetweenDates(Date start, Date end);
 
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstValidIcesFishingLocationBetweenDates(Date start, Date end);
 
     @Query("SELECT COUNT(*) FROM location WHERE uploaded = 0")
