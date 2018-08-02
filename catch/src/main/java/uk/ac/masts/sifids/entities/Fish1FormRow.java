@@ -183,7 +183,7 @@ public class Fish1FormRow extends ChangeLoggingEntity{
     }
 
     public boolean setGearId(int gearId) {
-        if (gearId != this.getGearId()) {
+        if (this.getGearId() == null || gearId != this.getGearId()) {
             this.gearId = gearId;
             this.updateDates();
             return true;
