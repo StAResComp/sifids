@@ -11,6 +11,7 @@ import java.util.List;
 public class FisheryOffice extends EntityWithId {
 
     private static final String[][] OFFICES = {
+            {"Aberdeen", "Room A30, 375 Victoria Road, ABERDEEN, AB11 9DB, Tel: 0300 244 9166", "fo.aberdeen@gov.scot"},
             {"Anstruther", "28 Cunzie Street, ANSTRUTHER KY10 3DF, Tel: 0300 244 9100", "fo.anstruther@gov.scot"},
             {"Ayr", "Russell House, King Street, AYR KA8 0BE, Tel: 01292 291380", "fo.ayr@gov.scot"},
             {"Buckie", "Suites 3 -5, Douglas Centre, March Road, BUCKIE AB56 1ER", "fo.buckie@gov.scot"},

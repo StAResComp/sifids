@@ -47,7 +47,7 @@ import uk.ac.masts.sifids.entities.Port;
                 ObservationSpecies.class,
                 Observation.class
     },
-        version = 14
+        version = 15
 )
 @TypeConverters({DateTypeConverter.class})
 public abstract class CatchDatabase extends RoomDatabase{
@@ -113,6 +113,10 @@ public abstract class CatchDatabase extends RoomDatabase{
                                                     dao.getObservationClasses()
                                             ));
                                 }
+                                if (dao.countOffices() == 0) {
+                                    dao.insertFisheryOffices(
+                                            FisheryOffice.createFisheryOffices());
+                                }
                             }
                         });
                     }
@@ -122,7 +126,8 @@ public abstract class CatchDatabase extends RoomDatabase{
                         MIGRATION_10_11,
                         MIGRATION_11_12,
                         MIGRATION_12_13,
-                        MIGRATION_13_14
+                        MIGRATION_13_14,
+                        MIGRATION_14_15
                 )
                 .build();
     }
@@ -188,6 +193,13 @@ public abstract class CatchDatabase extends RoomDatabase{
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE location ADD COLUMN accuracy REAL");
+        }
+    };
+
+    static final Migration MIGRATION_14_15 = new Migration(14,15) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("DELETE FROM fishery_office");
         }
     };
 }

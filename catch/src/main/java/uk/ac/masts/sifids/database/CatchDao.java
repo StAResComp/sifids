@@ -126,6 +126,9 @@ public interface CatchDao {
     @Query("SELECT * FROM fishery_office WHERE id = :id")
     public FisheryOffice getOffice(Integer id);
 
+    @Query("SELECT COUNT(*) FROM fishery_office")
+    public int countOffices();
+
     @Query("SELECT * FROM gear WHERE id = :id")
     public Gear getGearById(Integer id);
 
