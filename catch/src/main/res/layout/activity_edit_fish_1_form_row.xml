@@ -68,7 +68,7 @@
                         android:id="@+id/latitude_minutes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Latitude Min"
+                        android:hint="@string/fish_1_form_row_latitude_minutes"
                         android:inputType="number" />
 
                 </android.support.design.widget.TextInputLayout>

@@ -196,10 +196,10 @@
     <string name="fish_1_form_row_fishing_activity_date_not_set">Fishing Activity Date not set </string>
     <string name="fish_1_form_row_select_fishing_activity_date">Select Fishing Activity Date</string>
     <string name="fish_1_form_row_latitude_degrees">Latitude Deg</string>
-    <string name="fish_1_form_row_latitude_minutes">Latitude Min</string>
+    <string name="fish_1_form_row_latitude_minutes">Latitude Min (0-59)</string>
     <string name="fish_1_form_row_latitude_direction">Latitude Dir</string>
     <string name="fish_1_form_row_longitude_degrees">Longitude Deg</string>
-    <string name="fish_1_form_row_longitude_minutes">Longitude Min</string>
+    <string name="fish_1_form_row_longitude_minutes">Longitude Min (0-59)</string>
     <string name="fish_1_form_row_longitude_direction">Longitude Dir</string>
     <string name="fish_1_form_row_ices_area">ICES Area</string>
     <string name="fish_1_form_row_gear">Gear</string>
