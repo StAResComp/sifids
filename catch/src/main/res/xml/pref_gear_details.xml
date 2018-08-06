@@ -6,11 +6,6 @@
 
     <EditTextPreference
         android:inputType="number"
-        android:key="@string/pref_mesh_size_key"
-        android:title="@string/pref_mesh_size_title" />
-
-    <EditTextPreference
-        android:inputType="number"
         android:key="@string/pref_total_pots_fishing_key"
         android:title="@string/pref_total_pots_fishing_title" />
 
