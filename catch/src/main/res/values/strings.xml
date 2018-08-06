@@ -140,7 +140,7 @@
 
     <!-- FISH1 Form Editing -->
 
-    <string name="fish_1_form_header">FISH1 Form Header Fields</string>
+    <string name="fish_1_form_header">Dates not yet set</string>
     <string name="fish_1_form_fishery_office_string">%s (%s)</string>
     <string name="fish_1_form_fishery_office">Fishery Office</string>
     <string name="fish_1_form_fishery_office_email">Fishery Office Email</string>

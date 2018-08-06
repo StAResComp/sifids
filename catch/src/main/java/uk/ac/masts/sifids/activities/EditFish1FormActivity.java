@@ -20,12 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +39,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import uk.ac.masts.sifids.database.CatchDatabase;
 import uk.ac.masts.sifids.entities.CatchLocation;
 import uk.ac.masts.sifids.entities.CatchPresentation;
 import uk.ac.masts.sifids.entities.CatchSpecies;
@@ -113,6 +116,36 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
         super.onResume();
         //Handle associated FISH1 Form rows
         this.doRows();
+
+        if (this.fish1Form != null) {
+            db = CatchDatabase.getInstance(getApplicationContext());
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    String rowDates = "Dates not set";
+                    Calendar cal = Calendar.getInstance();
+                    Date lowerDate = db.catchDao().getDateOfEarliestRow(fish1Form.getId());
+                    if (lowerDate != null) {
+                        cal.setTime(lowerDate);
+                        cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
+                        rowDates = new SimpleDateFormat(getApplicationContext().getString(R.string.dmonthy)).format(cal.getTime());
+                        rowDates += " - ";
+                        cal.add(Calendar.DATE, 6);
+                        rowDates += new SimpleDateFormat(getApplicationContext().getString(R.string.dmonthy)).format(cal.getTime());
+                        TextView header = findViewById(R.id.fish_1_form_header);
+                        header.setText(rowDates);
+                    }
+                }
+            };
+            Thread newThread= new Thread(r);
+            newThread.start();
+            try {
+                newThread.join();
+            }
+            catch (InterruptedException ie) {
+
+            }
+        }
     }
 
     /**
