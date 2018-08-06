@@ -527,12 +527,23 @@ public class RecordObservationActivity extends AppCompatActivityWithMenuBar impl
             PostDataTask.postObservation(this, observation, new PostDataTask.VolleyCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
-                    AsyncTask.execute(new Runnable() {
+
+                    Runnable r = new Runnable(){
                         @Override
                         public void run() {
                             db.catchDao().markObservationSubmitted(observation.getId());
                         }
-                    });
+                    };
+
+                    Thread newThread= new Thread(r);
+                    newThread.start();
+                    try {
+                        newThread.join();
+                    }
+                    catch (InterruptedException ie) {
+
+                    }
+
                     updateSubmissionMessage(true);
                     Toast.makeText(RecordObservationActivity.this,
                             "Observation successfully submitted.",
