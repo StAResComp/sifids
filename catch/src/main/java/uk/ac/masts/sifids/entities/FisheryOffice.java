@@ -18,7 +18,7 @@ public class FisheryOffice extends EntityWithId {
             {"Campbeltown", "40 Hall Street, CAMPBELTOWN PA28 6BU", "fo.campbeltown@gov.scot"},
             {"Eyemouth", "Gunsgreen, Fish Market Buildings, EYEMOUTH TD14 5SD", "fo.eyemouth@gov.scot"},
             {"Fraserburgh", "121 Shore Street, FRASERBURGH AB43 9BR, Tel: 0300 244 9424", "fo.fraserburgh@gov.scot"},
-            {"Kinlochbervie", "Bervie Pier, Kinlochbervie, LAIRG IV27 4RR, Tel: 01971 521375", "fo.kinlochbervie.gov.scot"},
+            {"Kinlochbervie", "Bervie Pier, Kinlochbervie, LAIRG IV27 4RR, Tel: 01971 521375", "fo.kinlochbervie@gov.scot"},
             {"Kirkwall", "Terminal Buildings, Kirkwall Passenger Terminal, East Pier, KIRKWALL KW15 1HU", "fo.kirkwall@gov.scot"},
             {"Lerwick", "Alexandra Buildings, Lerwick, SHETLAND ZE1 0LL, Tel: 01595 692007", "fo.lerwick@gov.scot"},
             {"Lochinver", "Culag Pier, Lochinver, LAIRG IV27 4LE, Tel: 01571 844486", "fo.lochinver@gov.scot"},
