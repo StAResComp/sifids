@@ -16,6 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import uk.ac.masts.sifids.R;
 import uk.ac.masts.sifids.database.CatchDatabase;
@@ -46,31 +50,35 @@ public class Fish1FormAdapter extends RecyclerView.Adapter<Fish1FormAdapter.View
     public void onBindViewHolder(Fish1FormAdapter.ViewHolder holder, int position) {
         final Fish1Form form = forms.get(position);
         db = CatchDatabase.getInstance(holder.itemView.getContext());
-        final Calendar lowerCal = Calendar.getInstance();
-        final Calendar upperCal = Calendar.getInstance();
-        Runnable r = new Runnable() {
+        Callable<String> c = new Callable<String>() {
             @Override
-            public void run() {
+            public String call() {
+                String rowDates = "Dates not set";
+                Calendar cal = Calendar.getInstance();
                 Date lowerDate = db.catchDao().getDateOfEarliestRow(form.getId());
-                if (lowerDate != null) lowerCal.setTime(lowerDate);
-                Date upperDate = db.catchDao().getDateOfLatestRow(form.getId());
-                if (upperDate != null) upperCal.setTime(upperDate);
+                if (lowerDate != null) {
+                    cal.setTime(lowerDate);
+                    cal.add(Calendar.DATE, -1 * (cal.get(Calendar.DAY_OF_WEEK) - 1));
+                    rowDates = new SimpleDateFormat(context.getString(R.string.dmonthy)).format(cal.getTime());
+                    rowDates += " - \n";
+                    cal.add(Calendar.DATE, 6);
+                    rowDates += new SimpleDateFormat(context.getString(R.string.dmonthy)).format(cal.getTime());
+                }
+                return rowDates;
             }
         };
-        Thread newThread= new Thread(r);
-        newThread.start();
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Future<String> future = service.submit(c);
+        String dates = null;
         try {
-            newThread.join();
-        }
-        catch (InterruptedException ie) {
-
+            dates = future.get();
+        } catch (Exception e) {
         }
         holder.createdAt.setText(
                 String.format(
                         context.getString(R.string.fish_1_form_summary),
                         form.getPln(),
-                        new SimpleDateFormat(context.getString(R.string.dmonthy)).format(lowerCal.getTime()),
-                        new SimpleDateFormat(context.getString(R.string.dmonthy)).format(upperCal.getTime())
+                        dates
                 )
         );
         holder.editButton.setTag(R.id.form_in_question, forms.get(position).getId());
