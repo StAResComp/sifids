@@ -463,8 +463,8 @@ public class EditFish1FormRowActivity extends EditingActivity implements Adapter
 
                         }
                     }
-                    EditFish1FormRowActivity.this.returnToEditFish1FormActivity();
                 }
+                EditFish1FormRowActivity.this.returnToEditFish1FormActivity();
             }
         });
 
