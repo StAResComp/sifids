@@ -74,7 +74,7 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
             List<CatchLocation> locations = db.catchDao().getUnuploadedLocations();
             String csv = "";
             for (CatchLocation loc : locations) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(CatchApplication.TIME_ZONE);
                 String rowToWrite = df.format(loc.getTimestamp());
                 rowToWrite = Csv.appendToCsvRow(rowToWrite, loc.isFishing() ? 1 : 0, false, context);
