@@ -125,7 +125,7 @@
     <string name="stop_fishing">Stop Fishing</string>
     <string name="fishing_switch_label"><b>Fishing</b> - turn on when fishing</string>
     <string name="submit_track">Submit last 1000 location points</string>
-    <string name="fish_1_form_summary">%s\n%s -\n%s</string>
+    <string name="fish_1_form_summary">%s\n%s</string>
     <string name="stopped_tracking_location">Stopped tracking location</string>
     <string name="started_fishing">Recorded location information will now indicate that you are fishing</string>
     <string name="stopped_fishing">Recorded location information will no longer indicate that you are fishing</string>
@@ -140,7 +140,7 @@
 
     <!-- FISH1 Form Editing -->
 
-    <string name="fish_1_form_header">FISH1 Form Header Fields</string>
+    <string name="fish_1_form_header">Dates not yet set</string>
     <string name="fish_1_form_fishery_office_string">%s (%s)</string>
     <string name="fish_1_form_fishery_office">Fishery Office</string>
     <string name="fish_1_form_fishery_office_email">Fishery Office Email</string>
