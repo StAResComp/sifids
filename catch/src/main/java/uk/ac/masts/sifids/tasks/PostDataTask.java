@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -252,57 +253,63 @@ public class PostDataTask extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {}
     }
 
-    public static void postFish1Form(final Context context, File formCsv) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String pln = prefs.getString(context.getString(R.string.pref_vessel_pln_key), "PLN");
-        try {
-            URL url = new URL(context.getString(R.string.post_request_url));
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
+    public static void postFish1Form(final Context context, final File formCsv) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    String pln = prefs.getString(context.getString(R.string.pref_vessel_pln_key), "PLN");
 
-            urlConnection.setRequestMethod("POST");
+                    URL url = new URL(context.getString(R.string.post_request_url));
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setDoInput(true);
 
-            MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
-            meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                    urlConnection.setRequestMethod("POST");
 
-            meBuilder.addTextBody("vessel_name", pln);
-            meBuilder.addPart("fish_1_form", new FileBody(formCsv, ContentType.TEXT_PLAIN));
+                    MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
+                    meBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-            HttpEntity mpe = meBuilder.build();
+                    meBuilder.addTextBody("vessel_name", pln);
+                    meBuilder.addPart("fish_1_form", new FileBody(formCsv, ContentType.TEXT_PLAIN));
 
-            urlConnection.setRequestProperty("Connection", "Keep-Alive");
-            urlConnection.addRequestProperty("Content-length", mpe.getContentLength() + "");
-            urlConnection.addRequestProperty(
-                    mpe.getContentType().getName(), mpe.getContentType().getValue());
+                    HttpEntity mpe = meBuilder.build();
 
-            OutputStream out = urlConnection.getOutputStream();
+                    urlConnection.setRequestProperty("Connection", "Keep-Alive");
+                    urlConnection.addRequestProperty("Content-length", mpe.getContentLength() + "");
+                    urlConnection.addRequestProperty(
+                            mpe.getContentType().getName(), mpe.getContentType().getValue());
 
-            mpe.writeTo(out);
-            urlConnection.connect();
-            out.flush();
-            out.close();
+                    OutputStream out = urlConnection.getOutputStream();
 
-            InputStream input;
+                    mpe.writeTo(out);
+                    urlConnection.connect();
+                    out.flush();
+                    out.close();
 
-            if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
-                input = urlConnection.getInputStream();
-            } else {
-                input = urlConnection.getErrorStream();
+                    InputStream input;
+
+                    if (urlConnection.getResponseCode() < HttpURLConnection.HTTP_BAD_REQUEST) {
+                        input = urlConnection.getInputStream();
+                    } else {
+                        input = urlConnection.getErrorStream();
+                    }
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    urlConnection.disconnect();
+
+                }
+                catch (Exception e) { }
             }
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
-            }
-            urlConnection.disconnect();
-
-        }
-        catch (Exception e) {
-
-        }
+        };
+        Thread newThread = new Thread(r);
+        newThread.start();
     }
 
     public interface VolleyCallback {
