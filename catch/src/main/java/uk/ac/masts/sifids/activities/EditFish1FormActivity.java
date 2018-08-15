@@ -119,9 +119,9 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
 
         if (this.fish1Form != null) {
             db = CatchDatabase.getInstance(getApplicationContext());
-            Runnable r = new Runnable() {
+            Callable<String> c = new Callable<String>() {
                 @Override
-                public void run() {
+                public String call() throws Exception {
                     String rowDates = "Dates not set";
                     Calendar cal = Calendar.getInstance();
                     Date lowerDate = db.catchDao().getDateOfEarliestRow(fish1Form.getId());
@@ -132,19 +132,17 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                         rowDates += " - ";
                         cal.add(Calendar.DATE, 6);
                         rowDates += new SimpleDateFormat(getApplicationContext().getString(R.string.dmonthy)).format(cal.getTime());
-                        TextView header = findViewById(R.id.fish_1_form_header);
-                        header.setText(rowDates);
                     }
+                    return rowDates;
                 }
             };
-            Thread newThread= new Thread(r);
-            newThread.start();
+            ExecutorService service = Executors.newSingleThreadExecutor();
+            Future<String> future = service.submit(c);
             try {
-                newThread.join();
-            }
-            catch (InterruptedException ie) {
-
-            }
+                String headerString = future.get();
+                TextView header = findViewById(R.id.fish_1_form_header);
+                header.setText(headerString);
+            } catch (Exception e) {}
         }
     }
 
