@@ -64,13 +64,7 @@ public interface CatchDao {
     public void insertFish1FormRows(Collection<Fish1FormRow> formRows);
 
     @Insert
-    public void insertLocations(CatchLocation... locations);
-
-    @Insert
     public void insertLocation(CatchLocation location);
-
-    @Insert
-    public void insertLocations(Collection<CatchLocation> locations);
 
     @Insert
     public void insertObservationClasses(Collection<ObservationClass> observationClasses);
@@ -98,9 +92,6 @@ public interface CatchDao {
 
     @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId AND fishing_activity_date != 0 ORDER BY fishing_activity_date ASC LIMIT 1")
     public Date getDateOfEarliestRow(int formId);
-
-    @Query("SELECT fishing_activity_date FROM fish_1_form_row WHERE form_id = :formId ORDER BY fishing_activity_date DESC LIMIT 1")
-    public Date getDateOfLatestRow(int formId);
 
     @Query("SELECT * FROM gear")
     public List<Gear> getGear();
@@ -141,9 +132,6 @@ public interface CatchDao {
     @Query("SELECT * FROM catch_presentation WHERE id = :id")
     public CatchPresentation getPresentationById(Integer id);
 
-    @Query("SELECT * FROM location ORDER BY timestamp DESC LIMIT :limit")
-    public List<CatchLocation> getLastLocations(int limit);
-
     @Query("SELECT * FROM location WHERE id > :id")
     public List<CatchLocation> getLocationsSince(int id);
 
@@ -153,22 +141,13 @@ public interface CatchDao {
     @Query("SELECT * FROM location WHERE timestamp >= :start AND timestamp < :end ORDER BY timestamp DESC")
     public List<CatchLocation> getLocationsBetween(Date start, Date end);
 
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end ORDER BY timestamp ASC LIMIT 1")
-    public CatchLocation getFirstLocationBetweenDates(Date start, Date end);
-
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp >= :start AND timestamp < :end AND fishing = 1 AND (latitude != 0.0 OR longitude != 0.0) ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstFishingLocationBetweenDates(Date start, Date end);
 
-    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND (latitude < :lower_lat OR latitude >= :upper_lat OR longitude < :lower_long OR longitude >= :upper_long) ORDER BY timestamp ASC LIMIT 1")
-    public CatchLocation getFirstLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
-
-    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND fishing = 1 AND (latitude < :lower_lat OR latitude > :upper_lat OR longitude < :lower_long OR longitude > :upper_long) ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp > :start AND timestamp < :end AND fishing = 1 AND (latitude != 0.0 OR longitude != 0.0) AND (latitude < :lower_lat OR latitude > :upper_lat OR longitude < :lower_long OR longitude > :upper_long) ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstFishingLocationOutsideBoundsBetweenDates(Date start, Date end, double lower_lat, double upper_lat, double lower_long, double upper_long);
 
-    @Query("SELECT * FROM location WHERE timestamp >= :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 ORDER BY timestamp ASC LIMIT 1")
-    public CatchLocation getFirstValidIcesLocationBetweenDates(Date start, Date end);
-
-    @Query("SELECT * FROM location WHERE timestamp > :start AND TIMESTAMP < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
+    @Query("SELECT * FROM location WHERE timestamp > :start AND timestamp < :end AND latitude >= 36.0 AND latitude < 85.5 AND longitude >= -44.0 AND longitude < 68.5 AND fishing = 1 ORDER BY timestamp ASC LIMIT 1")
     public CatchLocation getFirstValidIcesFishingLocationBetweenDates(Date start, Date end);
 
     @Query("SELECT COUNT(*) FROM location WHERE uploaded = 0")
