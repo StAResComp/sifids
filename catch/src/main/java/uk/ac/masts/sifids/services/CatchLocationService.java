@@ -54,7 +54,7 @@ public class CatchLocationService extends Service {
         //Update location and persist
         @Override
         public void onLocationChanged(Location location) {
-            if(location.getLongitude() != 0.0 || location.getLatitude() != 0.0) {
+            if(location.getAccuracy() > 0.0) {
                 mLastLocation.set(location);
                 this.writeLocation();
             }
