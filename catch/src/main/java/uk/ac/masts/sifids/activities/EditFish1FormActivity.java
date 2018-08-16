@@ -358,6 +358,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
                     portOfDepartureAdapter.getPosition(fish1Form.getPortOfDeparture()));
             portOfLanding.setSelection(
                     portOfLandingAdapter.getPosition(fish1Form.getPortOfDeparture()));
+            comment.setText(fish1Form.getCommentsAndBuyersInformation());
         }
     }
 
@@ -382,6 +383,7 @@ public class EditFish1FormActivity extends EditingActivity implements AdapterVie
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveForm();
                 returnToFish1FormsActivity(null);
             }
         });
