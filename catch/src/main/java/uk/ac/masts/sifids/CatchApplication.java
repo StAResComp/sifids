@@ -28,7 +28,7 @@ import uk.ac.masts.sifids.services.CatchLocationService;
  */
 public class CatchApplication extends Application {
 
-    public final static String VERSION = "0.6.3";
+    public final static String VERSION = "0.6.4";
 
     public final static TimeZone TIME_ZONE = TimeZone.getTimeZone("TIME_ZONE");
 

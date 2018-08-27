@@ -45,3 +45,8 @@ before_script:
 
 script:
   - bash gradlew test
+
+notifications:
+
+webhooks: https://outlook.office.com/webhook/7cb17fa1-8130-4cad-a8b5-7d12328cef44@f85626cb-0da8-49d3-aa58-64ef678ef01a/TravisCI/edfddc030b9d4fd4995211b9db33b67e/241dea77-f6fa-43b8-9a6d-d88d5cb82f2b
+
