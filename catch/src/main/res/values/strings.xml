@@ -19,7 +19,7 @@
     <string name="pref_owner_master_address_title">Owner/Master Address</string>
     <string name="pref_owner_master_email_title">Owner/Master Email Address</string>
 
-    <string name="pref_header_port_details">Usual Ports</string>
+    <string name="pref_header_port_details">Usual Landing and Departing Ports</string>
     <string name="pref_port_title">Ports</string>
 
     <string name="pref_header_gear_details">Gear Details</string>
@@ -45,7 +45,7 @@
     <string name="participant_info_about_study_1">We invite you to participate in a research project aimed at improving the sustainability within commercial inshore fisheries (i.e. vessels of 12m or less fishing out to the 12nm limit). This project aims to trial ways to capture information that could contribute to the industry’s long-term sustainability and profitability. The project aims to generate this information through industry gathered data via a mobile phone application (Android App) that can be used within the scope of marine spatial planning and fisheries management. The project also seeks to identify how the App could provide a platform to capture useful observations and experiential information from fishers in a standardised format so that these data can either in isolation or collated over time, contribute to fisheries management and marine planning. This will involve engagement (through a trial using the mobile phone App) with a sample of inshore fishers to study the quality of the data provided through the App and will enable a better understanding of the fishing activities.</string>
     <string name="participant_info_about_study_2">This study is being conducted as part of the Scottish Inshore Fisheries Integrated Database System (SIFIDS) project, led by Dr Mark James who is based the University of St Andrews, Scotland.</string>
     <string name="participant_info_what_does_app_do_header">What does the App do?</string>
-    <string name="participant_info_what_does_app_do_1">With your agreement, we would like you to start using our App’s FISH1 form to record information about your daily catches. All information will be sent securely, via email, from your phone to your local Fishery Office and to researchers at the University of St Andrews. The FISH1 form will be available to for you review at any time in the App and can be sent to yours/the masters email address. The App has been approved by Marine Scotland for this trial.</string>
+    <string name="participant_info_what_does_app_do_1">With your agreement, we would like you to start using our App’s FISH1 form to record information about your daily catches. All information will be sent securely, via email, from your phone to your local Fishery Office and to researchers at the University of St Andrews. The FISH1 form will be available to for you review at any time in the App and can be sent to your/the master's email address. The App has been approved by Marine Scotland for this trial.</string>
     <string name="participant_info_what_does_app_do_2">If you are willing to assist us further, we would like to collect some GPS tracking data using the App whilst you are fishing. The GPS track will only be seen by researchers and yourself. This will allow the researchers to understand the areas you fish and frequency you fish in these locations.</string>
     <string name="participant_info_what_does_app_do_3">There is also an observation reporter. This will allow you to record unusual sightings or interactions with wildlife such as whales, dolphins, wrasse and octopus whilst fishing. This information will only be seen by researchers and yourself. These observations will provide useful, often unrecorded information on the distribution of these species.</string>
     <string name="participant_info_what_does_app_do_4">After the trial, we will seek your feedback on the overall functionality of the App and how we might improve it. <b>Please be assured that all the information and data that we collect in this research project will be treated as <u>STRICTLY CONFIDENTIAL</u></b>. The results will be analysed and presented in such a way that no personal details or information which might compromise your fishing activities will be made public.</string>
@@ -105,7 +105,7 @@
     <string name="participant_consent_form_email">Email</string>
     <string name="participant_consent_form_phone">Telephone Number</string>
     <string name="participant_consent_form_fish_1_header">FISH1/ logbook Data Access Consent</string>
-    <string name="participant_consent_form_fish_1">12. I, the fishing license holder named below, agree for the researchers at the University of St Andrews to have access to the data submitted via the FISH1 form through the mobile phone application developed by the University of St Andrews for the purposes of research under the EMFF SIFIDS Project for the above stated vessel.</string>
+    <string name="participant_consent_form_fish_1">12. I, the fishing licence holder named below, agree for the researchers at the University of St Andrews to have access to the data submitted via the FISH1 form through the mobile phone application developed by the University of St Andrews for the purposes of research under the EMFF SIFIDS Project for the above stated vessel.</string>
     <string name="participant_consent_form_fish_1_period">The information provided will span the period 1st December 2016 to 31st May 2019 (the duration of the SIFIDS Project).</string>
     <string name="participant_consent_form_accept_all_title">I accept all the numbered statements above</string>
     <string name="participant_consent_form_accept_all_summary">I confirm that I accept all statements 1 to 12 above to be true, and that all details I have entered here are correct.</string>
@@ -129,7 +129,7 @@
     <string name="stopped_tracking_location">Stopped tracking location</string>
     <string name="started_fishing">Recorded location information will now indicate that you are fishing</string>
     <string name="stopped_fishing">Recorded location information will no longer indicate that you are fishing</string>
-    <string name="fish_1_forms_header">FISH1 Forms</string>
+    <string name="fish_1_forms_header">FISH1 Forms (for owners of vessels 10m and under only)</string>
 
     <!-- FISH1 Form Creation -->
 
