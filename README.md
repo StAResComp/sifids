@@ -12,6 +12,9 @@ Form](http://www.gov.scot/Topics/marine/Compliance/letters/FISH12016) which can
 be completed in the app. Completion of the form is eased by the setting of
 default values for vessel, owner, ports, gear, species etc.
 
+Users can also report observations of a range of protected, endangered and
+threatened marine wildlife species.
+
 ## Building from source
 
 This app requires a [Google Maps API
