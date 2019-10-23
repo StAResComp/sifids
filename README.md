@@ -1,4 +1,6 @@
-# SIFIDS [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/StAResComp/sifids.svg?branch=master)](https://travis-ci.org/StAResComp/sifids)
+[![DOI](https://zenodo.org/badge/116812167.svg)](https://zenodo.org/badge/latestdoi/116812167) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/StAResComp/sifids.svg?branch=master)](https://travis-ci.org/StAResComp/sifids)
+
+# SIFIDS
 
 An Android app developed as part of the [Scottish Inshore Fisheries
 Integrated Data System (SIFIDS)
