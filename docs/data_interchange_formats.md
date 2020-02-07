@@ -75,15 +75,15 @@ the app generates for sending by email.
 
 The first 10 rows contain the header information for the form, as follows:
 
-- # Fishery Office: _Fishery Office name_
-- # Email: _Fishery Office email address_
-- # Port of Departure: _Port of departure_
-- # Port of Landing: _Port of landing_
-- # PLN: _PLN_
-- # Vessel Name: _vessel name_
-- # Owner/Master: _owner/master name_
-- # Address: _owner/master address_
-- # Total Pots Fishing: _total pots fishing_
+- \# Fishery Office: _Fishery Office name_
+- \# Email: _Fishery Office email address_
+- \# Port of Departure: _Port of departure_
+- \# Port of Landing: _Port of landing_
+- \# PLN: _PLN_
+- \# Vessel Name: _vessel name_
+- \# Owner/Master: _owner/master name_
+- \# Address: _owner/master address_
+- \# Total Pots Fishing: _total pots fishing_
 
 The next line is blank, followed by the header row for the tabular data:
 
