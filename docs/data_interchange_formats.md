@@ -1,7 +1,8 @@
 # Data Interchange Formats
 
 The SIFIDS mobile app sends four kinds of data to the [SIFIDS web
-application](https://github.com/StAResComp/sifids_web):
+application](https://github.com/StAResComp/sifids_web) at the url defined in
+`catch/src/main/res/values/strings.xml` as `post_request_url`:
 
 1. Location data
 2. Observation data
@@ -97,26 +98,27 @@ Consent data is posted in a JSON format which looks like:
 
 ```json
 {
-  "consent_read_understand": "",
-  "consent_questions_opportunity": "",
-  "consent_questions_answered": "",
-  "consent_can_withdraw": "",
-  "consent_confidential": "",
-  "consent_data_archiving": "",
-  "consent_risks": "",
-  "consent_photography_capture": "",
-  "consent_photography_publication": "",
-  "consent_photography_future_studies": "",
-  "consent_name": "",
-  "consent_email": "",
-  "consent_phone": "",
-  "consent_fish_1": "",
-  "consent_name": "",
-  "pref_vessel_pln": "",
-  "pref_vessel_name": "",
-  "pref_owner_master_name": ""
+  "consent_read_understand": "true",
+  "consent_questions_opportunity": "true",
+  "consent_questions_answered": "true",
+  "consent_can_withdraw": "true",
+  "consent_confidential": "true",
+  "consent_data_archiving": "true",
+  "consent_risks": "true",
+  "consent_photography_capture": "true",
+  "consent_photography_publication": "true",
+  "consent_photography_future_studies": "true",
+  "consent_name": "User Name",
+  "consent_email": "user@email.address",
+  "consent_phone": "0123456789",
+  "consent_fish_1": "true",
+  "pref_vessel_pln": "abc123",
+  "pref_vessel_name": "Titanic",
+  "pref_owner_master_name": "User Name"
 }
 ```
 
-\* Yes, `consent_name` is in there twice. This is a bug which is not going to
-be addressed at this point.
+All those values given as `"true"` above may also be `"false"`; if any are
+`"false"` then a HTTP error code should be returned. The value of
+`"pref_owner_master_name"` will probably be the same as that of
+`"consent_name"` but this cannot be assumed to be the case.
